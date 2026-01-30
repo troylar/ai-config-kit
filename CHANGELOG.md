@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-01-30
+
+### Added
+- **Package Creation Command** - Generate shareable packages from existing configurations (#24)
+  - `aiconfig package create` - Create packages from project configurations
+  - Automatic component detection for instructions, MCP servers, hooks, commands, resources
+  - Secret detection and templating for secure distribution
+  - Support for new component types: skills, workflows, memory files
+- **Enhanced IDE Capability Support** - All IDEs now support MCP servers
+  - Claude Code: Full support (skills, memory files, hooks, commands, resources)
+  - Cursor: MCP via `.cursor/mcp.json` (40 tool limit)
+  - Windsurf: MCP via `~/.codeium/windsurf/mcp_config.json` (100 tool limit)
+  - GitHub Copilot: MCP via `.vscode/mcp.json` (128 tool limit)
+- New component types in IDE capability registry:
+  - Skills (`.claude/skills/*/SKILL.md`)
+  - Workflows (`.windsurf/workflows/*.md`)
+  - Memory files (`CLAUDE.md`)
+- Updated copilot instruction detection for `.github/copilot-instructions.md` pattern
+
+### Changed
+- Updated MCP translators for Cursor and Copilot to support MCP installation
+- IDE capability registry now accurately reflects current MCP support across all tools
+
 ## [0.4.0] - 2025-11-09
 
 ### Added
