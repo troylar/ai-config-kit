@@ -233,7 +233,8 @@ class TestCapabilityRegistry:
         """Test validating unsupported component."""
         assert not validate_component_support(AIToolType.CURSOR, ComponentType.HOOK)  # Cursor doesn't support hooks
         assert not validate_component_support(AIToolType.COPILOT, ComponentType.HOOK)  # Copilot doesn't support hooks
-        assert not validate_component_support(AIToolType.COPILOT, ComponentType.RESOURCE)  # Copilot doesn't support resources
+        # Copilot doesn't support resources
+        assert not validate_component_support(AIToolType.COPILOT, ComponentType.RESOURCE)
 
     def test_validate_component_support_invalid_tool(self) -> None:
         """Test validating component for invalid tool returns False."""

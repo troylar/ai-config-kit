@@ -174,7 +174,7 @@ class TestPackageInstall:
         """
         from aiconfigkit.cli.package_install import install_package
 
-        # Install for Cursor (only supports instructions and resources)
+        # Install for Cursor (supports instructions, MCP servers, and resources)
         result = install_package(
             package_path=sample_package_dir,
             project_root=project_root,
@@ -182,11 +182,11 @@ class TestPackageInstall:
             scope=InstallationScope.PROJECT,
         )
 
-        # Verify partial installation
+        # Verify partial installation (some components filtered)
         assert result.success is True
         assert result.status == InstallationStatus.PARTIAL
-        assert result.installed_count == 2  # Only instruction + resource
-        assert result.skipped_count == 3  # MCP, hook, command skipped
+        assert result.installed_count == 3  # instruction + mcp + resource
+        assert result.skipped_count == 2  # hook, command skipped
         assert result.failed_count == 0
 
         # Verify instruction installed
@@ -207,7 +207,7 @@ class TestPackageInstall:
 
         assert record is not None
         assert record.status == InstallationStatus.PARTIAL
-        assert len(record.components) == 2  # Only installed components tracked
+        assert len(record.components) == 3  # instruction + mcp + resource tracked
 
     def test_install_package_already_exists(self, sample_package_dir: Path, project_root: Path) -> None:
         """

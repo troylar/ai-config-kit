@@ -39,7 +39,7 @@ class TestIDECompatibility:
         assert (test_project / ".gitignore").exists()
 
     def test_cursor_filters_unsupported_components(self, package_builder, test_project: Path) -> None:
-        """Test that Cursor only installs instructions and resources."""
+        """Test that Cursor installs instructions, MCP servers, and resources."""
         pkg = package_builder(
             name="complete-pkg",
             version="1.0.0",
@@ -53,17 +53,16 @@ class TestIDECompatibility:
         result = install_package(pkg, test_project, AIToolType.CURSOR)
 
         assert result.success is True
-        # Only instructions and resources installed
-        assert result.installed_count == 2
-        # MCP, hooks, commands filtered
-        assert result.skipped_count == 3
+        # Instructions, MCP servers, and resources installed
+        assert result.installed_count == 3
+        # Hooks and commands filtered
+        assert result.skipped_count == 2
 
-        # Verify only supported components installed
+        # Verify supported components installed
         assert (test_project / ".cursor/rules/guide.mdc").exists()  # Note: .mdc extension
         assert (test_project / ".editorconfig").exists()
 
-        # Unsupported not installed
-        assert not (test_project / ".cursor/mcp").exists()
+        # Unsupported not installed (hooks and commands)
         assert not (test_project / ".cursor/hooks").exists()
         assert not (test_project / ".cursor/commands").exists()
 
@@ -104,8 +103,8 @@ class TestIDECompatibility:
         result = install_package(pkg, test_project, AIToolType.WINSURF)
 
         assert result.success is True
-        # Instructions and resources only
-        assert result.installed_count == 2
+        # Instructions, MCP servers, and resources (hooks/commands not supported)
+        assert result.installed_count == 3
 
         # Verify paths
         assert (test_project / ".windsurf/rules/guide.md").exists()
@@ -158,13 +157,11 @@ class TestIDECompatibility:
         windsurf_result = install_package(pkg, windsurf_project, AIToolType.WINSURF)
         copilot_result = install_package(pkg, copilot_project, AIToolType.COPILOT)
 
-        # Claude gets everything
+        # All IDEs now support MCP servers
         assert claude_result.installed_count == 2  # instruction + mcp
-
-        # Others filter MCP
-        assert cursor_result.installed_count == 1  # instruction only
-        assert windsurf_result.installed_count == 1
-        assert copilot_result.installed_count == 1
+        assert cursor_result.installed_count == 2  # instruction + mcp
+        assert windsurf_result.installed_count == 2  # instruction + mcp
+        assert copilot_result.installed_count == 2  # instruction + mcp
 
         # Verify paths
         assert (claude_project / ".claude/rules/guide.md").exists()

@@ -107,10 +107,7 @@ def create_package_command(
         else:
             project_root_maybe = find_project_root()
             if not project_root_maybe:
-                console.print(
-                    "[red]Error: Could not find project root. "
-                    "Use --project to specify explicitly.[/red]"
-                )
+                console.print("[red]Error: Could not find project root. " "Use --project to specify explicitly.[/red]")
                 raise typer.Exit(1)
             project_root = project_root_maybe
 
@@ -185,11 +182,10 @@ def create_package_command(
                 if not quiet:
                     console.print(f"[yellow]Removing existing package directory: {package_dir}[/yellow]")
                 import shutil
+
                 shutil.rmtree(package_dir)
             else:
-                console.print(
-                    f"[red]Error: Package directory already exists: {package_dir}[/red]"
-                )
+                console.print(f"[red]Error: Package directory already exists: {package_dir}[/red]")
                 console.print("[dim]Use --force to overwrite[/dim]")
                 raise typer.Exit(1)
 

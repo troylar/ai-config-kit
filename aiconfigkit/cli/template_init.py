@@ -474,7 +474,7 @@ build/
         console.print("  3. Update templatekit.yaml with your templates")
         console.print("  4. Initialize git: git init && git add . && git commit -m 'Initial commit'")
         console.print("  5. Push to GitHub/GitLab/Bitbucket")
-        console.print(f"  6. Install to any IDE: inskit template install <repo-url> --as {namespace} --ide <claude|cursor|windsurf|copilot>")
+        console.print(f"  6. Install to any IDE: inskit template install <repo-url> --as {namespace} --ide <ide>")
 
         console.print("\n[cyan]Repository structure (IDE-agnostic):[/cyan]")
         console.print(f"{directory}/")

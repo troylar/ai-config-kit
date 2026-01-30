@@ -134,8 +134,14 @@ class TestCursorTranslator:
         # No frontmatter added when no tags
         assert not result.content.startswith("---")
 
-    def test_translate_mcp_server_raises_error(self, temp_package: Path) -> None:
-        """Test that translating MCP server raises NotImplementedError."""
+    def test_translate_mcp_server(self, temp_package: Path) -> None:
+        """Test that translating MCP server works for Cursor."""
+        # Create MCP config file
+        mcp_dir = temp_package / "mcp"
+        mcp_dir.mkdir(exist_ok=True)
+        mcp_file = mcp_dir / "server.json"
+        mcp_file.write_text('{"mcpServers": {}}')
+
         translator = CursorTranslator()
         component = MCPServerComponent(
             name="test-server",
@@ -143,8 +149,12 @@ class TestCursorTranslator:
             description="Test server",
         )
 
-        with pytest.raises(NotImplementedError, match="does not support MCP"):
-            translator.translate_mcp_server(component, temp_package)
+        result = translator.translate_mcp_server(component, temp_package)
+
+        assert result.component_type == ComponentType.MCP_SERVER
+        assert result.component_name == "test-server"
+        assert result.target_path == ".cursor/mcp/test-server.json"
+        assert '{"mcpServers": {}}' in result.content
 
     def test_translate_hook_raises_error(self, temp_package: Path) -> None:
         """Test that translating hook raises NotImplementedError."""
@@ -372,8 +382,14 @@ class TestCopilotTranslator:
         assert "Test Instruction" in result.content
         assert result.needs_processing is False  # Multi-file approach
 
-    def test_translate_mcp_server_raises_error(self, temp_package: Path) -> None:
-        """Test that translating MCP server raises NotImplementedError."""
+    def test_translate_mcp_server(self, temp_package: Path) -> None:
+        """Test that translating MCP server works for Copilot via VS Code."""
+        # Create MCP config file
+        mcp_dir = temp_package / "mcp"
+        mcp_dir.mkdir(exist_ok=True)
+        mcp_file = mcp_dir / "server.json"
+        mcp_file.write_text('{"mcpServers": {}}')
+
         translator = CopilotTranslator()
         component = MCPServerComponent(
             name="test-server",
@@ -381,8 +397,12 @@ class TestCopilotTranslator:
             description="Test server",
         )
 
-        with pytest.raises(NotImplementedError, match="does not support MCP"):
-            translator.translate_mcp_server(component, temp_package)
+        result = translator.translate_mcp_server(component, temp_package)
+
+        assert result.component_type == ComponentType.MCP_SERVER
+        assert result.component_name == "test-server"
+        assert result.target_path == ".vscode/mcp/test-server.json"
+        assert '{"mcpServers": {}}' in result.content
 
     def test_translate_command_raises_error(self, temp_package: Path) -> None:
         """Test that translating command raises NotImplementedError."""

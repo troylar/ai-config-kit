@@ -50,12 +50,17 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "test-pkg",
-                    "--output", str(output_dir),
-                    "--description", "Test package",
-                    "--author", "Tester",
+                    "--name",
+                    "test-pkg",
+                    "--output",
+                    str(output_dir),
+                    "--description",
+                    "Test package",
+                    "--author",
+                    "Tester",
                 ],
             )
 
@@ -75,10 +80,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "json-test",
-                    "--output", str(output_dir),
+                    "--name",
+                    "json-test",
+                    "--output",
+                    str(output_dir),
                     "--json",
                     "--quiet",  # Suppress non-JSON output
                 ],
@@ -115,10 +123,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "invalid@name!",
-                    "--output", str(output_dir),
+                    "--name",
+                    "invalid@name!",
+                    "--output",
+                    str(output_dir),
                 ],
             )
 
@@ -135,10 +146,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "existing",
-                    "--output", str(output_dir),
+                    "--name",
+                    "existing",
+                    "--output",
+                    str(output_dir),
                 ],
             )
 
@@ -158,10 +172,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "force-test",
-                    "--output", str(output_dir),
+                    "--name",
+                    "force-test",
+                    "--output",
+                    str(output_dir),
                     "--force",
                 ],
             )
@@ -179,10 +196,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "quiet-test",
-                    "--output", str(output_dir),
+                    "--name",
+                    "quiet-test",
+                    "--output",
+                    str(output_dir),
                     "--quiet",
                 ],
             )
@@ -199,17 +219,22 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "version-test",
-                    "--version", "2.5.0",
-                    "--output", str(output_dir),
+                    "--name",
+                    "version-test",
+                    "--version",
+                    "2.5.0",
+                    "--output",
+                    str(output_dir),
                 ],
             )
 
         assert result.exit_code == 0
 
         import yaml
+
         manifest_path = output_dir / "package-version-test" / "ai-config-kit-package.yaml"
         with open(manifest_path) as f:
             manifest = yaml.safe_load(f)
@@ -218,14 +243,7 @@ class TestPackageCreateCommand:
     def test_create_keep_secrets(self, project_with_instruction: Path, tmp_path: Path) -> None:
         """Test --keep-secrets flag."""
         claude_dir = project_with_instruction / ".claude"
-        settings = {
-            "mcpServers": {
-                "test": {
-                    "command": "cmd",
-                    "env": {"API_KEY": "secret-value-123456789"}
-                }
-            }
-        }
+        settings = {"mcpServers": {"test": {"command": "cmd", "env": {"API_KEY": "secret-value-123456789"}}}}
         (claude_dir / "settings.local.json").write_text(json.dumps(settings))
 
         output_dir = tmp_path / "output"
@@ -235,10 +253,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "secrets-test",
-                    "--output", str(output_dir),
+                    "--name",
+                    "secrets-test",
+                    "--output",
+                    str(output_dir),
                     "--keep-secrets",
                 ],
             )
@@ -258,10 +279,13 @@ class TestPackageCreateCommand:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "test",
-                    "--output", "/nonexistent/path",
+                    "--name",
+                    "test",
+                    "--output",
+                    "/nonexistent/path",
                 ],
             )
 
@@ -287,16 +311,20 @@ class TestPackageCreateComponents:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "multi-inst",
-                    "--output", str(output_dir),
+                    "--name",
+                    "multi-inst",
+                    "--output",
+                    str(output_dir),
                 ],
             )
 
         assert result.exit_code == 0
 
         import yaml
+
         manifest_path = output_dir / "package-multi-inst" / "ai-config-kit-package.yaml"
         with open(manifest_path) as f:
             manifest = yaml.safe_load(f)
@@ -322,10 +350,13 @@ class TestPackageCreateComponents:
             result = runner.invoke(
                 app,
                 [
-                    "package", "create",
+                    "package",
+                    "create",
                     "--no-interactive",
-                    "--name", "full-pkg",
-                    "--output", str(output_dir),
+                    "--name",
+                    "full-pkg",
+                    "--output",
+                    str(output_dir),
                 ],
             )
 

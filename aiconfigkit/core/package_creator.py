@@ -149,14 +149,10 @@ class PackageCreator:
             for sub_dir in sub_dirs:
                 (package_dir / sub_dir).mkdir(exist_ok=True)
 
-            copy_warnings = self._copy_component_files(
-                detection_result, selected_components, package_dir
-            )
+            copy_warnings = self._copy_component_files(detection_result, selected_components, package_dir)
             warnings.extend(copy_warnings)
 
-            mcp_warnings, mcp_secrets = self._process_mcp_servers(
-                detection_result.mcp_servers, package_dir
-            )
+            mcp_warnings, mcp_secrets = self._process_mcp_servers(detection_result.mcp_servers, package_dir)
             warnings.extend(mcp_warnings)
             secrets_templated = mcp_secrets
 
@@ -329,9 +325,7 @@ class PackageCreator:
         for server in detected_servers:
             try:
                 if self.scrub_secrets:
-                    templated_config, templated_keys = template_secrets_in_config(
-                        server.config, self.secret_detector
-                    )
+                    templated_config, templated_keys = template_secrets_in_config(server.config, self.secret_detector)
                     total_secrets += len(templated_keys)
                 else:
                     templated_config = server.config
@@ -710,19 +704,21 @@ class PackageCreator:
                 lines.append(f"- **{mem.name}**: {mem.description}")
             lines.append("")
 
-        lines.extend([
-            "## Author",
-            "",
-            self.metadata.author or "Unknown",
-            "",
-            "## License",
-            "",
-            self.metadata.license,
-            "",
-            "---",
-            "",
-            f"*Generated with AI Config Kit on {datetime.now().strftime('%Y-%m-%d')}*",
-        ])
+        lines.extend(
+            [
+                "## Author",
+                "",
+                self.metadata.author or "Unknown",
+                "",
+                "## License",
+                "",
+                self.metadata.license,
+                "",
+                "---",
+                "",
+                f"*Generated with AI Config Kit on {datetime.now().strftime('%Y-%m-%d')}*",
+            ]
+        )
 
         return "\n".join(lines)
 

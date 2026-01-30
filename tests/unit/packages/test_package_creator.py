@@ -165,9 +165,7 @@ class TestPackageCreator:
                 "github": {
                     "command": "npx",
                     "args": ["-y", "@modelcontextprotocol/server-github"],
-                    "env": {
-                        "GITHUB_TOKEN": "ghp_secret_token_value"
-                    }
+                    "env": {"GITHUB_TOKEN": "ghp_secret_token_value"},
                 }
             }
         }
@@ -195,16 +193,7 @@ class TestPackageCreator:
         (rules_dir / "test.md").write_text("# Test")
 
         claude_dir = temp_project / ".claude"
-        settings = {
-            "mcpServers": {
-                "test": {
-                    "command": "cmd",
-                    "env": {
-                        "API_KEY": "secret-value-12345678"
-                    }
-                }
-            }
-        }
+        settings = {"mcpServers": {"test": {"command": "cmd", "env": {"API_KEY": "secret-value-12345678"}}}}
         (claude_dir / "settings.local.json").write_text(json.dumps(settings))
 
         creator = PackageCreator(temp_project, temp_output, sample_metadata, scrub_secrets=False)
@@ -213,9 +202,7 @@ class TestPackageCreator:
         assert result.success is True
         assert result.secrets_templated == 0
 
-    def test_create_with_hooks(
-        self, temp_project: Path, temp_output: Path, sample_metadata: PackageMetadata
-    ) -> None:
+    def test_create_with_hooks(self, temp_project: Path, temp_output: Path, sample_metadata: PackageMetadata) -> None:
         """Test creation with hook files."""
         rules_dir = temp_project / ".claude" / "rules"
         rules_dir.mkdir(parents=True)
@@ -277,9 +264,7 @@ class TestPackageCreator:
         res_file = result.package_path / "resources" / "config.json"
         assert res_file.exists()
 
-    def test_generate_readme(
-        self, temp_project: Path, temp_output: Path, sample_metadata: PackageMetadata
-    ) -> None:
+    def test_generate_readme(self, temp_project: Path, temp_output: Path, sample_metadata: PackageMetadata) -> None:
         """Test README generation."""
         rules_dir = temp_project / ".claude" / "rules"
         rules_dir.mkdir(parents=True)

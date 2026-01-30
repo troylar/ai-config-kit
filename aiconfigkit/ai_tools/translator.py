@@ -176,8 +176,22 @@ class CursorTranslator(ComponentTranslator):
         )
 
     def translate_mcp_server(self, component: MCPServerComponent, package_root: Path) -> TranslatedComponent:
-        """Cursor doesn't support MCP natively yet."""
-        raise NotImplementedError("Cursor does not support MCP servers yet")
+        """Translate MCP server config to Cursor format."""
+        # Read MCP config
+        mcp_path = package_root / component.file
+        with open(mcp_path, "r") as f:
+            content = f.read()
+
+        # Store MCP config in project-specific location (.cursor/mcp/)
+        target_path = f".cursor/mcp/{component.name}.json"
+
+        return TranslatedComponent(
+            component_type=ComponentType.MCP_SERVER,
+            component_name=component.name,
+            target_path=target_path,
+            content=content,
+            metadata={"credentials": [c.to_dict() for c in component.credentials]},
+        )
 
 
 class ClaudeCodeTranslator(ComponentTranslator):
@@ -331,8 +345,22 @@ class CopilotTranslator(ComponentTranslator):
         )
 
     def translate_mcp_server(self, component: MCPServerComponent, package_root: Path) -> TranslatedComponent:
-        """GitHub Copilot doesn't support MCP."""
-        raise NotImplementedError("GitHub Copilot does not support MCP servers")
+        """Translate MCP server config to VS Code/Copilot format."""
+        # Read MCP config
+        mcp_path = package_root / component.file
+        with open(mcp_path, "r") as f:
+            content = f.read()
+
+        # Store MCP config in project-specific location (.vscode/mcp/)
+        target_path = f".vscode/mcp/{component.name}.json"
+
+        return TranslatedComponent(
+            component_type=ComponentType.MCP_SERVER,
+            component_name=component.name,
+            target_path=target_path,
+            content=content,
+            metadata={"credentials": [c.to_dict() for c in component.credentials]},
+        )
 
 
 def get_translator(tool_type: AIToolType) -> ComponentTranslator:

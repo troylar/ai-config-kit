@@ -137,9 +137,7 @@ class TestMCPServerDetection:
                 "github": {
                     "command": "npx",
                     "args": ["-y", "@modelcontextprotocol/server-github"],
-                    "env": {
-                        "GITHUB_TOKEN": "ghp_xxxx"
-                    }
+                    "env": {"GITHUB_TOKEN": "ghp_xxxx"},
                 }
             }
         }
@@ -395,13 +393,15 @@ class TestSkillDetection:
         skills_dir = temp_project / ".claude" / "skills"
         skill_dir = skills_dir / "my-skill"
         skill_dir.mkdir(parents=True)
-        (skill_dir / "SKILL.md").write_text("""---
+        (skill_dir / "SKILL.md").write_text(
+            """---
 name: my-skill
 description: A test skill
 ---
 # My Skill
 Instructions for the skill.
-""")
+"""
+        )
 
         detector = ComponentDetector(temp_project)
         result = detector.detect_all()
@@ -445,12 +445,14 @@ class TestWorkflowDetection:
         """Test detection of workflow file."""
         workflows_dir = temp_project / ".windsurf" / "workflows"
         workflows_dir.mkdir(parents=True)
-        (workflows_dir / "deploy.md").write_text("""---
+        (workflows_dir / "deploy.md").write_text(
+            """---
 description: Deploy workflow
 ---
 # Deploy Workflow
 Steps for deployment.
-""")
+"""
+        )
 
         detector = ComponentDetector(temp_project)
         result = detector.detect_all()
