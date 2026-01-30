@@ -19,14 +19,14 @@ class TestTemplateInit:
         with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
-        # Verify directory structure
+        # Verify directory structure (IDE-agnostic)
         assert repo_path.exists()
         assert (repo_path / "templatekit.yaml").exists()
         assert (repo_path / "README.md").exists()
         assert (repo_path / ".gitignore").exists()
-        assert (repo_path / ".claude" / "rules").exists()
-        assert (repo_path / ".claude" / "commands").exists()
-        assert (repo_path / ".claude" / "hooks").exists()
+        assert (repo_path / "templates" / "instructions").exists()
+        assert (repo_path / "templates" / "commands").exists()
+        assert (repo_path / "templates" / "hooks").exists()
 
     def test_init_with_examples(self, tmp_path):
         """Test that example templates are created."""
@@ -36,13 +36,13 @@ class TestTemplateInit:
         with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
-        # Verify example files
-        assert (repo_path / ".claude" / "rules" / "example-instruction.md").exists()
-        assert (repo_path / ".claude" / "commands" / "example-command.md").exists()
-        assert (repo_path / ".claude" / "hooks" / "example-hook.md").exists()
+        # Verify example files (IDE-agnostic paths)
+        assert (repo_path / "templates" / "instructions" / "example-instruction.md").exists()
+        assert (repo_path / "templates" / "commands" / "example-command.md").exists()
+        assert (repo_path / "templates" / "hooks" / "example-hook.md").exists()
 
         # Verify content is not empty
-        instruction = (repo_path / ".claude" / "rules" / "example-instruction.md").read_text(encoding="utf-8")
+        instruction = (repo_path / "templates" / "instructions" / "example-instruction.md").read_text(encoding="utf-8")
         assert len(instruction) > 100
         assert "Example Coding Standards" in instruction
 
@@ -115,9 +115,9 @@ class TestTemplateInit:
         with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name, force=True)
 
-        # Verify new files were created
+        # Verify new files were created (IDE-agnostic paths)
         assert (repo_path / "templatekit.yaml").exists()
-        assert (repo_path / ".claude" / "rules" / "example-instruction.md").exists()
+        assert (repo_path / "templates" / "instructions" / "example-instruction.md").exists()
 
     def test_init_manifest_structure(self, tmp_path):
         """Test that templatekit.yaml has correct structure."""
@@ -224,20 +224,20 @@ class TestTemplateInit:
         with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
-        # Check instruction file has guidance
-        instruction = (repo_path / ".claude" / "rules" / "example-instruction.md").read_text(encoding="utf-8")
+        # Check instruction file has guidance (IDE-agnostic paths)
+        instruction = (repo_path / "templates" / "instructions" / "example-instruction.md").read_text(encoding="utf-8")
         assert "Purpose" in instruction
         assert "Customization" in instruction
         assert len(instruction) > 500  # Should be substantial
 
         # Check command file has guidance
-        command = (repo_path / ".claude" / "commands" / "example-command.md").read_text(encoding="utf-8")
+        command = (repo_path / "templates" / "commands" / "example-command.md").read_text(encoding="utf-8")
         assert "Purpose" in command
         assert "Example" in command or "example" in command.lower()
         assert len(command) > 500
 
         # Check hook file has guidance
-        hook = (repo_path / ".claude" / "hooks" / "example-hook.md").read_text(encoding="utf-8")
+        hook = (repo_path / "templates" / "hooks" / "example-hook.md").read_text(encoding="utf-8")
         assert "Purpose" in hook
         assert "Hook Types" in hook or "hook" in hook.lower()
         assert len(hook) > 500
