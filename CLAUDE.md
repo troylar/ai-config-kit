@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **AI Config Kit** is a CLI tool for managing AI coding assistant instructions. It allows users to download instruction repositories to a local library, browse them with an interactive TUI, and install them to AI tools (Cursor, Claude Code, Windsurf, GitHub Copilot) at the project level.
 
-**CLI entry point:** `aiconfig` (installed via `pip install ai-config-kit`)
+**CLI entry point:** `aiconfig` (installed via `pip install configsync`)
 
 ## Architecture
 
@@ -504,9 +504,9 @@ This project uses **GitHub Actions with PyPI Trusted Publishing** for automated 
 
 1. Go to https://pypi.org/manage/account/publishing/
 2. Add a new publisher:
-   - **PyPI Project Name**: `ai-config-kit`
+   - **PyPI Project Name**: `configsync`
    - **Owner**: `troylar`
-   - **Repository**: `ai-config-kit`
+   - **Repository**: `config-sync`
    - **Workflow name**: `publish.yml`
    - **Environment**: (leave empty)
 3. Save the trusted publisher
@@ -636,7 +636,7 @@ gh release create v0.2.0 \
 ```
 
 **Alternative:** Create release manually on GitHub:
-1. Go to https://github.com/troylar/ai-config-kit/releases/new
+1. Go to https://github.com/troylar/config-sync/releases/new
 2. Click "Choose a tag" and select `v0.2.0`
 3. Title: `v0.2.0`
 4. Copy the relevant section from CHANGELOG.md into the description
@@ -657,7 +657,7 @@ gh run watch
 gh run list --workflow=publish.yml
 ```
 
-You can also monitor at: https://github.com/troylar/ai-config-kit/actions
+You can also monitor at: https://github.com/troylar/config-sync/actions
 
 ### Post-Release Verification
 
@@ -665,7 +665,7 @@ Wait for the GitHub Actions workflow to complete (usually 2-5 minutes), then:
 
 ```bash
 # Verify package on PyPI
-pip install --upgrade ai-config-kit
+pip install --upgrade configsync
 
 # Check installed version
 aiconfig --version
@@ -674,7 +674,7 @@ aiconfig --version
 gh release view v0.2.0
 
 # Check PyPI page
-open https://pypi.org/project/ai-config-kit/
+open https://pypi.org/project/configsync/
 ```
 
 ### Testing on TestPyPI (Optional)
@@ -689,7 +689,7 @@ gh workflow run publish.yml -f repository=testpypi
 gh run watch
 ```
 
-Then verify on TestPyPI: https://test.pypi.org/project/ai-config-kit/
+Then verify on TestPyPI: https://test.pypi.org/project/configsync/
 
 ### Rollback (If Needed)
 
@@ -748,7 +748,7 @@ The GitHub Actions workflow (`.github/workflows/publish.yml`) handles building a
 
 ## Active Technologies
 - Markdown (instruction content) | Python 3.10+ (for AI Config Kit CLI - no changes needed) + Git (for repository hosting), existing AI Config Kit commands (no new dependencies) (001-example-instruction-repo)
-- GitHub repository at `troylar/ai-config-kit-examples` | Git-based versioning (001-example-instruction-repo)
+- GitHub repository at `troylar/config-sync-examples` | Git-based versioning (001-example-instruction-repo)
 - Python 3.10+ (targeting 3.10-3.13) (002-template-sync-system)
 - Filesystem-based (MCP definitions in `~/.ai-config-kit/library/<namespace>/`, credentials in `.ai-config-kit/.env`, AI tool configs at standard locations) (003-mcp-server-management)
 - Python 3.10+ (minimum 3.10, support 3.10-3.13) + PyYAML (manifest parsing), Rich/Textual (TUI), Typer (CLI), existing ai-config-kit modules (004-config-package)

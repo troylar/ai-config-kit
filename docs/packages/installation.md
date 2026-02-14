@@ -692,4 +692,4 @@ aiconfig package install ./my-package --ide claude --conflict overwrite
 
 ---
 
-**Need more help?** Check the [Troubleshooting Guide](troubleshooting.md) or [open an issue](https://github.com/troylar/ai-config-kit/issues).
+**Need more help?** Check the [Troubleshooting Guide](troubleshooting.md) or [open an issue](https://github.com/troylar/config-sync/issues).

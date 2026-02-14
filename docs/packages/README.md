@@ -172,8 +172,8 @@ Throughout this documentation:
 ## Getting Help
 
 - **Questions?** Check individual guides for detailed information
-- **Issues?** Report bugs at [GitHub Issues](https://github.com/troylar/ai-config-kit/issues)
-- **Discussions?** Ask questions in [GitHub Discussions](https://github.com/troylar/ai-config-kit/discussions)
+- **Issues?** Report bugs at [GitHub Issues](https://github.com/troylar/config-sync/issues)
+- **Discussions?** Ask questions in [GitHub Discussions](https://github.com/troylar/config-sync/discussions)
 
 ## Contributing
 

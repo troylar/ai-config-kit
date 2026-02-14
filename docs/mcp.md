@@ -749,8 +749,8 @@ GITHUB_PERSONAL_ACCESS_TOKEN=ghp_xxxxx uvx mcp-server-github
 
 ### Getting Help
 
-- **GitHub Issues**: [Report bugs](https://github.com/troylar/ai-config-kit/issues)
-- **Discussions**: [Ask questions](https://github.com/troylar/ai-config-kit/discussions)
+- **GitHub Issues**: [Report bugs](https://github.com/troylar/config-sync/issues)
+- **Discussions**: [Ask questions](https://github.com/troylar/config-sync/discussions)
 - **Documentation**: Check other guides in `docs/`
 
 ---

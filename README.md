@@ -4,9 +4,9 @@
 
 **Distribute and sync coding standards, AI tool configurations, and MCP servers across your team**
 
-[![CI](https://github.com/troylar/ai-config-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-config-kit/actions/workflows/ci.yml)
-[![Coverage](https://codecov.io/gh/troylar/ai-config-kit/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/ai-config-kit)
-[![PyPI version](https://img.shields.io/pypi/v/ai-config-kit.svg)](https://pypi.org/project/ai-config-kit/)
+[![CI](https://github.com/troylar/config-sync/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/config-sync/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/troylar/config-sync/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/config-sync)
+[![PyPI version](https://img.shields.io/pypi/v/configsync.svg)](https://pypi.org/project/configsync/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -34,7 +34,7 @@ AI Config Kit is a CLI tool for distributing and managing AI coding assistant co
 ### Install
 
 ```bash
-pip install ai-config-kit
+pip install configsync
 ```
 
 ### Templates: Share Coding Standards (30 seconds)
@@ -293,7 +293,7 @@ Model Context Protocol server setups for enhanced AI capabilities:
 
 ```bash
 # Using pip
-pip install ai-config-kit
+pip install configsync
 
 # Verify installation
 aiconfig --version
@@ -426,8 +426,8 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/troylar/ai-config-kit/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/troylar/ai-config-kit/discussions)
+- **Issues**: [GitHub Issues](https://github.com/troylar/config-sync/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/troylar/config-sync/discussions)
 - **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ---

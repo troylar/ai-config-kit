@@ -104,8 +104,8 @@ Where to go from here.
 ### While Following a Tutorial
 
 1. **Check troubleshooting section** in that tutorial
-2. **Search GitHub Issues**: [github.com/troylar/ai-config-kit/issues](https://github.com/troylar/ai-config-kit/issues)
-3. **Ask in discussions**: [github.com/troylar/ai-config-kit/discussions](https://github.com/troylar/ai-config-kit/discussions)
+2. **Search GitHub Issues**: [github.com/troylar/config-sync/issues](https://github.com/troylar/config-sync/issues)
+3. **Ask in discussions**: [github.com/troylar/config-sync/discussions](https://github.com/troylar/config-sync/discussions)
 
 ### General Questions
 
@@ -122,7 +122,7 @@ Have a use case we didn't cover? We'd love your contribution!
 1. **Copy template**: Use [tutorial-template.md](tutorial-template.md)
 2. **Follow format**: Match the structure of existing tutorials
 3. **Test thoroughly**: Run through your tutorial start-to-finish
-4. **Submit PR**: [Submit a pull request](https://github.com/troylar/ai-config-kit/pulls)
+4. **Submit PR**: [Submit a pull request](https://github.com/troylar/config-sync/pulls)
 
 **Tutorial ideas we're looking for**:
 - Monorepo management
@@ -226,8 +226,8 @@ We're always improving these tutorials. Please let us know:
 - 🐛 Any errors or outdated information
 
 **How to provide feedback**:
-- [Create an issue](https://github.com/troylar/ai-config-kit/issues/new?labels=documentation,tutorial)
-- [Start a discussion](https://github.com/troylar/ai-config-kit/discussions/new)
+- [Create an issue](https://github.com/troylar/config-kit/issues/new?labels=documentation,tutorial)
+- [Start a discussion](https://github.com/troylar/config-kit/discussions/new)
 - Submit a PR with improvements
 
 ---

@@ -198,8 +198,8 @@ This documentation is organized into focused guides:
 ## Community & Support
 
 - **Examples**: Browse the `example-package/` directory in this repo
-- **Issues**: Report bugs or request features on [GitHub Issues](https://github.com/troylar/ai-config-kit/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/troylar/ai-config-kit/discussions)
+- **Issues**: Report bugs or request features on [GitHub Issues](https://github.com/troylar/config-sync/issues)
+- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/troylar/config-sync/discussions)
 
 ---
 

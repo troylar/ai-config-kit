@@ -42,7 +42,7 @@ def test(c, verbose=False, coverage=False, marker=None):
         cmd += " -q"
 
     if coverage:
-        cmd += " --cov=ai-config-kit --cov-report=term-missing --cov-report=xml --cov-report=html"
+        cmd += " --cov=aiconfigkit --cov-report=term-missing --cov-report=xml --cov-report=html"
 
     if marker:
         cmd += f" -m {marker}"
@@ -86,7 +86,7 @@ def coverage(c, html=True):
     Options:
         --html: Generate HTML coverage report (default: True)
     """
-    cmd = "pytest tests/ --cov=ai-config-kit --cov-report=term-missing --cov-report=xml"
+    cmd = "pytest tests/ --cov=aiconfigkit --cov-report=term-missing --cov-report=xml"
 
     if html:
         cmd += " --cov-report=html"
@@ -219,7 +219,7 @@ def install(c, dev=False, editable=True):
 @task
 def uninstall(c):
     """Uninstall the package."""
-    c.run("pip uninstall -y ai-config-kit", pty=PTY_SUPPORTED)
+    c.run("pip uninstall -y configsync", pty=PTY_SUPPORTED)
     print("✅ Package uninstalled successfully!")
 
 
@@ -260,19 +260,19 @@ def cli(c, args="--help"):
 
     Usage: invoke cli --args="download --repo https://..."
     """
-    c.run(f"ai-config-kit {args}", pty=PTY_SUPPORTED)
+    c.run(f"aiconfig {args}", pty=PTY_SUPPORTED)
 
 
 @task
 def list_tools(c):
     """List detected AI tools."""
-    c.run("ai-config-kit tools", pty=PTY_SUPPORTED)
+    c.run("aiconfig tools", pty=PTY_SUPPORTED)
 
 
 @task
 def list_library(c):
     """List instructions in library."""
-    c.run("ai-config-kit list library", pty=PTY_SUPPORTED)
+    c.run("aiconfig list library", pty=PTY_SUPPORTED)
 
 
 # ============================================================================

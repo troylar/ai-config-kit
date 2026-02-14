@@ -993,4 +993,4 @@ components:
 
 ---
 
-**Questions?** Check the [Troubleshooting Guide](troubleshooting.md) or [open an issue](https://github.com/troylar/ai-config-kit/issues).
+**Questions?** Check the [Troubleshooting Guide](troubleshooting.md) or [open an issue](https://github.com/troylar/config-sync/issues).
