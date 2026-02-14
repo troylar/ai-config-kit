@@ -105,7 +105,7 @@ aiconfig package install ./pkg --ide claude
 
 **Project detection:**
 
-AI Config Kit searches for project markers:
+Config Sync searches for project markers:
 - `.git/` directory
 - `pyproject.toml`
 - `package.json`

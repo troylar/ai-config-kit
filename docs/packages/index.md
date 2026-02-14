@@ -1,6 +1,6 @@
 # Configuration Packages
 
-**A comprehensive guide to AI Config Kit's package management system**
+**A comprehensive guide to Config Sync's package management system**
 
 ## Overview
 
@@ -128,7 +128,7 @@ When you install a package:
 aiconfig package install ./my-package --ide claude
 ```
 
-AI Config Kit:
+Config Sync:
 
 1. **Parses** the manifest to understand what's in the package
 2. **Filters** components based on your IDE's capabilities

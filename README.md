@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎯 AI Config Kit
+# 🎯 Config Sync
 
 **Distribute and sync coding standards, AI tool configurations, and MCP servers across your team**
 
@@ -16,16 +16,16 @@
 
 ---
 
-## What is AI Config Kit?
+## What is Config Sync?
 
-AI Config Kit is a CLI tool for distributing and managing AI coding assistant configurations across teams:
+Config Sync is a CLI tool for distributing and managing AI coding assistant configurations across teams:
 
 - **📋 Templates**: Share coding standards, slash commands, and IDE configurations from Git repositories
 - **🔌 MCP Servers**: Distribute and manage Model Context Protocol server configurations
 - **🔄 Sync**: Keep your team aligned with single-command updates
 - **✅ Safe**: Built-in validation, automatic backups, conflict resolution
 
-> **Note:** Commands use `aiconfig` (short for AI Config Kit)
+> **Note:** Commands use `aiconfig` (short for Config Sync)
 
 ---
 
@@ -151,7 +151,7 @@ aiconfig package uninstall <package-name>            # Remove package
 
 ---
 
-## Why AI Config Kit?
+## Why Config Sync?
 
 ### For Teams
 
@@ -171,7 +171,7 @@ aiconfig package uninstall <package-name>            # Remove package
 
 ## Real-World Example
 
-Here's how a team at ACME Corp uses AI Config Kit:
+Here's how a team at ACME Corp uses Config Sync:
 
 ```bash
 # 1. Everyone installs company security policies (global, applies to all projects)
@@ -219,7 +219,7 @@ aiconfig mcp update --all
 
 ## Project vs Global Scope
 
-AI Config Kit supports two installation scopes:
+Config Sync supports two installation scopes:
 
 | Scope | Where Files Go | When Active | Best For |
 |-------|---------------|-------------|----------|
@@ -289,7 +289,7 @@ Model Context Protocol server setups for enhanced AI capabilities:
 - Git (for cloning template repositories)
 - One of: Claude Code, Claude Desktop, Cline, Cursor, GitHub Copilot, Kiro, Roo Code, or Windsurf
 
-### Install AI Config Kit
+### Install Config Sync
 
 ```bash
 # Using pip

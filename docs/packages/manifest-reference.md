@@ -744,7 +744,7 @@ components:
 
 ## Validation Rules
 
-AI Config Kit validates manifests during installation. Here are all validation rules:
+Config Sync validates manifests during installation. Here are all validation rules:
 
 ### Package-Level Validation
 

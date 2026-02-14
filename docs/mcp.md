@@ -1,6 +1,6 @@
 # MCP Server Management
 
-Complete guide to managing Model Context Protocol (MCP) servers with AI Config Kit.
+Complete guide to managing Model Context Protocol (MCP) servers with Config Sync.
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ Complete guide to managing Model Context Protocol (MCP) servers with AI Config K
 
 ## Overview
 
-MCP (Model Context Protocol) servers extend AI coding assistants with additional capabilities like database access, API integrations, and file system operations. AI Config Kit makes it easy to:
+MCP (Model Context Protocol) servers extend AI coding assistants with additional capabilities like database access, API integrations, and file system operations. Config Sync makes it easy to:
 
 - **Distribute** MCP server configurations across your team via Git
 - **Configure** credentials securely without committing secrets
@@ -28,13 +28,13 @@ MCP (Model Context Protocol) servers extend AI coding assistants with additional
 
 ### What Problem Does This Solve?
 
-**Without AI Config Kit:**
+**Without Config Sync:**
 - Everyone manually edits `claude_desktop_config.json`
 - Credentials accidentally committed to Git
 - Configuration drift across team members
 - Difficult to update when servers change
 
-**With AI Config Kit:**
+**With Config Sync:**
 ```bash
 # Install MCP servers (shared via Git)
 aiconfig mcp install https://github.com/company/mcp-servers --as backend
@@ -60,7 +60,7 @@ aiconfig mcp install https://github.com/company/mcp-servers --as backend
 aiconfig mcp install ./my-mcp-servers --as backend
 ```
 
-This downloads the MCP server definitions to your library (`~/.ai-config-kit/library/`).
+This downloads the MCP server definitions to your library (`~/.config-sync/library/`).
 
 ### 2. Configure Credentials
 
@@ -72,7 +72,7 @@ aiconfig mcp configure backend
 aiconfig mcp configure backend.github
 ```
 
-Credentials are stored in `.ai-config-kit/.env` (automatically gitignored).
+Credentials are stored in `.config-sync/.env` (automatically gitignored).
 
 ### 3. Sync to AI Tools
 
@@ -110,7 +110,7 @@ You should see your MCP servers with resolved environment variables.
 
 ### MCP Templates
 
-An **MCP template** is a Git repository containing `ai-config-kit.yaml` (or `templatekit.yaml`) with MCP server definitions:
+An **MCP template** is a Git repository containing `config-sync.yaml` (or `templatekit.yaml`) with MCP server definitions:
 
 ```yaml
 name: Backend MCP Servers
@@ -155,22 +155,22 @@ MCP templates can be installed at two scopes:
 
 | Scope | Library Location | Credentials Location | Use Case |
 |-------|-----------------|---------------------|----------|
-| **Project** (default) | `~/.ai-config-kit/library/` | `.ai-config-kit/.env` | Project-specific servers |
-| **Global** | `~/.ai-config-kit/library/global/` | `~/.ai-config-kit/global/.env` | Personal or company-wide servers |
+| **Project** (default) | `~/.config-sync/library/` | `.config-sync/.env` | Project-specific servers |
+| **Global** | `~/.config-sync/library/global/` | `~/.config-sync/global/.env` | Personal or company-wide servers |
 
 **Example:**
 ```bash
 # Project scope (default)
 cd ~/projects/backend-api
 aiconfig mcp install <repo> --as backend
-# Credentials in: ~/projects/backend-api/.ai-config-kit/.env
+# Credentials in: ~/projects/backend-api/.config-sync/.env
 
 # Global scope
 aiconfig mcp install <repo> --as personal --scope global
-# Credentials in: ~/.ai-config-kit/global/.env
+# Credentials in: ~/.config-sync/global/.env
 ```
 
-When syncing, AI Config Kit merges global and project credentials (project takes precedence).
+When syncing, Config Sync merges global and project credentials (project takes precedence).
 
 ---
 
@@ -373,7 +373,7 @@ aiconfig mcp sync --tool all --scope global
 
 ### Backup Control
 
-By default, AI Config Kit creates backups before modifying config files:
+By default, Config Sync creates backups before modifying config files:
 
 ```bash
 # Create backup (default)
@@ -582,14 +582,14 @@ env: {}
 
 ### Credential Storage
 
-Credentials are stored in `.ai-config-kit/.env` files which are **automatically gitignored**:
+Credentials are stored in `.config-sync/.env` files which are **automatically gitignored**:
 
 ```bash
 # Project credentials
-<project>/.ai-config-kit/.env
+<project>/.config-sync/.env
 
 # Global credentials
-~/.ai-config-kit/global/.env
+~/.config-sync/global/.env
 ```
 
 **File format:**
@@ -601,10 +601,10 @@ SLACK_BOT_TOKEN=xoxb-xxxxx
 
 ### Automatic Gitignore
 
-AI Config Kit automatically creates `.gitignore` files to prevent committing secrets:
+Config Sync automatically creates `.gitignore` files to prevent committing secrets:
 
 ```
-.ai-config-kit/.env
+.config-sync/.env
 ```
 
 **Verify it's gitignored:**
@@ -622,8 +622,8 @@ git status
 - Use environment-specific namespaces (dev, staging, prod)
 
 ❌ **DON'T:**
-- Commit `.ai-config-kit/.env` to Git
-- Put credentials in `ai-config-kit.yaml`
+- Commit `.config-sync/.env` to Git
+- Put credentials in `config-sync.yaml`
 - Share credentials in chat/email
 - Use production credentials for development
 

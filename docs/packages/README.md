@@ -1,6 +1,6 @@
 # Configuration Packages Documentation
 
-**Complete documentation for AI Config Kit's package management system**
+**Complete documentation for Config Sync's package management system**
 
 This directory contains comprehensive documentation for creating, installing, and managing configuration packages.
 
@@ -185,7 +185,7 @@ Want to improve this documentation?
 
 ## Related Documentation
 
-- **[Main README](../../README.md)** - AI Config Kit overview
+- **[Main README](../../README.md)** - Config Sync overview
 - **[MCP Documentation](../mcp/)** - MCP server management (if available)
 
 ---

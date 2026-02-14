@@ -8,7 +8,7 @@ This guide will walk you through installing and using your first configuration p
 
 Before you begin, make sure you have:
 
-- ✅ AI Config Kit installed (`pip install ai-config-kit`)
+- ✅ Config Sync installed (`pip install ai-config-kit`)
 - ✅ One of the supported IDEs:
   - Claude Code (claude.ai/code)
   - Cursor (cursor.sh)
@@ -25,7 +25,7 @@ aiconfig --version
 
 ## Step 1: Find a Package
 
-For this guide, we'll use the `example-package` included with AI Config Kit. This package demonstrates all component types.
+For this guide, we'll use the `example-package` included with Config Sync. This package demonstrates all component types.
 
 **What's in the example package:**
 - ✓ 2 Instructions (code quality, testing strategy)
@@ -38,7 +38,7 @@ For this guide, we'll use the `example-package` included with AI Config Kit. Thi
 
 ```bash
 # If you cloned the repo
-cd ai-config-kit
+cd config-sync
 ls example-package/
 
 # You should see:
@@ -221,7 +221,7 @@ git commit -m "Add AI assistant configuration package"
 git push
 ```
 
-Team members can then see what packages are installed:
+Team members can then see what packages are installed on the shared configuration:
 
 ```bash
 # Clone the repo

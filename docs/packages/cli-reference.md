@@ -44,7 +44,7 @@ aiconfig package install --help
 
 ### `--version`
 
-Show AI Config Kit version and exit.
+Show Config Sync version and exit.
 
 ```bash
 aiconfig --version
@@ -126,7 +126,7 @@ aiconfig package install ../shared/python-package
 
 **Default**: Current working directory
 
-**Behavior**: AI Config Kit searches for project markers (`.git/`, `pyproject.toml`, `package.json`, etc.)
+**Behavior**: Config Sync searches for project markers (`.git/`, `pyproject.toml`, `package.json`, etc.)
 
 **Examples**:
 ```bash
@@ -727,7 +727,7 @@ done
 
 ## Exit Codes
 
-AI Config Kit commands use standard exit codes:
+Config Sync commands use standard exit codes:
 
 | Code | Meaning | When Used |
 |------|---------|-----------|

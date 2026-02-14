@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**AI Config Kit** is a CLI tool for managing AI coding assistant instructions. It allows users to download instruction repositories to a local library, browse them with an interactive TUI, and install them to AI tools (Cursor, Claude Code, Windsurf, GitHub Copilot) at the project level.
+**Config Sync** is a CLI tool for managing AI coding assistant instructions. It allows users to download instruction repositories to a local library, browse them with an interactive TUI, and install them to AI tools (Cursor, Claude Code, Windsurf, GitHub Copilot) at the project level.
 
 **CLI entry point:** `aiconfig` (installed via `pip install configsync`)
 
@@ -747,7 +747,7 @@ gh run watch
 The GitHub Actions workflow (`.github/workflows/publish.yml`) handles building and publishing automatically.
 
 ## Active Technologies
-- Markdown (instruction content) | Python 3.10+ (for AI Config Kit CLI - no changes needed) + Git (for repository hosting), existing AI Config Kit commands (no new dependencies) (001-example-instruction-repo)
+- Markdown (instruction content) | Python 3.10+ (for Config Sync CLI - no changes needed) + Git (for repository hosting), existing Config Sync commands (no new dependencies) (001-example-instruction-repo)
 - GitHub repository at `troylar/config-sync-examples` | Git-based versioning (001-example-instruction-repo)
 - Python 3.10+ (targeting 3.10-3.13) (002-template-sync-system)
 - Filesystem-based (MCP definitions in `~/.ai-config-kit/library/<namespace>/`, credentials in `.ai-config-kit/.env`, AI tool configs at standard locations) (003-mcp-server-management)
@@ -755,4 +755,4 @@ The GitHub Actions workflow (`.github/workflows/publish.yml`) handles building a
 - JSON files (registry, package tracker) + YAML (manifests) + filesystem (.instructionkit/ structure) (004-config-package)
 
 ## Recent Changes
-- 001-example-instruction-repo: Added Markdown (instruction content) | Python 3.10+ (for AI Config Kit CLI - no changes needed) + Git (for repository hosting), existing AI Config Kit commands (no new dependencies)
+- 001-example-instruction-repo: Added Markdown (instruction content) | Python 3.10+ (for Config Sync CLI - no changes needed) + Git (for repository hosting), existing Config Sync commands (no new dependencies)

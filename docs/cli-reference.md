@@ -1,6 +1,6 @@
 # CLI Reference
 
-Complete command-line interface reference for AI Config Kit.
+Complete command-line interface reference for Config Sync.
 
 ## Table of Contents
 
@@ -348,7 +348,7 @@ Windsurf           ✓            ~/Library/Application Support/Windsurf
 
 ### `aiconfig --version`
 
-Show AI Config Kit version.
+Show Config Sync version.
 
 ```bash
 aiconfig --version
@@ -412,7 +412,7 @@ aiconfig template install <repo> --as demo
 
 ## Configuration Files
 
-AI Config Kit uses these configuration files:
+Config Sync uses these configuration files:
 
 | File | Location | Purpose |
 |------|----------|---------|

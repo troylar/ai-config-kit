@@ -1,6 +1,6 @@
-# Contributing to AI Config Kit
+# Contributing to Config Sync
 
-Thanks for your interest in improving AI Config Kit! This project thrives on community involvement. The guidelines below help you get started quickly and keep contributions consistent and high-quality.
+Thanks for your interest in improving Config Sync! This project thrives on community involvement. The guidelines below help you get started quickly and keep contributions consistent and high-quality.
 
 ## 🧭 Ways to Contribute
 
@@ -14,14 +14,14 @@ If you are unsure where to begin, check the **good first issue** label or ask in
 
 ## ⚙️ Development Environment
 
-AI Config Kit uses [Invoke](https://www.pyinvoke.org/) to orchestrate common tasks. After cloning the repo:
+Config Sync uses [Invoke](https://www.pyinvoke.org/) to orchestrate common tasks. After cloning the repo:
 
 ```bash
 pip install invoke
 invoke dev-setup
 ```
 
-This installs AI Config Kit in editable mode with all development dependencies.
+This installs Config Sync in editable mode with all development dependencies.
 
 ### Available Invoke Tasks
 

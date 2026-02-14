@@ -1,6 +1,6 @@
 # Template System
 
-Comprehensive guide to AI Config Kit's template system for distributing IDE configurations.
+Comprehensive guide to Config Sync's template system for distributing IDE configurations.
 
 > **Note:** This document is being reorganized. For now, see the main [README](../README.md) for template system documentation. Full documentation coming soon.
 

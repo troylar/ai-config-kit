@@ -1,6 +1,6 @@
-# AI Config Kit Tutorials
+# Config Sync Tutorials
 
-Complete, hands-on tutorials for getting the most out of AI Config Kit.
+Complete, hands-on tutorials for getting the most out of Config Sync.
 
 ---
 
@@ -49,16 +49,16 @@ Tutorials for specific scenarios and workflows.
 | Tutorial | Time | Difficulty | What You'll Learn |
 |----------|------|------------|-------------------|
 | **[Open Source - Contributor Onboarding](open-source-contributor-onboarding.md)** | 15 min | Beginner | Create contributor guidelines as AI instructions |
-| **[Migrating Legacy Projects](migrating-legacy-projects.md)** | 25 min | Intermediate | Add AI Config Kit to existing projects with established conventions |
+| **[Migrating Legacy Projects](migrating-legacy-projects.md)** | 25 min | Intermediate | Add Config Sync to existing projects with established conventions |
 | **[Package Development Workflow](package-development-workflow.md)** | 30 min | Advanced | Create, test, version, and publish your own packages |
 
 ---
 
 ## 🎯 Quick Start Guide
 
-**New to AI Config Kit?** Start here:
+**New to Config Sync?** Start here:
 
-1. **Read**: [What is AI Config Kit?](../README.md#what-is-ai-config-kit)
+1. **Read**: [What is Config Sync?](../README.md#overview)
 2. **Install**: `pip install ai-config-kit`
 3. **Choose your tutorial**:
    - Solo developer? → [Managing Multiple Projects](solo-developer-personal-projects.md)
@@ -109,7 +109,7 @@ Where to go from here.
 
 ### General Questions
 
-- **Documentation**: [AI Config Kit Docs](../README.md)
+- **Documentation**: [Config Sync Docs](../README.md)
 - **CLI Reference**: [Command Reference](../reference/cli.md)
 - **Package Format**: [Package Specification](../reference/package-format.md)
 
@@ -208,9 +208,9 @@ Not sure which tutorials to follow? Here are recommended learning paths:
 
 Complete all tutorials in a learning path and pass an assessment to earn:
 
-- **AI Config Kit Certified Solo Developer**
-- **AI Config Kit Certified Team Lead**
-- **AI Config Kit Certified Enterprise Architect**
+- **Config Sync Certified Solo Developer**
+- **Config Sync Certified Team Lead**
+- **Config Sync Certified Enterprise Architect**
 
 Stay tuned for certification program details!
 
