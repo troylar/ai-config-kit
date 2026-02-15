@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     ConflictResolution,
     InstallationRecord,
@@ -422,7 +422,7 @@ class TestLibraryInstruction:
     """Test LibraryInstruction model."""
 
     def test_create_valid_library_instruction(self):
-        from aiconfigkit.core.models import LibraryInstruction
+        from devsync.core.models import LibraryInstruction
 
         inst = LibraryInstruction(
             id="test-repo/test-instruction",
@@ -441,7 +441,7 @@ class TestLibraryInstruction:
         assert inst.repo_namespace == "test-repo"
 
     def test_library_instruction_requires_id(self):
-        from aiconfigkit.core.models import LibraryInstruction
+        from devsync.core.models import LibraryInstruction
 
         with pytest.raises(ValueError, match="id cannot be empty"):
             LibraryInstruction(
@@ -457,7 +457,7 @@ class TestLibraryInstruction:
             )
 
     def test_library_instruction_requires_name(self):
-        from aiconfigkit.core.models import LibraryInstruction
+        from devsync.core.models import LibraryInstruction
 
         with pytest.raises(ValueError, match="name cannot be empty"):
             LibraryInstruction(
@@ -473,7 +473,7 @@ class TestLibraryInstruction:
             )
 
     def test_library_instruction_requires_repo_namespace(self):
-        from aiconfigkit.core.models import LibraryInstruction
+        from devsync.core.models import LibraryInstruction
 
         with pytest.raises(ValueError, match="Repository namespace cannot be empty"):
             LibraryInstruction(
@@ -493,7 +493,7 @@ class TestLibraryRepository:
     """Test LibraryRepository model."""
 
     def test_create_valid_library_repository(self):
-        from aiconfigkit.core.models import LibraryRepository
+        from devsync.core.models import LibraryRepository
 
         repo = LibraryRepository(
             namespace="test-org",
@@ -509,7 +509,7 @@ class TestLibraryRepository:
         assert repo.name == "test-repo"
 
     def test_library_repository_requires_namespace(self):
-        from aiconfigkit.core.models import LibraryRepository
+        from devsync.core.models import LibraryRepository
 
         with pytest.raises(ValueError, match="Repository namespace cannot be empty"):
             LibraryRepository(
@@ -523,7 +523,7 @@ class TestLibraryRepository:
             )
 
     def test_library_repository_requires_name(self):
-        from aiconfigkit.core.models import LibraryRepository
+        from devsync.core.models import LibraryRepository
 
         with pytest.raises(ValueError, match="Repository name cannot be empty"):
             LibraryRepository(
@@ -541,7 +541,7 @@ class TestTemplateFile:
     """Test TemplateFile model."""
 
     def test_create_valid_template_file(self):
-        from aiconfigkit.core.models import TemplateFile
+        from devsync.core.models import TemplateFile
 
         template = TemplateFile(path="templates/python-style.md", ide="cursor")
 
@@ -549,13 +549,13 @@ class TestTemplateFile:
         assert template.ide == "cursor"
 
     def test_template_file_requires_path(self):
-        from aiconfigkit.core.models import TemplateFile
+        from devsync.core.models import TemplateFile
 
         with pytest.raises(ValueError, match="Template file path cannot be empty"):
             TemplateFile(path="", ide="cursor")
 
     def test_template_file_validates_ide(self):
-        from aiconfigkit.core.models import TemplateFile
+        from devsync.core.models import TemplateFile
 
         with pytest.raises(ValueError, match="Invalid IDE type"):
             TemplateFile(path="test.md", ide="invalid-ide")
@@ -565,7 +565,7 @@ class TestTemplateDefinition:
     """Test TemplateDefinition model."""
 
     def test_template_definition_requires_name(self):
-        from aiconfigkit.core.models import TemplateDefinition, TemplateFile
+        from devsync.core.models import TemplateDefinition, TemplateFile
 
         with pytest.raises(ValueError, match="Template name cannot be empty"):
             TemplateDefinition(
@@ -575,7 +575,7 @@ class TestTemplateDefinition:
             )
 
     def test_template_definition_requires_description(self):
-        from aiconfigkit.core.models import TemplateDefinition, TemplateFile
+        from devsync.core.models import TemplateDefinition, TemplateFile
 
         with pytest.raises(ValueError, match="Template description cannot be empty"):
             TemplateDefinition(
@@ -585,7 +585,7 @@ class TestTemplateDefinition:
             )
 
     def test_template_definition_requires_files(self):
-        from aiconfigkit.core.models import TemplateDefinition
+        from devsync.core.models import TemplateDefinition
 
         with pytest.raises(ValueError, match="Template must have at least one file"):
             TemplateDefinition(
@@ -599,7 +599,7 @@ class TestTemplateBundle:
     """Test TemplateBundle model."""
 
     def test_template_bundle_requires_name(self):
-        from aiconfigkit.core.models import TemplateBundle
+        from devsync.core.models import TemplateBundle
 
         with pytest.raises(ValueError, match="Bundle name cannot be empty"):
             TemplateBundle(
@@ -609,7 +609,7 @@ class TestTemplateBundle:
             )
 
     def test_template_bundle_requires_description(self):
-        from aiconfigkit.core.models import TemplateBundle
+        from devsync.core.models import TemplateBundle
 
         with pytest.raises(ValueError, match="Bundle description cannot be empty"):
             TemplateBundle(
@@ -619,7 +619,7 @@ class TestTemplateBundle:
             )
 
     def test_template_bundle_requires_multiple_templates(self):
-        from aiconfigkit.core.models import TemplateBundle
+        from devsync.core.models import TemplateBundle
 
         with pytest.raises(ValueError, match="Bundle must contain at least 2 templates"):
             TemplateBundle(
@@ -633,7 +633,7 @@ class TestTemplateManifest:
     """Test TemplateManifest model."""
 
     def test_template_manifest_requires_name(self):
-        from aiconfigkit.core.models import TemplateDefinition, TemplateFile, TemplateManifest
+        from devsync.core.models import TemplateDefinition, TemplateFile, TemplateManifest
 
         with pytest.raises(ValueError, match="Manifest name cannot be empty"):
             TemplateManifest(
@@ -650,7 +650,7 @@ class TestTemplateManifest:
             )
 
     def test_template_manifest_requires_description(self):
-        from aiconfigkit.core.models import TemplateDefinition, TemplateFile, TemplateManifest
+        from devsync.core.models import TemplateDefinition, TemplateFile, TemplateManifest
 
         with pytest.raises(ValueError, match="Manifest description cannot be empty"):
             TemplateManifest(
@@ -667,7 +667,7 @@ class TestTemplateManifest:
             )
 
     def test_template_manifest_requires_version(self):
-        from aiconfigkit.core.models import TemplateDefinition, TemplateFile, TemplateManifest
+        from devsync.core.models import TemplateDefinition, TemplateFile, TemplateManifest
 
         with pytest.raises(ValueError, match="Manifest version cannot be empty"):
             TemplateManifest(
@@ -684,7 +684,7 @@ class TestTemplateManifest:
             )
 
     def test_template_manifest_requires_templates(self):
-        from aiconfigkit.core.models import TemplateManifest
+        from devsync.core.models import TemplateManifest
 
         with pytest.raises(ValueError, match="Manifest must contain at least one template"):
             TemplateManifest(
@@ -699,7 +699,7 @@ class TestTemplateInstallationRecord:
     """Test TemplateInstallationRecord model."""
 
     def test_template_installation_record_requires_id(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Installation ID cannot be empty"):
             TemplateInstallationRecord(
@@ -716,7 +716,7 @@ class TestTemplateInstallationRecord:
             )
 
     def test_template_installation_record_requires_template_name(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Template name cannot be empty"):
             TemplateInstallationRecord(
@@ -733,7 +733,7 @@ class TestTemplateInstallationRecord:
             )
 
     def test_template_installation_record_requires_source_repo(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Source repository cannot be empty"):
             TemplateInstallationRecord(
@@ -750,7 +750,7 @@ class TestTemplateInstallationRecord:
             )
 
     def test_template_installation_record_requires_namespace(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Namespace cannot be empty"):
             TemplateInstallationRecord(
@@ -767,7 +767,7 @@ class TestTemplateInstallationRecord:
             )
 
     def test_template_installation_record_requires_installed_path(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Installed path cannot be empty"):
             TemplateInstallationRecord(
@@ -784,7 +784,7 @@ class TestTemplateInstallationRecord:
             )
 
     def test_template_installation_record_validates_checksum_length(self):
-        from aiconfigkit.core.models import TemplateInstallationRecord
+        from devsync.core.models import TemplateInstallationRecord
 
         with pytest.raises(ValueError, match="Checksum must be a valid SHA-256 hash"):
             TemplateInstallationRecord(
@@ -805,7 +805,7 @@ class TestAIAnalysis:
     """Test AIAnalysis model."""
 
     def test_ai_analysis_validates_confidence_range_too_low(self):
-        from aiconfigkit.core.models import AIAnalysis
+        from devsync.core.models import AIAnalysis
 
         with pytest.raises(ValueError, match="Confidence must be between 0.0 and 1.0"):
             AIAnalysis(
@@ -814,7 +814,7 @@ class TestAIAnalysis:
             )
 
     def test_ai_analysis_validates_confidence_range_too_high(self):
-        from aiconfigkit.core.models import AIAnalysis
+        from devsync.core.models import AIAnalysis
 
         with pytest.raises(ValueError, match="Confidence must be between 0.0 and 1.0"):
             AIAnalysis(
@@ -823,7 +823,7 @@ class TestAIAnalysis:
             )
 
     def test_ai_analysis_requires_explanation(self):
-        from aiconfigkit.core.models import AIAnalysis
+        from devsync.core.models import AIAnalysis
 
         with pytest.raises(ValueError, match="Explanation cannot be empty"):
             AIAnalysis(
@@ -836,7 +836,7 @@ class TestValidationIssue:
     """Test ValidationIssue model."""
 
     def test_validation_issue_requires_title(self):
-        from aiconfigkit.core.models import IssueSeverity, IssueType, ValidationIssue
+        from devsync.core.models import IssueSeverity, IssueType, ValidationIssue
 
         with pytest.raises(ValueError, match="Issue title cannot be empty"):
             ValidationIssue(
@@ -850,7 +850,7 @@ class TestValidationIssue:
             )
 
     def test_validation_issue_requires_description(self):
-        from aiconfigkit.core.models import IssueSeverity, IssueType, ValidationIssue
+        from devsync.core.models import IssueSeverity, IssueType, ValidationIssue
 
         with pytest.raises(ValueError, match="Issue description cannot be empty"):
             ValidationIssue(
@@ -864,7 +864,7 @@ class TestValidationIssue:
             )
 
     def test_validation_issue_requires_affected_items(self):
-        from aiconfigkit.core.models import IssueSeverity, IssueType, ValidationIssue
+        from devsync.core.models import IssueSeverity, IssueType, ValidationIssue
 
         with pytest.raises(ValueError, match="Issue must affect at least one item"):
             ValidationIssue(
@@ -878,7 +878,7 @@ class TestValidationIssue:
             )
 
     def test_validation_issue_requires_recommendation(self):
-        from aiconfigkit.core.models import IssueSeverity, IssueType, ValidationIssue
+        from devsync.core.models import IssueSeverity, IssueType, ValidationIssue
 
         with pytest.raises(ValueError, match="Issue recommendation cannot be empty"):
             ValidationIssue(
@@ -896,7 +896,7 @@ class TestMCPServer:
     """Test MCPServer model."""
 
     def test_mcp_server_validates_name_pattern(self):
-        from aiconfigkit.core.models import MCPServer
+        from devsync.core.models import MCPServer
 
         with pytest.raises(ValueError, match="Invalid server name"):
             MCPServer(
@@ -908,7 +908,7 @@ class TestMCPServer:
             )
 
     def test_mcp_server_requires_command(self):
-        from aiconfigkit.core.models import MCPServer
+        from devsync.core.models import MCPServer
 
         with pytest.raises(ValueError, match="Server command cannot be empty"):
             MCPServer(
@@ -920,7 +920,7 @@ class TestMCPServer:
             )
 
     def test_mcp_server_validates_env_var_names(self):
-        from aiconfigkit.core.models import MCPServer
+        from devsync.core.models import MCPServer
 
         with pytest.raises(ValueError, match="Invalid environment variable name"):
             MCPServer(
@@ -936,7 +936,7 @@ class TestMCPSet:
     """Test MCPSet model."""
 
     def test_mcp_set_validates_name_pattern(self):
-        from aiconfigkit.core.models import MCPSet
+        from devsync.core.models import MCPSet
 
         with pytest.raises(ValueError, match="Invalid set name"):
             MCPSet(
@@ -947,7 +947,7 @@ class TestMCPSet:
             )
 
     def test_mcp_set_requires_at_least_one_server(self):
-        from aiconfigkit.core.models import MCPSet
+        from devsync.core.models import MCPSet
 
         with pytest.raises(ValueError, match="Set must contain at least one server"):
             MCPSet(
@@ -964,7 +964,7 @@ class TestMCPTemplate:
     def test_mcp_template_requires_namespace(self):
         from datetime import datetime
 
-        from aiconfigkit.core.models import MCPTemplate
+        from devsync.core.models import MCPTemplate
 
         with pytest.raises(ValueError, match="Template namespace cannot be empty"):
             MCPTemplate(
@@ -979,7 +979,7 @@ class TestMCPTemplate:
     def test_mcp_template_cannot_have_both_sources(self):
         from datetime import datetime
 
-        from aiconfigkit.core.models import MCPTemplate
+        from devsync.core.models import MCPTemplate
 
         with pytest.raises(ValueError, match="Template cannot have both source_url and source_path"):
             MCPTemplate(
@@ -994,7 +994,7 @@ class TestMCPTemplate:
     def test_mcp_template_requires_at_least_one_source(self):
         from datetime import datetime
 
-        from aiconfigkit.core.models import MCPTemplate
+        from devsync.core.models import MCPTemplate
 
         with pytest.raises(ValueError, match="Template must have either source_url or source_path"):
             MCPTemplate(
@@ -1011,21 +1011,21 @@ class TestEnvironmentConfig:
     """Test EnvironmentConfig model."""
 
     def test_environment_config_validates_var_name_lowercase(self):
-        from aiconfigkit.core.models import EnvironmentConfig
+        from devsync.core.models import EnvironmentConfig
 
         config = EnvironmentConfig()
         with pytest.raises(ValueError, match="Invalid environment variable name"):
             config.set("lowercase", "value")
 
     def test_environment_config_validates_var_name_with_hyphen(self):
-        from aiconfigkit.core.models import EnvironmentConfig
+        from devsync.core.models import EnvironmentConfig
 
         config = EnvironmentConfig()
         with pytest.raises(ValueError, match="Invalid environment variable name"):
             config.set("INVALID-NAME", "value")
 
     def test_environment_config_validates_var_name_starting_with_number(self):
-        from aiconfigkit.core.models import EnvironmentConfig
+        from devsync.core.models import EnvironmentConfig
 
         config = EnvironmentConfig()
         with pytest.raises(ValueError, match="Invalid environment variable name"):
@@ -1039,7 +1039,7 @@ class TestLibraryInstructionSerialization:
         """Test from_dict with downloaded_at field (line 312)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import LibraryInstruction
+        from devsync.core.models import LibraryInstruction
 
         data = {
             "id": "test/instruction",
@@ -1066,7 +1066,7 @@ class TestMCPTemplateMethods:
         """Test get_set_by_name when set exists (lines 829-831)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import MCPSet, MCPTemplate
+        from devsync.core.models import MCPSet, MCPTemplate
 
         mcp_set = MCPSet(name="test-set", description="Test", server_names=["server1"], namespace="test")
         template = MCPTemplate(
@@ -1087,7 +1087,7 @@ class TestMCPTemplateMethods:
         """Test get_set_by_name when set doesn't exist (line 832)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import MCPTemplate
+        from devsync.core.models import MCPTemplate
 
         template = MCPTemplate(
             namespace="test",
@@ -1109,7 +1109,7 @@ class TestEnvironmentConfigMethods:
 
     def test_to_dict(self):
         """Test EnvironmentConfig.to_dict (line 901)."""
-        from aiconfigkit.core.models import EnvironmentConfig
+        from devsync.core.models import EnvironmentConfig
 
         config = EnvironmentConfig()
         config.variables = {"API_KEY": "secret", "USERNAME": "user"}
@@ -1128,7 +1128,7 @@ class TestActiveSetStateSerialization:
         """Test ActiveSetState.to_dict (line 954)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import ActiveSetState
+        from devsync.core.models import ActiveSetState
 
         activated_at = datetime.fromisoformat("2025-01-01T12:00:00")
         state = ActiveSetState(
@@ -1145,7 +1145,7 @@ class TestActiveSetStateSerialization:
         """Test ActiveSetState.from_dict with activated_at (lines 964-967)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import ActiveSetState
+        from devsync.core.models import ActiveSetState
 
         data = {
             "namespace": "test",
@@ -1163,7 +1163,7 @@ class TestMCPServerComponentSerialization:
 
     def test_from_dict_with_credentials(self):
         """Test MCPServerComponent.from_dict with credentials (line 1140)."""
-        from aiconfigkit.core.models import MCPServerComponent
+        from devsync.core.models import MCPServerComponent
 
         data = {
             "name": "test-server",
@@ -1186,7 +1186,7 @@ class TestHookComponentSerialization:
 
     def test_to_dict(self):
         """Test HookComponent.to_dict (line 1170)."""
-        from aiconfigkit.core.models import HookComponent
+        from devsync.core.models import HookComponent
 
         hook = HookComponent(name="test-hook", file="hook.sh", description="Test hook", hook_type="pre-commit")
 
@@ -1196,7 +1196,7 @@ class TestHookComponentSerialization:
 
     def test_from_dict(self):
         """Test HookComponent.from_dict (line 1181)."""
-        from aiconfigkit.core.models import HookComponent
+        from devsync.core.models import HookComponent
 
         data = {
             "name": "test-hook",
@@ -1216,7 +1216,7 @@ class TestCommandComponentSerialization:
 
     def test_to_dict(self):
         """Test CommandComponent.to_dict (lines 1211-1217)."""
-        from aiconfigkit.core.models import CommandComponent
+        from devsync.core.models import CommandComponent
 
         component = CommandComponent(
             name="test-command",
@@ -1234,7 +1234,7 @@ class TestCommandComponentSerialization:
 
     def test_from_dict(self):
         """Test CommandComponent.from_dict (lines 1222-1228)."""
-        from aiconfigkit.core.models import CommandComponent
+        from devsync.core.models import CommandComponent
 
         data = {
             "name": "test-command",
@@ -1255,7 +1255,7 @@ class TestResourceComponentSerialization:
 
     def test_to_dict(self):
         """Test ResourceComponent.to_dict (lines 1254-1261)."""
-        from aiconfigkit.core.models import ResourceComponent
+        from devsync.core.models import ResourceComponent
 
         component = ResourceComponent(
             name="test-resource",
@@ -1275,7 +1275,7 @@ class TestResourceComponentSerialization:
 
     def test_from_dict(self):
         """Test ResourceComponent.from_dict (lines 1266-1273)."""
-        from aiconfigkit.core.models import ResourceComponent
+        from devsync.core.models import ResourceComponent
 
         data = {
             "name": "test-resource",
@@ -1297,7 +1297,7 @@ class TestPackageValidation:
 
     def test_empty_version_validation(self):
         """Test Package validation error for empty version (line 1380)."""
-        from aiconfigkit.core.models import Package, PackageComponents
+        from devsync.core.models import Package, PackageComponents
 
         with pytest.raises(ValueError, match="Package version cannot be empty"):
             Package(
@@ -1312,7 +1312,7 @@ class TestPackageValidation:
 
     def test_empty_namespace_validation(self):
         """Test Package validation error for empty namespace (line 1382)."""
-        from aiconfigkit.core.models import Package, PackageComponents
+        from devsync.core.models import Package, PackageComponents
 
         with pytest.raises(ValueError, match="Package namespace cannot be empty"):
             Package(
@@ -1333,7 +1333,7 @@ class TestPackageDatetimeDeserialization:
         """Test Package.from_dict with created_at (line 1403)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import Package
+        from devsync.core.models import Package
 
         data = {
             "name": "test",
@@ -1354,7 +1354,7 @@ class TestPackageDatetimeDeserialization:
         """Test Package.from_dict with updated_at (line 1406)."""
         from datetime import datetime
 
-        from aiconfigkit.core.models import Package
+        from devsync.core.models import Package
 
         data = {
             "name": "test",
@@ -1377,7 +1377,7 @@ class TestPackageComponentsMethods:
 
     def test_component_types_with_all_types(self):
         """Test component_types property with all component types (lines 1307-1315)."""
-        from aiconfigkit.core.models import (
+        from devsync.core.models import (
             CommandComponent,
             HookComponent,
             InstructionComponent,
@@ -1403,7 +1403,7 @@ class TestPackageComponentsMethods:
 
     def test_component_types_partial(self):
         """Test component_types property with some component types (lines 1311, 1313, 1315)."""
-        from aiconfigkit.core.models import CommandComponent, HookComponent, PackageComponents
+        from devsync.core.models import CommandComponent, HookComponent, PackageComponents
 
         components = PackageComponents(
             hooks=[HookComponent(name="h", file="h.sh", description="H", hook_type="pre-commit")],

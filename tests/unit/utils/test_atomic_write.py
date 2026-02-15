@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
-from aiconfigkit.utils.atomic_write import atomic_write
+from devsync.utils.atomic_write import atomic_write
 
 
 class TestAtomicWrite:

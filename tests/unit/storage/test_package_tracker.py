@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     ComponentStatus,
     ComponentType,
     InstallationScope,
@@ -14,13 +14,13 @@ from aiconfigkit.core.models import (
     InstalledComponent,
     PackageInstallationRecord,
 )
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.storage.package_tracker import PackageTracker
 
 
 @pytest.fixture
 def temp_tracker(tmp_path: Path) -> PackageTracker:
     """Create a temporary package tracker."""
-    tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+    tracker_file = tmp_path / ".devsync" / "packages.json"
     return PackageTracker(tracker_file)
 
 
@@ -52,7 +52,7 @@ class TestPackageTrackerInitialization:
 
     def test_creates_tracker_file(self, tmp_path: Path) -> None:
         """Test that tracker file is created on initialization."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         _tracker = PackageTracker(tracker_file)
 
         assert tracker_file.exists()
@@ -60,7 +60,7 @@ class TestPackageTrackerInitialization:
 
     def test_creates_empty_tracker_file(self, tmp_path: Path) -> None:
         """Test that empty tracker file contains empty array."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         PackageTracker(tracker_file)
 
         with open(tracker_file, "r") as f:
@@ -70,7 +70,7 @@ class TestPackageTrackerInitialization:
 
     def test_existing_tracker_file_not_overwritten(self, tmp_path: Path) -> None:
         """Test that existing tracker file is preserved."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Create existing file with data
@@ -553,7 +553,7 @@ class TestErrorHandling:
 
     def test_invalid_json_in_tracker_file(self, tmp_path: Path) -> None:
         """Test handling of invalid JSON in tracker file."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Write invalid JSON
@@ -567,7 +567,7 @@ class TestErrorHandling:
 
     def test_invalid_record_in_tracker_file(self, tmp_path: Path) -> None:
         """Test handling of invalid record in tracker file."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Write valid JSON but invalid record (missing required fields)
@@ -598,7 +598,7 @@ class TestErrorHandling:
 
     def test_missing_tracker_file(self, tmp_path: Path) -> None:
         """Test handling of missing tracker file."""
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
 
         # Don't create the file
         tracker = PackageTracker(tracker_file)
@@ -611,7 +611,7 @@ class TestErrorHandling:
         """Test handling when tracker file is deleted after initialization."""
         import shutil
 
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         tracker = PackageTracker(tracker_file)
 
         # File should be created by __init__
@@ -628,7 +628,7 @@ class TestErrorHandling:
         """Test handling write failures due to permissions."""
         from unittest.mock import mock_open, patch
 
-        tracker_file = tmp_path / ".ai-config-kit" / "packages.json"
+        tracker_file = tmp_path / ".devsync" / "packages.json"
         tracker = PackageTracker(tracker_file)
 
         sample_record = PackageInstallationRecord(

@@ -16,7 +16,7 @@ except ImportError:
         pass
 
 
-from aiconfigkit.utils.git_helpers import (
+from devsync.utils.git_helpers import (
     GitPythonNotInstalledError,
     TemplateAuthError,
     TemplateNetworkError,
@@ -29,7 +29,7 @@ from aiconfigkit.utils.git_helpers import (
 class TestCloneTemplateRepo:
     """Test clone_template_repo function."""
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_basic(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test basic repository cloning."""
         mock_repo = MagicMock()
@@ -45,7 +45,7 @@ class TestCloneTemplateRepo:
             url=url, to_path=str(destination), depth=1, env={"GIT_TERMINAL_PROMPT": "0"}
         )
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_custom_depth(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with custom depth."""
         mock_repo = MagicMock()
@@ -60,7 +60,7 @@ class TestCloneTemplateRepo:
         call_args = mock_repo_class.clone_from.call_args
         assert call_args[1]["depth"] == 10
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_auth_failed_401(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with 401 authentication failure."""
         error = GitCommandError("authentication failed 401", "git")
@@ -69,7 +69,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateAuthError, match="Authentication failed"):
             clone_template_repo("https://github.com/test/repo.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_auth_failed_403(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with 403 forbidden error."""
         error = GitCommandError("403 forbidden", "git")
@@ -78,7 +78,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateAuthError, match="Authentication failed"):
             clone_template_repo("https://github.com/test/repo.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_auth_failed_permission_denied(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with permission denied error."""
         error = GitCommandError("permission denied", "git")
@@ -87,7 +87,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateAuthError, match="Authentication failed"):
             clone_template_repo("git@github.com:test/repo.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_auth_failed_publickey(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with publickey error."""
         error = GitCommandError("publickey", "git")
@@ -96,7 +96,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateAuthError, match="Authentication failed"):
             clone_template_repo("git@github.com:test/repo.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_repo_not_found_404(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning non-existent repository (404)."""
         error = GitCommandError("404 not found", "git")
@@ -105,7 +105,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateNetworkError, match="Repository not found"):
             clone_template_repo("https://github.com/test/nonexistent.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_clone_network_error(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test cloning with generic network error."""
         error = GitCommandError("network timeout", "git")
@@ -114,7 +114,7 @@ class TestCloneTemplateRepo:
         with pytest.raises(TemplateNetworkError, match="Failed to clone repository"):
             clone_template_repo("https://github.com/test/repo.git", tmp_path / "repo")
 
-    @patch("aiconfigkit.utils.git_helpers.Repo", None)
+    @patch("devsync.utils.git_helpers.Repo", None)
     def test_clone_gitpython_not_installed(self, tmp_path: Path) -> None:
         """Test cloning when GitPython is not installed."""
         with pytest.raises(GitPythonNotInstalledError, match="GitPython is required"):
@@ -124,7 +124,7 @@ class TestCloneTemplateRepo:
 class TestUpdateTemplateRepo:
     """Test update_template_repo function."""
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_update_has_changes(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test updating repository with remote changes."""
         mock_repo = MagicMock()
@@ -145,7 +145,7 @@ class TestUpdateTemplateRepo:
         mock_origin.fetch.assert_called_once()
         mock_origin.pull.assert_called_once()
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_update_already_up_to_date(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test updating repository that is already up-to-date."""
         mock_repo = MagicMock()
@@ -167,7 +167,7 @@ class TestUpdateTemplateRepo:
         mock_origin.fetch.assert_called_once()
         mock_origin.pull.assert_not_called()  # Should not pull if up-to-date
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_update_invalid_repo(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test updating invalid/non-existent repository."""
         error = InvalidGitRepositoryError(f"Not a Git repository: {tmp_path}")
@@ -176,7 +176,7 @@ class TestUpdateTemplateRepo:
         with pytest.raises(InvalidGitRepositoryError, match="Not a Git repository"):
             update_template_repo(tmp_path)
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_update_network_error(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test updating with network failure."""
         mock_repo = MagicMock()
@@ -191,7 +191,7 @@ class TestUpdateTemplateRepo:
         with pytest.raises(TemplateNetworkError, match="Failed to update repository"):
             update_template_repo(tmp_path)
 
-    @patch("aiconfigkit.utils.git_helpers.Repo", None)
+    @patch("devsync.utils.git_helpers.Repo", None)
     def test_update_gitpython_not_installed(self, tmp_path: Path) -> None:
         """Test updating when GitPython is not installed."""
         with pytest.raises(GitPythonNotInstalledError, match="GitPython is required"):
@@ -201,7 +201,7 @@ class TestUpdateTemplateRepo:
 class TestGetRepoVersion:
     """Test get_repo_version function."""
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_get_version_with_tags(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test getting version when repository has tags."""
         mock_repo = MagicMock()
@@ -227,7 +227,7 @@ class TestGetRepoVersion:
         # Should return most recent tag (v2.0.0)
         assert version == "v2.0.0"
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_get_version_no_tags(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test getting version when repository has no tags."""
         mock_repo = MagicMock()
@@ -241,7 +241,7 @@ class TestGetRepoVersion:
         # Should return short commit hash (first 8 chars)
         assert version == "12345678"
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_get_version_single_tag(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test getting version with single tag."""
         mock_repo = MagicMock()
@@ -257,7 +257,7 @@ class TestGetRepoVersion:
 
         assert version == "v1.0.0"
 
-    @patch("aiconfigkit.utils.git_helpers.Repo")
+    @patch("devsync.utils.git_helpers.Repo")
     def test_get_version_invalid_repo(self, mock_repo_class: MagicMock, tmp_path: Path) -> None:
         """Test getting version from invalid repository."""
         error = InvalidGitRepositoryError(f"Not a Git repository: {tmp_path}")
@@ -266,7 +266,7 @@ class TestGetRepoVersion:
         with pytest.raises(InvalidGitRepositoryError, match="Not a Git repository"):
             get_repo_version(tmp_path)
 
-    @patch("aiconfigkit.utils.git_helpers.Repo", None)
+    @patch("devsync.utils.git_helpers.Repo", None)
     def test_get_version_gitpython_not_installed(self, tmp_path: Path) -> None:
         """Test getting version when GitPython is not installed."""
         with pytest.raises(GitPythonNotInstalledError, match="GitPython is required"):

@@ -3,9 +3,9 @@
 import subprocess
 from pathlib import Path
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestGitRepositoryInstallation:
@@ -25,7 +25,7 @@ class TestGitRepositoryInstallation:
         assert result.success is True
         assert (test_project / ".claude/rules/guide.md").exists()
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("git-pkg", InstallationScope.PROJECT)
         assert pkg_record is not None
         assert pkg_record.version == "1.0.0"
@@ -107,7 +107,7 @@ class TestGitRepositoryInstallation:
         content = (test_project / ".claude/rules/guide.md").read_text()
         assert "Version 2" in content
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("updated-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.1.0"
 
@@ -275,7 +275,7 @@ class TestGitTags:
 
         assert result.success is True
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("tagged-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.1.0"
 
@@ -318,7 +318,7 @@ class TestGitTags:
         assert result.success is True
 
         # Verify v1.0.0 installed
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("versioned-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.0"
 

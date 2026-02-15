@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-02-14
+
+### Changed
+- **BREAKING: Module renamed** - Python module `aiconfigkit` renamed to `devsync`
+  - All imports changed from `from aiconfigkit...` to `from devsync...`
+- **Data directories consolidated** - All data directories unified to `.devsync`
+  - Global: `~/.instructionkit/` -> `~/.devsync/` (with fallback to old path)
+  - Project: `.instructionkit/` and `.ai-config-kit/` -> `.devsync/` (with fallback)
+  - Existing installations automatically detected via fallback logic
+
 ## [0.6.0] - 2026-02-14
 
 ### Changed

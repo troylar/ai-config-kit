@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from aiconfigkit.core.version import VersionError, VersionManager
+from devsync.core.version import VersionError, VersionManager
 
 
 class TestVersionManager:

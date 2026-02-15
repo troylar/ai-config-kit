@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from aiconfigkit.core.models import AIToolType
-from aiconfigkit.core.repository import RepositoryParser, validate_repository_structure
+from devsync.core.models import AIToolType
+from devsync.core.repository import RepositoryParser, validate_repository_structure
 
 
 class TestRepositoryParser:

@@ -2,8 +2,8 @@
 
 import pytest
 
-from aiconfigkit.core.models import TemplateDefinition
-from aiconfigkit.core.template_manifest import (
+from devsync.core.models import TemplateDefinition
+from devsync.core.template_manifest import (
     TemplateManifestError,
     load_manifest,
     parse_bundle,
@@ -453,7 +453,7 @@ class TestValidateDependencies:
     @pytest.fixture
     def dummy_file(self):
         """Create a dummy template file for testing."""
-        from aiconfigkit.core.models import TemplateFile
+        from devsync.core.models import TemplateFile
 
         return [TemplateFile(path="test.md", ide="all")]
 

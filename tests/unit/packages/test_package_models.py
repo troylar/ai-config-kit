@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     ComponentStatus,
     # Enums
     ComponentType,

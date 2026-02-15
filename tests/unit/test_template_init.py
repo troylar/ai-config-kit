@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 import typer
 
-from aiconfigkit.cli.template_init import init_command
+from devsync.cli.template_init import init_command
 
 
 class TestTemplateInit:
@@ -16,7 +16,7 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         # Verify directory structure (IDE-agnostic)
@@ -33,7 +33,7 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         # Verify example files (IDE-agnostic paths)
@@ -52,7 +52,7 @@ class TestTemplateInit:
         repo_path = tmp_path / repo_name
         custom_namespace = "acme"
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name, namespace=custom_namespace)
 
         # Verify namespace in manifest
@@ -69,7 +69,7 @@ class TestTemplateInit:
         repo_path = tmp_path / repo_name
         description = "ACME Corp Engineering Standards"
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name, description=description)
 
         # Verify description in manifest
@@ -86,7 +86,7 @@ class TestTemplateInit:
         repo_path = tmp_path / repo_name
         author = "Jane Doe"
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name, author=author)
 
         # Verify author in manifest
@@ -99,7 +99,7 @@ class TestTemplateInit:
         repo_path = tmp_path / repo_name
         repo_path.mkdir()
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             with pytest.raises(typer.Exit) as exc_info:
                 init_command(directory=repo_name, force=False)
 
@@ -112,7 +112,7 @@ class TestTemplateInit:
         repo_path.mkdir()
         (repo_path / "existing.txt").write_text("old content")
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name, force=True)
 
         # Verify new files were created (IDE-agnostic paths)
@@ -124,7 +124,7 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         manifest_content = (repo_path / "templatekit.yaml").read_text(encoding="utf-8")
@@ -150,7 +150,7 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         readme_content = (repo_path / "README.md").read_text(encoding="utf-8")
@@ -170,13 +170,13 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         gitignore_content = (repo_path / ".gitignore").read_text(encoding="utf-8")
 
         # Verify important ignores
-        assert ".instructionkit/" in gitignore_content
+        assert ".devsync/" in gitignore_content
         assert "__pycache__/" in gitignore_content
         assert ".vscode/" in gitignore_content or ".idea/" in gitignore_content
 
@@ -185,7 +185,7 @@ class TestTemplateInit:
         repo_name = "my-awesome-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         readme = (repo_path / "README.md").read_text(encoding="utf-8")
@@ -198,7 +198,7 @@ class TestTemplateInit:
         repo_name = "company-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(
                 directory=repo_name,
                 namespace="acme",
@@ -221,7 +221,7 @@ class TestTemplateInit:
         repo_name = "my-templates"
         repo_path = tmp_path / repo_name
 
-        with patch("aiconfigkit.cli.template_init.Path.resolve", return_value=repo_path):
+        with patch("devsync.cli.template_init.Path.resolve", return_value=repo_path):
             init_command(directory=repo_name)
 
         # Check instruction file has guidance (IDE-agnostic paths)
@@ -242,7 +242,7 @@ class TestTemplateInit:
         assert "Hook Types" in hook or "hook" in hook.lower()
         assert len(hook) > 500
 
-    @patch("aiconfigkit.cli.template_init.Path.mkdir")
+    @patch("devsync.cli.template_init.Path.mkdir")
     def test_init_exception_handling(self, mock_mkdir, tmp_path):
         """Test exception handling during init."""
         repo_name = "my-templates"

@@ -7,8 +7,8 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from aiconfigkit.core.mcp.manager import MCPManager
-from aiconfigkit.core.models import InstallationScope
+from devsync.core.mcp.manager import MCPManager
+from devsync.core.models import InstallationScope
 
 
 class TestMCPManager:
@@ -105,7 +105,7 @@ class TestMCPManager:
         assert install_path.exists()
         assert (install_path / "templatekit.yaml").exists()
 
-    @patch("aiconfigkit.core.mcp.manager.GitOperations")
+    @patch("devsync.core.mcp.manager.GitOperations")
     def test_install_from_git_success(self, mock_git: Mock, manager: MCPManager, tmp_path: Path) -> None:
         """Test installing template from Git URL."""
         # Setup
@@ -138,8 +138,8 @@ class TestMCPManager:
         install_path = manager.library_root / "test-template"
         assert install_path.exists()
 
-    @patch("aiconfigkit.core.mcp.manager.RepositoryParser")
-    @patch("aiconfigkit.core.mcp.manager.shutil.copytree")
+    @patch("devsync.core.mcp.manager.RepositoryParser")
+    @patch("devsync.core.mcp.manager.shutil.copytree")
     def test_install_template_already_exists_no_force(
         self, mock_copytree: Mock, mock_parser: Mock, manager: MCPManager, tmp_path: Path
     ) -> None:
@@ -156,9 +156,9 @@ class TestMCPManager:
         with pytest.raises(ValueError, match="already exists"):
             manager.install_template(str(source_dir), "test-template", force=False)
 
-    @patch("aiconfigkit.core.mcp.manager.RepositoryParser")
-    @patch("aiconfigkit.core.mcp.manager.shutil.copytree")
-    @patch("aiconfigkit.core.mcp.manager.shutil.rmtree")
+    @patch("devsync.core.mcp.manager.RepositoryParser")
+    @patch("devsync.core.mcp.manager.shutil.copytree")
+    @patch("devsync.core.mcp.manager.shutil.rmtree")
     def test_install_template_force_overwrite(
         self, mock_rmtree: Mock, mock_copytree: Mock, mock_parser: Mock, manager: MCPManager, tmp_path: Path
     ) -> None:
@@ -289,7 +289,7 @@ class TestMCPManager:
         assert len(templates) == 1
         assert templates[0].namespace == "global-template"
 
-    @patch("aiconfigkit.core.mcp.manager.shutil.rmtree")
+    @patch("devsync.core.mcp.manager.shutil.rmtree")
     def test_uninstall_template_exists(self, mock_rmtree: Mock, manager: MCPManager) -> None:
         """Test uninstalling an existing template."""
         # Create template directory
@@ -347,7 +347,7 @@ class TestMCPManager:
 
         assert metadata == {}
 
-    @patch("aiconfigkit.core.mcp.manager.GitOperations")
+    @patch("devsync.core.mcp.manager.GitOperations")
     def test_install_from_git_clone_failure(
         self, mock_git_ops_class: MagicMock, manager: MCPManager, tmp_path: Path
     ) -> None:

@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.ai_tools.translator import (
+from devsync.ai_tools.translator import (
     ClaudeCodeTranslator,
     CopilotTranslator,
     CursorTranslator,
@@ -12,7 +12,7 @@ from aiconfigkit.ai_tools.translator import (
     WindsurfTranslator,
     get_translator,
 )
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     CommandComponent,
     ComponentType,

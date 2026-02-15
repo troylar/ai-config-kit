@@ -5,21 +5,21 @@ import sys
 
 
 def test_main_module_execution() -> None:
-    """Test that the module can be executed as python -m aiconfigkit."""
+    """Test that the module can be executed as python -m devsync."""
     result = subprocess.run(
-        [sys.executable, "-m", "aiconfigkit", "--help"],
+        [sys.executable, "-m", "devsync", "--help"],
         capture_output=True,
         text=True,
         timeout=10,
     )
     assert result.returncode == 0
-    assert "devsync" in result.stdout.lower() or "aiconfigkit" in result.stdout.lower()
+    assert "devsync" in result.stdout.lower() or "devsync" in result.stdout.lower()
 
 
 def test_main_module_version() -> None:
     """Test that version command works through module entry point."""
     result = subprocess.run(
-        [sys.executable, "-m", "aiconfigkit", "version"],
+        [sys.executable, "-m", "devsync", "version"],
         capture_output=True,
         text=True,
         timeout=10,

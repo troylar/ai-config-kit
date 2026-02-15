@@ -112,7 +112,7 @@ Comprehensive end-to-end test suite for package management system with **83 test
 pytest tests/e2e/ -v
 
 # Run with coverage
-pytest tests/e2e/ --cov=aiconfigkit.cli.package_install --cov-report=html
+pytest tests/e2e/ --cov=devsync.cli.package_install --cov-report=html
 
 # Run in parallel (fast)
 pytest tests/e2e/ -n auto

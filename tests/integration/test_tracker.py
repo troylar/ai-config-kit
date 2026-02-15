@@ -3,8 +3,8 @@
 from datetime import datetime
 from pathlib import Path
 
-from aiconfigkit.core.models import AIToolType, InstallationRecord, InstallationScope
-from aiconfigkit.storage.tracker import InstallationTracker
+from devsync.core.models import AIToolType, InstallationRecord, InstallationScope
+from devsync.storage.tracker import InstallationTracker
 
 
 class TestInstallationTracker:
@@ -278,7 +278,7 @@ class TestInstallationTracker:
 
     def test_make_path_relative_with_non_relative_path(self, temp_dir: Path):
         """Test _make_path_relative when path is not relative to project root."""
-        from aiconfigkit.storage.tracker import _make_path_relative
+        from devsync.storage.tracker import _make_path_relative
 
         project_root = temp_dir / "project"
         absolute_path = Path("/completely/different/path/file.md")
@@ -338,7 +338,7 @@ class TestInstallationTracker:
         tracker = InstallationTracker(tracker_file)
 
         # Write corrupted JSON to project tracker
-        project_tracker = mock_project_dir / ".ai-config-kit" / "installations.json"
+        project_tracker = mock_project_dir / ".devsync" / "installations.json"
         project_tracker.parent.mkdir(parents=True, exist_ok=True)
         with open(project_tracker, "w") as f:
             f.write("{invalid")
@@ -421,7 +421,7 @@ class TestInstallationTracker:
         tracker = InstallationTracker(tracker_file)
 
         # Create corrupted project tracker
-        project_tracker = mock_project_dir / ".ai-config-kit" / "installations.json"
+        project_tracker = mock_project_dir / ".devsync" / "installations.json"
         project_tracker.parent.mkdir(parents=True, exist_ok=True)
         with open(project_tracker, "w") as f:
             f.write("{invalid json")
@@ -497,7 +497,7 @@ class TestInstallationTracker:
 
     def test_get_updatable_instructions(self, temp_dir: Path):
         """Test get_updatable_instructions method."""
-        from aiconfigkit.core.models import RefType
+        from devsync.core.models import RefType
 
         tracker_file = temp_dir / "installations.json"
         tracker = InstallationTracker(tracker_file)

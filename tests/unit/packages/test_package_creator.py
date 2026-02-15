@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from aiconfigkit.core.package_creator import (
+from devsync.core.package_creator import (
     PackageCreationResult,
     PackageCreator,
     PackageMetadata,
@@ -252,7 +252,7 @@ class TestPackageCreator:
         rules_dir.mkdir(parents=True)
         (rules_dir / "test.md").write_text("# Test")
 
-        res_dir = temp_project / ".ai-config-kit" / "resources"
+        res_dir = temp_project / ".devsync" / "resources"
         res_dir.mkdir(parents=True)
         (res_dir / "config.json").write_text('{"setting": "value"}')
 

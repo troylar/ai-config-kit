@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 from typer.testing import CliRunner
 
-from aiconfigkit.cli.main import app
+from devsync.cli.main import app
 
 runner = CliRunner()
 
@@ -35,7 +35,7 @@ class TestPackageCreateCommand:
 
     def test_create_no_components(self, temp_project: Path) -> None:
         """Test create fails with no components."""
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=temp_project):
+        with patch("devsync.cli.package_create.find_project_root", return_value=temp_project):
             result = runner.invoke(app, ["package", "create", "--no-interactive", "--name", "test"])
 
         assert result.exit_code != 0
@@ -46,7 +46,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -76,7 +76,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -105,7 +105,7 @@ class TestPackageCreateCommand:
 
     def test_create_requires_name_non_interactive(self, project_with_instruction: Path) -> None:
         """Test that --name is required in non-interactive mode."""
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 ["package", "create", "--no-interactive"],
@@ -119,7 +119,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -142,7 +142,7 @@ class TestPackageCreateCommand:
         output_dir.mkdir()
         (output_dir / "package-existing").mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -168,7 +168,7 @@ class TestPackageCreateCommand:
         existing.mkdir()
         (existing / "old-file.txt").write_text("old content")
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -192,7 +192,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -215,7 +215,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -249,7 +249,7 @@ class TestPackageCreateCommand:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -275,7 +275,7 @@ class TestPackageCreateCommand:
 
     def test_create_invalid_output_directory(self, project_with_instruction: Path) -> None:
         """Test failure with invalid output directory."""
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=project_with_instruction):
+        with patch("devsync.cli.package_create.find_project_root", return_value=project_with_instruction):
             result = runner.invoke(
                 app,
                 [
@@ -307,7 +307,7 @@ class TestPackageCreateComponents:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=temp_project):
+        with patch("devsync.cli.package_create.find_project_root", return_value=temp_project):
             result = runner.invoke(
                 app,
                 [
@@ -346,7 +346,7 @@ class TestPackageCreateComponents:
         output_dir = tmp_path / "output"
         output_dir.mkdir()
 
-        with patch("aiconfigkit.cli.package_create.find_project_root", return_value=temp_project):
+        with patch("devsync.cli.package_create.find_project_root", return_value=temp_project):
             result = runner.invoke(
                 app,
                 [

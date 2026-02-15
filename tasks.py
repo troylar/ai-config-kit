@@ -13,7 +13,7 @@ from invoke import task
 
 # Project paths
 ROOT = Path(__file__).parent
-SRC = ROOT / "aiconfigkit"
+SRC = ROOT / "devsync"
 TESTS = ROOT / "tests"
 
 # Check if pty is available (not available on Windows)
@@ -42,7 +42,7 @@ def test(c, verbose=False, coverage=False, marker=None):
         cmd += " -q"
 
     if coverage:
-        cmd += " --cov=aiconfigkit --cov-report=term-missing --cov-report=xml --cov-report=html"
+        cmd += " --cov=devsync --cov-report=term-missing --cov-report=xml --cov-report=html"
 
     if marker:
         cmd += f" -m {marker}"
@@ -86,7 +86,7 @@ def coverage(c, html=True):
     Options:
         --html: Generate HTML coverage report (default: True)
     """
-    cmd = "pytest tests/ --cov=aiconfigkit --cov-report=term-missing --cov-report=xml"
+    cmd = "pytest tests/ --cov=devsync --cov-report=term-missing --cov-report=xml"
 
     if html:
         cmd += " --cov-report=html"
@@ -109,7 +109,7 @@ def lint(c, fix=False):
     Options:
         -f, --fix: Automatically fix issues
     """
-    cmd = "ruff check aiconfigkit/ tests/"
+    cmd = "ruff check devsync/ tests/"
 
     if fix:
         cmd += " --fix"
@@ -125,7 +125,7 @@ def format(c, check=False):
     Options:
         -c, --check: Check formatting without making changes
     """
-    cmd = "black aiconfigkit/ tests/"
+    cmd = "black devsync/ tests/"
 
     if check:
         cmd += " --check"
@@ -136,7 +136,7 @@ def format(c, check=False):
 @task
 def typecheck(c):
     """Run mypy type checking."""
-    c.run("mypy aiconfigkit/", pty=PTY_SUPPORTED)
+    c.run("mypy devsync/", pty=PTY_SUPPORTED)
 
 
 @task
@@ -245,8 +245,8 @@ def dev_setup(c):
 
 @task
 def repl(c):
-    """Start Python REPL with aiconfigkit imported."""
-    c.run("python -i -c 'import aiconfigkit; print(\"DevSync imported\")'", pty=PTY_SUPPORTED)
+    """Start Python REPL with devsync imported."""
+    c.run("python -i -c 'import devsync; print(\"DevSync imported\")'", pty=PTY_SUPPORTED)
 
 
 # ============================================================================
@@ -256,7 +256,7 @@ def repl(c):
 @task
 def cli(c, args="--help"):
     """
-    Run the aiconfigkit CLI.
+    Run the devsync CLI.
 
     Usage: invoke cli --args="download --repo https://..."
     """
@@ -354,7 +354,7 @@ def count(c):
     print("📊 Lines of Code:\n")
 
     # Source code
-    result = c.run("find aiconfigkit -name '*.py' | xargs wc -l | tail -1", hide=True)
+    result = c.run("find devsync -name '*.py' | xargs wc -l | tail -1", hide=True)
     src_lines = result.stdout.strip().split()[0]
     print(f"  Source:      {src_lines:>6} lines")
 
@@ -392,7 +392,7 @@ def security_check(c):
 
     print("\n2. Checking for security issues in code (bandit)...")
     c.run("pip install bandit", hide=True)
-    c.run("bandit -r aiconfigkit/ -ll", warn=True)
+    c.run("bandit -r devsync/ -ll", warn=True)
 
     print("\n✅ Security checks complete!")
 

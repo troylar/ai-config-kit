@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.models import Repository
-from aiconfigkit.core.repository import RepositoryParser, validate_repository_structure
+from devsync.core.models import Repository
+from devsync.core.repository import RepositoryParser, validate_repository_structure
 
 
 class TestRepositoryParser:

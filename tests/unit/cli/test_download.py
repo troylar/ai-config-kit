@@ -3,16 +3,16 @@
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from aiconfigkit.cli.download import download_instructions
-from aiconfigkit.core.git_operations import RepositoryOperationError
-from aiconfigkit.core.models import Instruction
+from devsync.cli.download import download_instructions
+from devsync.core.git_operations import RepositoryOperationError
+from devsync.core.models import Instruction
 
 
 class TestDownloadInstructions:
     """Test download_instructions function."""
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
-    @patch("aiconfigkit.cli.download.GitOperations.detect_ref_type")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.GitOperations.detect_ref_type")
     def test_download_remote_invalid_reference(self, mock_detect_ref: MagicMock, mock_is_local: MagicMock) -> None:
         """Test downloading with invalid reference."""
         mock_is_local.return_value = False
@@ -22,8 +22,8 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
-    @patch("aiconfigkit.cli.download.GitOperations.detect_ref_type")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.GitOperations.detect_ref_type")
     def test_download_remote_network_error(self, mock_detect_ref: MagicMock, mock_is_local: MagicMock) -> None:
         """Test downloading with network error."""
         mock_is_local.return_value = False
@@ -33,8 +33,8 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
-    @patch("aiconfigkit.cli.download.GitOperations.detect_ref_type")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.GitOperations.detect_ref_type")
     def test_download_remote_generic_ref_error(self, mock_detect_ref: MagicMock, mock_is_local: MagicMock) -> None:
         """Test downloading with generic ref validation error."""
         mock_is_local.return_value = False
@@ -44,7 +44,7 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
     def test_download_local_with_ref(self, mock_is_local: MagicMock) -> None:
         """Test downloading from local path with ref (should error)."""
         mock_is_local.return_value = True
@@ -53,10 +53,10 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.download.LibraryManager")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
-    @patch("aiconfigkit.cli.download.GitOperations")
+    @patch("devsync.cli.download.GitOperations.cleanup_repository")
+    @patch("devsync.cli.download.LibraryManager")
+    @patch("devsync.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations")
     def test_download_local_success(
         self,
         mock_git_ops_class: MagicMock,
@@ -104,9 +104,9 @@ class TestDownloadInstructions:
         assert result == 0  # Success
         mock_library.add_repository.assert_called_once()
 
-    @patch("aiconfigkit.cli.download.shutil.rmtree")
+    @patch("devsync.cli.download.shutil.rmtree")
     @patch("tempfile.mkdtemp")
-    @patch("aiconfigkit.cli.download.GitOperations")
+    @patch("devsync.cli.download.GitOperations")
     def test_download_remote_clone_failure(
         self, mock_git_ops_class: MagicMock, mock_mkdtemp: MagicMock, mock_rmtree: MagicMock, tmp_path: Path
     ) -> None:
@@ -128,9 +128,9 @@ class TestDownloadInstructions:
         assert result == 1  # Error code
         mock_rmtree.assert_called_once()
 
-    @patch("aiconfigkit.cli.download.LibraryManager")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.LibraryManager")
+    @patch("devsync.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
     def test_download_already_exists_no_force(
         self, mock_is_local: MagicMock, mock_parser_class: MagicMock, mock_library_class: MagicMock, tmp_path: Path
     ) -> None:
@@ -158,10 +158,10 @@ class TestDownloadInstructions:
         assert result == 1  # Error code
         mock_library.add_repository.assert_not_called()
 
-    @patch("aiconfigkit.cli.download.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.download.LibraryManager")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.GitOperations.cleanup_repository")
+    @patch("devsync.cli.download.LibraryManager")
+    @patch("devsync.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
     def test_download_file_not_found_warning(
         self,
         mock_is_local: MagicMock,
@@ -205,13 +205,13 @@ class TestDownloadInstructions:
         call_args = mock_library.add_repository.call_args
         assert call_args[1]["instructions"] == []
 
-    @patch("aiconfigkit.cli.download.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.download.shutil.copytree")
-    @patch("aiconfigkit.cli.download.shutil.rmtree")
-    @patch("aiconfigkit.cli.download.LibraryManager")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.cleanup_repository")
+    @patch("devsync.cli.download.shutil.copytree")
+    @patch("devsync.cli.download.shutil.rmtree")
+    @patch("devsync.cli.download.LibraryManager")
+    @patch("devsync.cli.download.RepositoryParser")
     @patch("tempfile.mkdtemp")
-    @patch("aiconfigkit.cli.download.GitOperations")
+    @patch("devsync.cli.download.GitOperations")
     def test_download_remote_with_git_dir(
         self,
         mock_git_ops_class: MagicMock,
@@ -271,8 +271,8 @@ class TestDownloadInstructions:
         # Verify .git directory was copied
         mock_copytree.assert_called()
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.RepositoryParser")
     def test_download_parse_error(self, mock_parser_class: MagicMock, mock_is_local: MagicMock) -> None:
         """Test downloading when parsing fails."""
         mock_is_local.return_value = True
@@ -286,8 +286,8 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.is_local_path")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.is_local_path")
+    @patch("devsync.cli.download.RepositoryParser")
     def test_download_generic_exception(self, mock_parser_class: MagicMock, mock_is_local: MagicMock) -> None:
         """Test downloading with generic exception."""
         mock_is_local.return_value = True
@@ -301,11 +301,11 @@ class TestDownloadInstructions:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.download.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.download.LibraryManager")
-    @patch("aiconfigkit.cli.download.RepositoryParser")
+    @patch("devsync.cli.download.GitOperations.cleanup_repository")
+    @patch("devsync.cli.download.LibraryManager")
+    @patch("devsync.cli.download.RepositoryParser")
     @patch("tempfile.mkdtemp")
-    @patch("aiconfigkit.cli.download.GitOperations")
+    @patch("devsync.cli.download.GitOperations")
     def test_download_remote_with_branch_ref(
         self,
         mock_git_ops_class: MagicMock,

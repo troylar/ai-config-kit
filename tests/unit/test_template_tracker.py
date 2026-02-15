@@ -2,12 +2,11 @@
 
 import json
 from datetime import datetime
-from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.models import AIToolType, InstallationScope, TemplateInstallationRecord
-from aiconfigkit.storage.template_tracker import TemplateInstallationTracker
+from devsync.core.models import AIToolType, InstallationScope, TemplateInstallationRecord
+from devsync.storage.template_tracker import TemplateInstallationTracker
 
 
 @pytest.fixture
@@ -78,15 +77,16 @@ class TestTemplateInstallationTrackerInit:
 
         tracker = TemplateInstallationTracker.for_project(project_root)
 
-        expected_file = project_root / ".instructionkit" / "template-installations.json"
+        expected_file = project_root / ".devsync" / "template-installations.json"
         assert tracker.tracking_file == expected_file
         assert expected_file.parent.exists()
 
-    def test_for_global(self):
+    def test_for_global(self, tmp_path, monkeypatch):
         """Test creating tracker for global installations."""
+        monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
         tracker = TemplateInstallationTracker.for_global()
 
-        expected_file = Path.home() / ".instructionkit" / "global-template-installations.json"
+        expected_file = tmp_path / ".devsync" / "global-template-installations.json"
         assert tracker.tracking_file == expected_file
 
 

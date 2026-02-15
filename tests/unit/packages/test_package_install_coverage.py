@@ -4,16 +4,16 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.ai_tools.capability_registry import get_capability
-from aiconfigkit.ai_tools.translator import get_translator
-from aiconfigkit.cli.package_install import (
+from devsync.ai_tools.capability_registry import get_capability
+from devsync.ai_tools.translator import get_translator
+from devsync.cli.package_install import (
     _filter_components_by_capability,
     _install_command_component,
     _install_hook_component,
     _install_mcp_component,
     _install_resource_component,
 )
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     CommandComponent,
     ConflictResolution,
@@ -30,7 +30,7 @@ class TestFilterComponentsByCapability:
 
     def test_filter_all_components_for_claude(self) -> None:
         """Test that Claude Code supports all component types."""
-        from aiconfigkit.core.models import InstructionComponent
+        from devsync.core.models import InstructionComponent
 
         package = Package(
             name="test",
@@ -63,7 +63,7 @@ class TestFilterComponentsByCapability:
 
     def test_filter_components_for_cursor(self) -> None:
         """Test that Cursor supports instructions, MCP servers, and resources."""
-        from aiconfigkit.core.models import InstructionComponent
+        from devsync.core.models import InstructionComponent
 
         package = Package(
             name="test",
@@ -204,7 +204,7 @@ class TestComponentInstallation:
         """Test resource installation fallback when no source_path in metadata."""
         from unittest.mock import MagicMock
 
-        from aiconfigkit.ai_tools.translator import TranslatedComponent
+        from devsync.ai_tools.translator import TranslatedComponent
 
         component = ResourceComponent(
             name="test",
@@ -216,7 +216,7 @@ class TestComponentInstallation:
         )
 
         # Create mock translator that returns TranslatedComponent without source_path
-        from aiconfigkit.core.models import ComponentType
+        from devsync.core.models import ComponentType
 
         translator = MagicMock()
         translator.translate_resource.return_value = TranslatedComponent(

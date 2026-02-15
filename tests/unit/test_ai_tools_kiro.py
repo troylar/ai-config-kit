@@ -2,8 +2,8 @@
 
 import pytest
 
-from aiconfigkit.ai_tools.kiro import KiroTool
-from aiconfigkit.core.models import AIToolType, InstallationScope, Instruction
+from devsync.ai_tools.kiro import KiroTool
+from devsync.core.models import AIToolType, InstallationScope, Instruction
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def mock_kiro_installed(monkeypatch, temp_dir):
 
     kiro_dir.mkdir(parents=True)
 
-    monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+    monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
     return kiro_dir
 
 
@@ -56,7 +56,7 @@ class TestKiroTool:
         """Test is_installed returns False when Kiro is not present."""
         home_dir = temp_dir / "empty_home"
         home_dir.mkdir()
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
         kiro_tool = KiroTool()
         assert kiro_tool.is_installed() is False
 
@@ -66,7 +66,7 @@ class TestKiroTool:
         def raise_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", raise_error)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", raise_error)
         kiro_tool = KiroTool()
         assert kiro_tool.is_installed() is False
 

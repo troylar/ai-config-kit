@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestMultiplePackages:
@@ -42,7 +42,7 @@ class TestMultiplePackages:
         assert (test_project / ".claude/rules/pytest-guide.md").exists()
 
         # Verify all tracked
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
         assert len(packages) == 3
 
@@ -68,7 +68,7 @@ class TestMultiplePackages:
         install_package(pkg1, test_project, AIToolType.CLAUDE)
         install_package(pkg2, test_project, AIToolType.CLAUDE)
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 2
@@ -107,7 +107,7 @@ class TestMultiplePackages:
         )
 
         # Verify pkg1 updated
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg1_record = tracker.get_package("pkg1", InstallationScope.PROJECT)
         pkg2_record = tracker.get_package("pkg2", InstallationScope.PROJECT)
 
@@ -142,7 +142,7 @@ class TestMultiplePackages:
         install_package(pkg3, test_project, AIToolType.CLAUDE)
 
         # Uninstall pkg2
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg2_record = tracker.get_package("pkg2", InstallationScope.PROJECT)
 
         for component in pkg2_record.components:
@@ -292,7 +292,7 @@ class TestPackageDependencies:
         assert (test_project / ".claude/rules/async-patterns.md").exists()
         assert (test_project / ".claude/rules/type-hints.md").exists()
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
         assert len(packages) == 2
 
@@ -335,7 +335,7 @@ class TestPackageDependencies:
         install_package(personal_pkg, project, AIToolType.CLAUDE)
 
         # Verify all coexist
-        tracker = PackageTracker(project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
         assert len(packages) == 3
 
@@ -395,7 +395,7 @@ class TestPackageOrdering:
         install_package(pkg3, test_project, AIToolType.CLAUDE)
 
         # Get tracker
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
 
         # Reinstall in order 3, 1, 2
         install_package(
@@ -494,7 +494,7 @@ class TestPackageUpdates:
         )
 
         # Verify all updated
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         for name in ["pkg1", "pkg2", "pkg3"]:
             record = tracker.get_package(name, InstallationScope.PROJECT)
             assert record.version == "2.0.0"
@@ -550,7 +550,7 @@ class TestPackageUpdates:
         )
 
         # Verify selective updates
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         stable = tracker.get_package("stable-pkg", InstallationScope.PROJECT)
         beta = tracker.get_package("beta-pkg", InstallationScope.PROJECT)
         experimental = tracker.get_package("experimental-pkg", InstallationScope.PROJECT)

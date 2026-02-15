@@ -6,9 +6,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from aiconfigkit.cli.update import _extract_ref_from_namespace, _update_installed_instructions, update_repository
-from aiconfigkit.core.git_operations import RepositoryOperationError
-from aiconfigkit.core.models import (
+from devsync.cli.update import _extract_ref_from_namespace, _update_installed_instructions, update_repository
+from devsync.core.git_operations import RepositoryOperationError
+from devsync.core.models import (
     AIToolType,
     InstallationRecord,
     InstallationScope,
@@ -22,14 +22,14 @@ from aiconfigkit.core.models import (
 class TestUpdateRepository:
     """Test update_repository function."""
 
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_no_namespace_no_all(self, mock_library_class: MagicMock) -> None:
         """Test updating without namespace or --all flag."""
         result = update_repository(namespace=None, all_repos=False)
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_all_empty_library(self, mock_library_class: MagicMock) -> None:
         """Test updating all when library is empty."""
         mock_library = MagicMock()
@@ -40,7 +40,7 @@ class TestUpdateRepository:
 
         assert result == 0  # Success (nothing to update)
 
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_namespace_not_found(self, mock_library_class: MagicMock) -> None:
         """Test updating non-existent namespace."""
         mock_library = MagicMock()
@@ -51,8 +51,8 @@ class TestUpdateRepository:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_skip_immutable_tag(self, mock_library_class: MagicMock, mock_tracker_class: MagicMock) -> None:
         """Test updating repository with tag reference (should skip)."""
         # Create repository with tag reference in namespace
@@ -79,8 +79,8 @@ class TestUpdateRepository:
 
         assert result == 0  # Success (skipped)
 
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_skip_immutable_commit(self, mock_library_class: MagicMock, mock_tracker_class: MagicMock) -> None:
         """Test updating repository with commit reference (should skip)."""
         # Create repository with commit reference in namespace
@@ -107,8 +107,8 @@ class TestUpdateRepository:
 
         assert result == 0  # Success (skipped)
 
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_repo_directory_not_found(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, tmp_path: Path
     ) -> None:
@@ -140,8 +140,8 @@ class TestUpdateRepository:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_skip_non_git_repository(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, tmp_path: Path
     ) -> None:
@@ -176,10 +176,10 @@ class TestUpdateRepository:
 
         assert result == 0  # Success (skipped)
 
-    @patch("aiconfigkit.cli.update.GitOperations.check_for_updates")
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.GitOperations.check_for_updates")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_already_up_to_date(
         self,
         mock_library_class: MagicMock,
@@ -229,13 +229,13 @@ class TestUpdateRepository:
         assert result == 0  # Success (no updates)
 
     @pytest.mark.skip(reason="Needs investigation - mock setup issue")
-    @patch("aiconfigkit.cli.update._update_installed_instructions")
-    @patch("aiconfigkit.cli.update.RepositoryParser")
-    @patch("aiconfigkit.cli.update.GitOperations.pull_repository_updates")
-    @patch("aiconfigkit.cli.update.GitOperations.check_for_updates")
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update._update_installed_instructions")
+    @patch("devsync.cli.update.RepositoryParser")
+    @patch("devsync.cli.update.GitOperations.pull_repository_updates")
+    @patch("devsync.cli.update.GitOperations.check_for_updates")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_success(
         self,
         mock_library_class: MagicMock,
@@ -308,11 +308,11 @@ class TestUpdateRepository:
         mock_library.add_repository.assert_called_once()
         mock_update_installed.assert_called_once()
 
-    @patch("aiconfigkit.cli.update.GitOperations.pull_repository_updates")
-    @patch("aiconfigkit.cli.update.GitOperations.check_for_updates")
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.GitOperations.pull_repository_updates")
+    @patch("devsync.cli.update.GitOperations.check_for_updates")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_pull_local_modifications(
         self,
         mock_library_class: MagicMock,
@@ -369,11 +369,11 @@ class TestUpdateRepository:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.GitOperations.pull_repository_updates")
-    @patch("aiconfigkit.cli.update.GitOperations.check_for_updates")
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.GitOperations.pull_repository_updates")
+    @patch("devsync.cli.update.GitOperations.check_for_updates")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_pull_conflict(
         self,
         mock_library_class: MagicMock,
@@ -426,9 +426,9 @@ class TestUpdateRepository:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_repository_operation_error(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_repo_class: MagicMock, tmp_path: Path
     ) -> None:
@@ -467,9 +467,9 @@ class TestUpdateRepository:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.update.Repo")
-    @patch("aiconfigkit.cli.update.InstallationTracker")
-    @patch("aiconfigkit.cli.update.LibraryManager")
+    @patch("devsync.cli.update.Repo")
+    @patch("devsync.cli.update.InstallationTracker")
+    @patch("devsync.cli.update.LibraryManager")
     def test_update_generic_exception(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_repo_class: MagicMock, tmp_path: Path
     ) -> None:
@@ -551,7 +551,7 @@ class TestExtractRefFromNamespace:
 class TestUpdateInstalledInstructions:
     """Test _update_installed_instructions helper function."""
 
-    @patch("aiconfigkit.cli.update.find_project_root")
+    @patch("devsync.cli.update.find_project_root")
     def test_update_installed_no_records(self, mock_find_root: MagicMock, tmp_path: Path) -> None:
         """Test updating when no instructions are installed."""
         mock_find_root.return_value = tmp_path
@@ -565,7 +565,7 @@ class TestUpdateInstalledInstructions:
 
         # Should complete without error
 
-    @patch("aiconfigkit.cli.update.find_project_root")
+    @patch("devsync.cli.update.find_project_root")
     def test_update_installed_success(self, mock_find_root: MagicMock, tmp_path: Path) -> None:
         """Test updating installed instruction files."""
         project_root = tmp_path / "project"

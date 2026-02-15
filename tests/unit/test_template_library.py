@@ -1,12 +1,11 @@
 """Tests for template library management."""
 
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
-from aiconfigkit.core.models import TemplateDefinition, TemplateFile, TemplateManifest
-from aiconfigkit.storage.template_library import TemplateLibraryManager
+from devsync.core.models import TemplateDefinition, TemplateFile, TemplateManifest
+from devsync.storage.template_library import TemplateLibraryManager
 
 
 @pytest.fixture
@@ -85,10 +84,11 @@ templates:
 class TestTemplateLibraryManagerInit:
     """Tests for TemplateLibraryManager initialization."""
 
-    def test_default_library_path(self):
+    def test_default_library_path(self, tmp_path, monkeypatch):
         """Test initialization with default library path."""
+        monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
         manager = TemplateLibraryManager()
-        expected_path = Path.home() / ".instructionkit" / "templates"
+        expected_path = tmp_path / ".devsync" / "templates"
         assert manager.library_path == expected_path
 
     def test_custom_library_path(self, temp_library):
@@ -109,9 +109,9 @@ class TestTemplateLibraryManagerInit:
 class TestCloneRepository:
     """Tests for clone_repository method."""
 
-    @patch("aiconfigkit.storage.template_library.clone_template_repo")
-    @patch("aiconfigkit.storage.template_library.derive_namespace")
-    @patch("aiconfigkit.storage.template_library.load_manifest")
+    @patch("devsync.storage.template_library.clone_template_repo")
+    @patch("devsync.storage.template_library.derive_namespace")
+    @patch("devsync.storage.template_library.load_manifest")
     def test_clone_new_repository(
         self, mock_load_manifest, mock_derive_namespace, mock_clone, temp_library, sample_manifest
     ):
@@ -138,9 +138,9 @@ class TestCloneRepository:
         assert repo_path == expected_dest
         assert manifest == sample_manifest
 
-    @patch("aiconfigkit.storage.template_library.clone_template_repo")
-    @patch("aiconfigkit.storage.template_library.derive_namespace")
-    @patch("aiconfigkit.storage.template_library.load_manifest")
+    @patch("devsync.storage.template_library.clone_template_repo")
+    @patch("devsync.storage.template_library.derive_namespace")
+    @patch("devsync.storage.template_library.load_manifest")
     def test_clone_with_namespace_override(
         self, mock_load_manifest, mock_derive_namespace, mock_clone, temp_library, sample_manifest
     ):
@@ -155,9 +155,9 @@ class TestCloneRepository:
 
         mock_derive_namespace.assert_called_once_with(repo_url, "custom-namespace")
 
-    @patch("aiconfigkit.storage.template_library.clone_template_repo")
-    @patch("aiconfigkit.storage.template_library.derive_namespace")
-    @patch("aiconfigkit.storage.template_library.load_manifest")
+    @patch("devsync.storage.template_library.clone_template_repo")
+    @patch("devsync.storage.template_library.derive_namespace")
+    @patch("devsync.storage.template_library.load_manifest")
     def test_clone_replaces_existing_repository(
         self, mock_load_manifest, mock_derive_namespace, mock_clone, temp_library, sample_manifest
     ):
@@ -231,7 +231,7 @@ class TestListAvailableTemplates:
 class TestGetRepositoryVersion:
     """Tests for get_repository_version method."""
 
-    @patch("aiconfigkit.storage.template_library.get_repo_version")
+    @patch("devsync.storage.template_library.get_repo_version")
     def test_get_version_success(self, mock_get_version, temp_library):
         """Test getting repository version successfully."""
         # Create a repository directory
@@ -253,7 +253,7 @@ class TestGetRepositoryVersion:
 
         assert version is None
 
-    @patch("aiconfigkit.storage.template_library.get_repo_version")
+    @patch("devsync.storage.template_library.get_repo_version")
     def test_get_version_exception_returns_none(self, mock_get_version, temp_library):
         """Test that exceptions during version retrieval return None."""
         repo_path = temp_library / "acme-templates"

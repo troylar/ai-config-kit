@@ -3,8 +3,8 @@
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
-from aiconfigkit.cli.delete import delete_from_library
-from aiconfigkit.core.models import (
+from devsync.cli.delete import delete_from_library
+from devsync.core.models import (
     AIToolType,
     InstallationRecord,
     InstallationScope,
@@ -16,8 +16,8 @@ from aiconfigkit.core.models import (
 class TestDeleteFromLibrary:
     """Test delete_from_library function."""
 
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_nonexistent_repository(self, mock_library_class: MagicMock, mock_tracker_class: MagicMock) -> None:
         """Test deleting non-existent repository."""
         mock_library = MagicMock()
@@ -29,9 +29,9 @@ class TestDeleteFromLibrary:
         assert result == 1  # Error code
         mock_library.remove_repository.assert_not_called()
 
-    @patch("aiconfigkit.cli.delete.Confirm")
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.Confirm")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_with_force(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_confirm: MagicMock
     ) -> None:
@@ -65,9 +65,9 @@ class TestDeleteFromLibrary:
         mock_library.remove_repository.assert_called_once_with("test/repo")
         mock_confirm.ask.assert_not_called()  # Confirmation should be skipped
 
-    @patch("aiconfigkit.cli.delete.Confirm")
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.Confirm")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_with_confirmation_cancelled(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_confirm: MagicMock
     ) -> None:
@@ -101,9 +101,9 @@ class TestDeleteFromLibrary:
         assert result == 0  # Success (cancelled, but not an error)
         mock_library.remove_repository.assert_not_called()
 
-    @patch("aiconfigkit.cli.delete.Confirm")
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.Confirm")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_with_installed_instructions_warning(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_confirm: MagicMock
     ) -> None:
@@ -160,8 +160,8 @@ class TestDeleteFromLibrary:
         # Should have warned about installed instructions
         mock_confirm.ask.assert_called_once()
 
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_failure(self, mock_library_class: MagicMock, mock_tracker_class: MagicMock) -> None:
         """Test when repository deletion fails."""
         # Setup library
@@ -190,9 +190,9 @@ class TestDeleteFromLibrary:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.delete.Confirm")
-    @patch("aiconfigkit.cli.delete.InstallationTracker")
-    @patch("aiconfigkit.cli.delete.LibraryManager")
+    @patch("devsync.cli.delete.Confirm")
+    @patch("devsync.cli.delete.InstallationTracker")
+    @patch("devsync.cli.delete.LibraryManager")
     def test_delete_with_many_installed_instructions(
         self, mock_library_class: MagicMock, mock_tracker_class: MagicMock, mock_confirm: MagicMock
     ) -> None:

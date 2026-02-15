@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.component_detector import (
+from devsync.core.component_detector import (
     ComponentDetector,
     DetectedHook,
     DetectedInstruction,
@@ -174,7 +174,7 @@ class TestMCPServerDetection:
 
     def test_detect_mcp_from_dedicated_dir(self, temp_project: Path) -> None:
         """Test detection of MCP configs from dedicated directory."""
-        mcp_dir = temp_project / ".ai-config-kit" / "mcp"
+        mcp_dir = temp_project / ".devsync" / "mcp"
         mcp_dir.mkdir(parents=True)
 
         config = {"command": "python", "args": ["-m", "my_server"]}
@@ -285,7 +285,7 @@ class TestResourceDetection:
 
     def test_detect_resources(self, temp_project: Path) -> None:
         """Test detection of resource files."""
-        res_dir = temp_project / ".ai-config-kit" / "resources"
+        res_dir = temp_project / ".devsync" / "resources"
         res_dir.mkdir(parents=True)
         (res_dir / "config.json").write_text('{"key": "value"}')
 
@@ -300,7 +300,7 @@ class TestResourceDetection:
 
     def test_detect_nested_resources(self, temp_project: Path) -> None:
         """Test detection of nested resource files."""
-        res_dir = temp_project / ".ai-config-kit" / "resources" / "templates"
+        res_dir = temp_project / ".devsync" / "resources" / "templates"
         res_dir.mkdir(parents=True)
         (res_dir / "template.txt").write_text("template content")
 
@@ -339,8 +339,8 @@ class TestToPackageComponents:
         (temp_project / ".claude" / "commands").mkdir(parents=True)
         (temp_project / ".claude" / "commands" / "build.sh").write_text("#!/bin/bash")
 
-        (temp_project / ".ai-config-kit" / "resources").mkdir(parents=True)
-        (temp_project / ".ai-config-kit" / "resources" / "data.json").write_text("{}")
+        (temp_project / ".devsync" / "resources").mkdir(parents=True)
+        (temp_project / ".devsync" / "resources" / "data.json").write_text("{}")
 
         detector = ComponentDetector(temp_project)
         result = detector.detect_all()

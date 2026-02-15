@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.checksum import (
+from devsync.core.checksum import (
     ChecksumError,
     ChecksumValidator,
     calculate_checksum,

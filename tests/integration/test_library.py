@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from aiconfigkit.core.models import LibraryInstruction
-from aiconfigkit.storage.library import LibraryManager
+from devsync.core.models import LibraryInstruction
+from devsync.storage.library import LibraryManager
 
 
 class TestLibraryManager:

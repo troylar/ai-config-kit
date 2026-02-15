@@ -119,7 +119,7 @@ pytest tests/e2e/test_basic_workflows.py::TestBasicInstallation::test_install_si
 
 ### Run with Coverage
 ```bash
-pytest tests/e2e/ --cov=aiconfigkit.cli.package_install --cov=aiconfigkit.storage.package_tracker --cov-report=html
+pytest tests/e2e/ --cov=devsync.cli.package_install --cov=devsync.storage.package_tracker --cov-report=html
 ```
 
 ### Run in Parallel (faster)

@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from aiconfigkit.utils.backup import (
+from devsync.utils.backup import (
     cleanup_old_backups,
     create_backup,
     list_backups,
@@ -105,7 +105,7 @@ class TestCreateBackup:
 
         assert backup_path.read_bytes() == binary_content
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_create_backup_default_dir_with_project(self, mock_find_root: MagicMock, tmp_path: Path) -> None:
         """Test default backup directory with project root."""
         mock_find_root.return_value = tmp_path
@@ -115,10 +115,10 @@ class TestCreateBackup:
 
         backup_path = create_backup(test_file)
 
-        expected_dir = tmp_path / ".instructionkit" / "backups"
+        expected_dir = tmp_path / ".devsync" / "backups"
         assert str(expected_dir) in str(backup_path)
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_create_backup_default_dir_no_project(
         self, mock_find_root: MagicMock, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -131,7 +131,7 @@ class TestCreateBackup:
 
         backup_path = create_backup(test_file)
 
-        expected_dir = tmp_path / ".instructionkit" / "backups"
+        expected_dir = tmp_path / ".devsync" / "backups"
         assert str(expected_dir) in str(backup_path)
 
     def test_create_backup_collision_counter(self, tmp_path: Path) -> None:
@@ -238,12 +238,12 @@ class TestListBackups:
         backups = list_backups(backup_dir)
         assert len(backups) == 0
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_list_backups_default_dir_with_project(self, mock_find_root: MagicMock, tmp_path: Path) -> None:
         """Test default backup directory detection with project."""
         mock_find_root.return_value = tmp_path
 
-        backup_dir = tmp_path / ".instructionkit" / "backups"
+        backup_dir = tmp_path / ".devsync" / "backups"
         timestamp_dir = backup_dir / "20251109_143052"
         timestamp_dir.mkdir(parents=True)
 
@@ -251,7 +251,7 @@ class TestListBackups:
 
         assert len(backups) == 1
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_list_backups_default_dir_no_project(
         self, mock_find_root: MagicMock, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -259,7 +259,7 @@ class TestListBackups:
         mock_find_root.return_value = None
         monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
 
-        backup_dir = tmp_path / ".instructionkit" / "backups"
+        backup_dir = tmp_path / ".devsync" / "backups"
         timestamp_dir = backup_dir / "20251109_143052"
         timestamp_dir.mkdir(parents=True)
 
@@ -361,12 +361,12 @@ class TestCleanupOldBackups:
         assert removed == 2  # 10 and 15 day old backups removed
         assert len(list(backup_dir.iterdir())) == 1  # 5 day old backup remains
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_cleanup_default_dir_with_project(self, mock_find_root: MagicMock, tmp_path: Path) -> None:
         """Test cleanup with default project directory."""
         mock_find_root.return_value = tmp_path
 
-        backup_dir = tmp_path / ".instructionkit" / "backups"
+        backup_dir = tmp_path / ".devsync" / "backups"
         old_date = datetime.now() - timedelta(days=60)
         old_timestamp = old_date.strftime("%Y%m%d_%H%M%S")
         old_dir = backup_dir / old_timestamp
@@ -376,7 +376,7 @@ class TestCleanupOldBackups:
 
         assert removed == 1
 
-    @patch("aiconfigkit.utils.project.find_project_root")
+    @patch("devsync.utils.project.find_project_root")
     def test_cleanup_default_dir_no_project(
         self, mock_find_root: MagicMock, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
@@ -384,7 +384,7 @@ class TestCleanupOldBackups:
         mock_find_root.return_value = None
         monkeypatch.setattr("pathlib.Path.home", lambda: tmp_path)
 
-        backup_dir = tmp_path / ".instructionkit" / "backups"
+        backup_dir = tmp_path / ".devsync" / "backups"
         old_date = datetime.now() - timedelta(days=60)
         old_timestamp = old_date.strftime("%Y%m%d_%H%M%S")
         old_dir = backup_dir / old_timestamp

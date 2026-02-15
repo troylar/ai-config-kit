@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from packaging.version import Version
 
-from aiconfigkit.core.version import VersionError, VersionManager
+from devsync.core.version import VersionError, VersionManager
 
 
 @pytest.fixture

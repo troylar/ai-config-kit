@@ -7,8 +7,8 @@ from unittest.mock import Mock, patch
 import pytest
 import yaml
 
-from aiconfigkit.core.mcp.manager import MCPManager
-from aiconfigkit.core.models import InstallationScope
+from devsync.core.mcp.manager import MCPManager
+from devsync.core.models import InstallationScope
 
 
 class TestMCPInstallIntegration:
@@ -253,7 +253,7 @@ class TestMCPInstallIntegration:
         assert len(loaded.servers) == len(original.servers)
         assert len(loaded.sets) == len(original.sets)
 
-    @patch("aiconfigkit.core.mcp.manager.GitOperations")
+    @patch("devsync.core.mcp.manager.GitOperations")
     def test_install_from_git_url(self, mock_git: Mock, manager: MCPManager, sample_template_repo: Path) -> None:
         """Test installing from Git URL (with mocked Git operations)."""
 

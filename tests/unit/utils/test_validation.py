@@ -1,6 +1,6 @@
 """Unit tests for validation utilities."""
 
-from aiconfigkit.utils.validation import (
+from devsync.utils.validation import (
     is_valid_checksum,
     is_valid_git_url,
     is_valid_instruction_name,
@@ -68,14 +68,14 @@ class TestIsValidGitUrl:
         """Test exception handling in HTTPS URL parsing."""
         from unittest.mock import patch
 
-        with patch("aiconfigkit.utils.validation.urlparse", side_effect=Exception("Parse error")):
+        with patch("devsync.utils.validation.urlparse", side_effect=Exception("Parse error")):
             assert is_valid_git_url("https://example.com/repo.git") is False
 
     def test_urlparse_exception_git_protocol(self) -> None:
         """Test exception handling in git:// URL parsing."""
         from unittest.mock import patch
 
-        with patch("aiconfigkit.utils.validation.urlparse", side_effect=Exception("Parse error")):
+        with patch("devsync.utils.validation.urlparse", side_effect=Exception("Parse error")):
             assert is_valid_git_url("git://example.com/repo.git") is False
 
 

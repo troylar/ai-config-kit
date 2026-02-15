@@ -5,13 +5,13 @@ from unittest.mock import patch
 
 import pytest
 
-from aiconfigkit.core.conflict_resolution import (
+from devsync.core.conflict_resolution import (
     ConflictResolver,
     batch_resolve_conflicts,
     check_conflicts,
     prompt_conflict_resolution,
 )
-from aiconfigkit.core.models import ConflictInfo, ConflictResolution
+from devsync.core.models import ConflictInfo, ConflictResolution
 
 
 def test_conflict_resolver_default_strategy() -> None:

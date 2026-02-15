@@ -3,14 +3,14 @@
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from aiconfigkit.cli.install import _get_ai_tool, install_instruction
-from aiconfigkit.core.models import Instruction
+from devsync.cli.install import _get_ai_tool, install_instruction
+from devsync.core.models import Instruction
 
 
 class TestInstallInstruction:
     """Test install_instruction function."""
 
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_invalid_git_url(self, mock_valid: MagicMock) -> None:
         """Test installing with invalid Git URL."""
         mock_valid.return_value = False
@@ -19,7 +19,7 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_invalid_conflict_strategy(self, mock_valid: MagicMock) -> None:
         """Test installing with invalid conflict strategy."""
         mock_valid.return_value = True
@@ -28,8 +28,8 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_no_project_root(self, mock_valid: MagicMock, mock_find_root: MagicMock) -> None:
         """Test installing when project root cannot be detected."""
         mock_valid.return_value = True
@@ -39,9 +39,9 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install.GitOperations.is_git_installed")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.GitOperations.is_git_installed")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_git_not_installed(
         self, mock_valid: MagicMock, mock_find_root: MagicMock, mock_git_installed: MagicMock
     ) -> None:
@@ -54,10 +54,10 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.GitOperations.is_git_installed")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.GitOperations.is_git_installed")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_no_ai_tool(
         self,
         mock_valid: MagicMock,
@@ -75,10 +75,10 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.GitOperations.is_git_installed")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.GitOperations.is_git_installed")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_ai_tool_validation_error(
         self,
         mock_valid: MagicMock,
@@ -99,12 +99,12 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_local_directory(
         self,
         mock_valid: MagicMock,
@@ -152,11 +152,11 @@ class TestInstallInstruction:
         assert result == 0  # Success
         mock_cleanup.assert_called_once_with(Path("/local/path"), is_temp=False)
 
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_clone_failure(
         self,
         mock_valid: MagicMock,
@@ -186,12 +186,12 @@ class TestInstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_instruction_not_found(
         self,
         mock_valid: MagicMock,
@@ -229,13 +229,13 @@ class TestInstallInstruction:
         assert result == 1  # Error code
         mock_cleanup.assert_called_once()
 
-    @patch("aiconfigkit.cli.install.InstallationTracker")
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.InstallationTracker")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_skip_existing(
         self,
         mock_valid: MagicMock,
@@ -291,14 +291,14 @@ class TestInstallInstruction:
         assert existing_file.read_text() == "existing"
         mock_tracker.add_installation.assert_not_called()
 
-    @patch("aiconfigkit.cli.install.ChecksumValidator")
-    @patch("aiconfigkit.cli.install.InstallationTracker")
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.ChecksumValidator")
+    @patch("devsync.cli.install.InstallationTracker")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_rename_existing(
         self,
         mock_valid: MagicMock,
@@ -362,14 +362,14 @@ class TestInstallInstruction:
         # Check that tracker was called (file was installed somewhere)
         mock_tracker.add_installation.assert_called_once()
 
-    @patch("aiconfigkit.cli.install.ChecksumValidator")
-    @patch("aiconfigkit.cli.install.InstallationTracker")
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.ChecksumValidator")
+    @patch("devsync.cli.install.InstallationTracker")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_checksum_validation_failure(
         self,
         mock_valid: MagicMock,
@@ -427,14 +427,14 @@ class TestInstallInstruction:
         assert not target_file.exists()
         mock_tracker.add_installation.assert_not_called()
 
-    @patch("aiconfigkit.cli.install.ChecksumValidator")
-    @patch("aiconfigkit.cli.install.InstallationTracker")
-    @patch("aiconfigkit.cli.install.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.install.RepositoryParser")
-    @patch("aiconfigkit.cli.install.GitOperations")
-    @patch("aiconfigkit.cli.install._get_ai_tool")
-    @patch("aiconfigkit.cli.install.find_project_root")
-    @patch("aiconfigkit.cli.install.is_valid_git_url")
+    @patch("devsync.cli.install.ChecksumValidator")
+    @patch("devsync.cli.install.InstallationTracker")
+    @patch("devsync.cli.install.GitOperations.cleanup_repository")
+    @patch("devsync.cli.install.RepositoryParser")
+    @patch("devsync.cli.install.GitOperations")
+    @patch("devsync.cli.install._get_ai_tool")
+    @patch("devsync.cli.install.find_project_root")
+    @patch("devsync.cli.install.is_valid_git_url")
     def test_install_bundle(
         self,
         mock_valid: MagicMock,
@@ -506,7 +506,7 @@ class TestInstallInstruction:
 class TestGetAITool:
     """Test _get_ai_tool helper function."""
 
-    @patch("aiconfigkit.cli.install.get_detector")
+    @patch("devsync.cli.install.get_detector")
     def test_get_ai_tool_by_name(self, mock_get_detector: MagicMock) -> None:
         """Test getting AI tool by name."""
         mock_tool = MagicMock()
@@ -521,7 +521,7 @@ class TestGetAITool:
         assert result == mock_tool
         mock_detector.get_tool_by_name.assert_called_once_with("cursor")
 
-    @patch("aiconfigkit.cli.install.get_detector")
+    @patch("devsync.cli.install.get_detector")
     def test_get_ai_tool_not_installed(self, mock_get_detector: MagicMock) -> None:
         """Test getting AI tool that is not installed."""
         mock_tool = MagicMock()
@@ -536,7 +536,7 @@ class TestGetAITool:
 
         assert result is None
 
-    @patch("aiconfigkit.cli.install.get_detector")
+    @patch("devsync.cli.install.get_detector")
     def test_get_ai_tool_auto_detect(self, mock_get_detector: MagicMock) -> None:
         """Test auto-detecting primary AI tool."""
         mock_tool = MagicMock()

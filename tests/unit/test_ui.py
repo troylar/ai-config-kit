@@ -6,7 +6,7 @@ from io import StringIO
 from rich.console import Console
 from rich.table import Table
 
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     InstallationRecord,
     InstallationScope,
@@ -14,7 +14,7 @@ from aiconfigkit.core.models import (
     InstructionBundle,
     RefType,
 )
-from aiconfigkit.utils.ui import (
+from devsync.utils.ui import (
     _shorten_url,
     format_bundle_details,
     format_installed_table,

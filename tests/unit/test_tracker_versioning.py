@@ -2,8 +2,8 @@
 
 from datetime import datetime
 
-from aiconfigkit.core.models import AIToolType, InstallationRecord, InstallationScope, RefType
-from aiconfigkit.storage.tracker import InstallationTracker
+from devsync.core.models import AIToolType, InstallationRecord, InstallationScope, RefType
+from devsync.storage.tracker import InstallationTracker
 
 
 class TestGetUpdatableInstructions:

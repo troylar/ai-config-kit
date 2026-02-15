@@ -8,13 +8,13 @@ import pytest
 from git import Repo
 from git.exc import GitCommandError
 
-from aiconfigkit.core.git_operations import (
+from devsync.core.git_operations import (
     GitOperationError,
     GitOperations,
     RepositoryOperationError,
     with_temporary_clone,
 )
-from aiconfigkit.core.models import RefType
+from devsync.core.models import RefType
 
 
 class TestGitOperationError:
@@ -192,13 +192,13 @@ class TestCleanupRepository:
 class TestCloneRepository:
     """Test clone_repository static method."""
 
-    @patch("aiconfigkit.core.git_operations.is_valid_git_url", return_value=False)
+    @patch("devsync.core.git_operations.is_valid_git_url", return_value=False)
     def test_clone_invalid_url(self, mock_valid: MagicMock) -> None:
         """Test cloning with invalid URL raises error."""
         with pytest.raises(ValueError, match="Invalid Git repository URL"):
             GitOperations.clone_repository("invalid-url")
 
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_local_path_exists(self, mock_valid: MagicMock, tmp_path: Path) -> None:
         """Test cloning local path that exists."""
         mock_valid.return_value = True
@@ -209,7 +209,7 @@ class TestCloneRepository:
 
         assert result == local_dir.resolve()
 
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_local_path_not_exists(self, mock_valid: MagicMock, tmp_path: Path) -> None:
         """Test cloning local path that doesn't exist."""
         mock_valid.return_value = True
@@ -218,7 +218,7 @@ class TestCloneRepository:
         with pytest.raises(GitOperationError, match="Local directory does not exist"):
             GitOperations.clone_repository(str(local_dir))
 
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_local_path_not_directory(self, mock_valid: MagicMock, tmp_path: Path) -> None:
         """Test cloning local path that is a file."""
         mock_valid.return_value = True
@@ -229,7 +229,7 @@ class TestCloneRepository:
             GitOperations.clone_repository(str(local_file))
 
     @patch("subprocess.run")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_remote_success(self, mock_valid: MagicMock, mock_run: MagicMock, tmp_path: Path) -> None:
         """Test successful remote clone."""
         mock_valid.return_value = True
@@ -246,7 +246,7 @@ class TestCloneRepository:
         assert "https://github.com/user/repo.git" in cmd
 
     @patch("subprocess.run")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_with_branch(self, mock_valid: MagicMock, mock_run: MagicMock, tmp_path: Path) -> None:
         """Test cloning with specific branch."""
         mock_valid.return_value = True
@@ -260,7 +260,7 @@ class TestCloneRepository:
         assert "develop" in cmd
 
     @patch("subprocess.run")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_with_depth(self, mock_valid: MagicMock, mock_run: MagicMock, tmp_path: Path) -> None:
         """Test cloning with depth."""
         mock_valid.return_value = True
@@ -275,7 +275,7 @@ class TestCloneRepository:
 
     @patch("subprocess.run")
     @patch("shutil.rmtree")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_failure_cleanup(
         self, mock_valid: MagicMock, mock_rmtree: MagicMock, mock_run: MagicMock, tmp_path: Path
     ) -> None:
@@ -291,7 +291,7 @@ class TestCloneRepository:
 
     @patch("subprocess.run")
     @patch("shutil.rmtree")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_timeout_cleanup(
         self, mock_valid: MagicMock, mock_rmtree: MagicMock, mock_run: MagicMock, tmp_path: Path
     ) -> None:
@@ -659,7 +659,7 @@ class TestUpdateIfMutable:
         assert result is False
 
     @patch.object(GitOperations, "check_for_updates")
-    @patch("aiconfigkit.core.git_operations.Repo")
+    @patch("devsync.core.git_operations.Repo")
     def test_update_branch_no_updates(self, mock_repo_cls: MagicMock, mock_check: MagicMock, tmp_path: Path) -> None:
         """Test update branch with no updates available."""
         mock_repo = MagicMock()
@@ -673,7 +673,7 @@ class TestUpdateIfMutable:
 
     @patch.object(GitOperations, "pull_repository_updates")
     @patch.object(GitOperations, "check_for_updates")
-    @patch("aiconfigkit.core.git_operations.Repo")
+    @patch("devsync.core.git_operations.Repo")
     def test_update_branch_with_updates(
         self, mock_repo_cls: MagicMock, mock_check: MagicMock, mock_pull: MagicMock, tmp_path: Path
     ) -> None:
@@ -689,7 +689,7 @@ class TestUpdateIfMutable:
 
     @patch.object(GitOperations, "pull_repository_updates")
     @patch.object(GitOperations, "check_for_updates")
-    @patch("aiconfigkit.core.git_operations.Repo")
+    @patch("devsync.core.git_operations.Repo")
     def test_update_branch_pull_failed(
         self, mock_repo_cls: MagicMock, mock_check: MagicMock, mock_pull: MagicMock, tmp_path: Path
     ) -> None:
@@ -743,7 +743,7 @@ class TestCloneRepositoryEdgeCases:
     """Test edge cases in clone_repository."""
 
     @patch("subprocess.run")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     @patch("tempfile.mkdtemp")
     def test_clone_without_target_dir_creates_tempdir(
         self, mock_mkdtemp: MagicMock, mock_valid: MagicMock, mock_run: MagicMock
@@ -760,7 +760,7 @@ class TestCloneRepositoryEdgeCases:
 
     @patch("subprocess.run")
     @patch("shutil.rmtree")
-    @patch("aiconfigkit.utils.validation.is_valid_git_url")
+    @patch("devsync.utils.validation.is_valid_git_url")
     def test_clone_generic_exception_cleanup(
         self, mock_valid: MagicMock, mock_rmtree: MagicMock, mock_run: MagicMock, tmp_path: Path
     ) -> None:

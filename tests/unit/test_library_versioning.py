@@ -4,7 +4,7 @@ import json
 import re
 from datetime import datetime
 
-from aiconfigkit.storage.library import LibraryManager
+from devsync.storage.library import LibraryManager
 
 
 def create_test_repo_data(namespace: str, name: str, version: str = "1.0.0") -> dict:

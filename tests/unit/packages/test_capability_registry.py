@@ -2,14 +2,14 @@
 
 import pytest
 
-from aiconfigkit.ai_tools.capability_registry import (
+from devsync.ai_tools.capability_registry import (
     CAPABILITY_REGISTRY,
     IDECapability,
     get_capability,
     get_supported_tools_for_component,
     validate_component_support,
 )
-from aiconfigkit.core.models import AIToolType, ComponentType
+from devsync.core.models import AIToolType, ComponentType
 
 
 class TestIDECapability:

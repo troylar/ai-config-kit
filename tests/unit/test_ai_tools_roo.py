@@ -2,8 +2,8 @@
 
 import pytest
 
-from aiconfigkit.ai_tools.roo import RooTool
-from aiconfigkit.core.models import AIToolType, InstallationScope, Instruction
+from devsync.ai_tools.roo import RooTool
+from devsync.core.models import AIToolType, InstallationScope, Instruction
 
 
 @pytest.fixture
@@ -41,7 +41,7 @@ def mock_roo_installed(monkeypatch, temp_dir):
 
     roo_dir.mkdir(parents=True)
 
-    monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+    monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
     return roo_dir
 
 
@@ -64,7 +64,7 @@ class TestRooTool:
         """Test is_installed returns False when Roo Code is not present."""
         home_dir = temp_dir / "empty_home"
         home_dir.mkdir()
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
         roo_tool = RooTool()
         assert roo_tool.is_installed() is False
 
@@ -74,7 +74,7 @@ class TestRooTool:
         def raise_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", raise_error)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", raise_error)
         roo_tool = RooTool()
         assert roo_tool.is_installed() is False
 
@@ -88,7 +88,7 @@ class TestRooTool:
         """Test get_instructions_directory raises when not installed."""
         home_dir = temp_dir / "empty_home"
         home_dir.mkdir()
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
         roo_tool = RooTool()
         with pytest.raises(FileNotFoundError):
             roo_tool.get_instructions_directory()

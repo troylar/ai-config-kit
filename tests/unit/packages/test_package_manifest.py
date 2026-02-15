@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from aiconfigkit.core.package_manifest import PackageManifestParser, ValidationError
+from devsync.core.package_manifest import PackageManifestParser, ValidationError
 
 
 @pytest.fixture

@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestSkipStrategy:
@@ -229,7 +229,7 @@ class TestOverwriteStrategy:
         assert "User Content" not in content
 
         # Verify version updated
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "2.0.0"
 
@@ -457,7 +457,7 @@ class TestConflictResolutionCombinations:
             import shutil
 
             claude_dir = test_project / ".claude"
-            aikit_dir = test_project / ".ai-config-kit"
+            aikit_dir = test_project / ".devsync"
             if claude_dir.exists():
                 shutil.rmtree(claude_dir)
             if aikit_dir.exists():

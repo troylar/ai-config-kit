@@ -4,8 +4,8 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-from aiconfigkit.core.models import AIToolType, InstallationRecord, InstallationScope
-from aiconfigkit.storage.tracker import InstallationTracker
+from devsync.core.models import AIToolType, InstallationRecord, InstallationScope
+from devsync.storage.tracker import InstallationTracker
 
 
 class TestRelativePathStorage:
@@ -16,7 +16,7 @@ class TestRelativePathStorage:
         project_root = temp_dir / "project"
         project_root.mkdir()
 
-        tracker_file = project_root / ".instructionkit" / "installations.json"
+        tracker_file = project_root / ".devsync" / "installations.json"
         tracker = InstallationTracker()
 
         # Create record with absolute path
@@ -50,7 +50,7 @@ class TestRelativePathStorage:
         project_root = temp_dir / "project"
         project_root.mkdir()
 
-        tracker_file = project_root / ".instructionkit" / "installations.json"
+        tracker_file = project_root / ".devsync" / "installations.json"
         tracker = InstallationTracker()
 
         absolute_path = project_root / ".claude" / "rules" / "test.md"
@@ -173,7 +173,7 @@ class TestBackwardCompatibility:
         project_root = temp_dir / "project"
         project_root.mkdir()
 
-        tracker_file = project_root / ".instructionkit" / "installations.json"
+        tracker_file = project_root / ".devsync" / "installations.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Manually create old-format JSON with absolute path
@@ -209,7 +209,7 @@ class TestBackwardCompatibility:
         project_root = temp_dir / "project"
         project_root.mkdir()
 
-        tracker_file = project_root / ".instructionkit" / "installations.json"
+        tracker_file = project_root / ".devsync" / "installations.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Create old format
@@ -260,7 +260,7 @@ class TestBackwardCompatibility:
         project_root = temp_dir / "project"
         project_root.mkdir()
 
-        tracker_file = project_root / ".instructionkit" / "installations.json"
+        tracker_file = project_root / ".devsync" / "installations.json"
         tracker_file.parent.mkdir(parents=True)
 
         # Create mixed format

@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from aiconfigkit.core.conflict_resolution import (
+from devsync.core.conflict_resolution import (
     ConflictResolver,
     apply_resolution,
     batch_resolve_conflicts,
@@ -15,7 +15,7 @@ from aiconfigkit.core.conflict_resolution import (
     prompt_conflict_resolution,
     prompt_conflict_resolution_template,
 )
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     ConflictInfo,
     ConflictResolution,
@@ -370,7 +370,7 @@ class TestDetectConflict:
 
     def test_no_conflict_unchanged_file(self, tmp_path: Path) -> None:
         """Test when file unchanged and template unchanged."""
-        from aiconfigkit.core.checksum import sha256_string
+        from devsync.core.checksum import sha256_string
 
         content = "original content"
         installed_file = tmp_path / "test.md"
@@ -396,7 +396,7 @@ class TestDetectConflict:
 
     def test_no_conflict_only_remote_changed(self, tmp_path: Path) -> None:
         """Test when only remote template changed."""
-        from aiconfigkit.core.checksum import sha256_string
+        from devsync.core.checksum import sha256_string
 
         original_content = "original content"
         new_content = "new remote content"
@@ -424,7 +424,7 @@ class TestDetectConflict:
 
     def test_local_modified(self, tmp_path: Path) -> None:
         """Test when only local file was modified."""
-        from aiconfigkit.core.checksum import sha256_string
+        from devsync.core.checksum import sha256_string
 
         original_content = "original content"
         local_modified_content = "local changes"
@@ -452,7 +452,7 @@ class TestDetectConflict:
 
     def test_both_modified(self, tmp_path: Path) -> None:
         """Test when both local and remote were modified."""
-        from aiconfigkit.core.checksum import sha256_string
+        from devsync.core.checksum import sha256_string
 
         original_content = "original content"
         local_modified_content = "local changes"
@@ -544,7 +544,7 @@ class TestApplyResolution:
         assert result_path == template_path
         assert template_path.read_text() == "new content"
 
-    @patch("aiconfigkit.utils.backup.create_backup")
+    @patch("devsync.utils.backup.create_backup")
     def test_apply_overwrite_with_backup(self, mock_backup: MagicMock, tmp_path: Path) -> None:
         """Test applying OVERWRITE creates backup."""
         template_path = tmp_path / "test.md"

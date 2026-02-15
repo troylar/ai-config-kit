@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope, InstallationStatus
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope, InstallationStatus
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestBasicInstallation:
@@ -38,7 +38,7 @@ class TestBasicInstallation:
         assert (test_project / ".claude/rules/style-guide.md").exists()
 
         # Verify tracking
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("simple-pkg", InstallationScope.PROJECT)
         assert pkg_record is not None
         assert pkg_record.version == "1.0.0"
@@ -116,8 +116,8 @@ class TestBasicInstallation:
         # Verify separate installations
         assert (project1 / ".claude/rules/guide.md").exists()
         assert (project2 / ".claude/rules/guide.md").exists()
-        assert (project1 / ".ai-config-kit/packages.json").exists()
-        assert (project2 / ".ai-config-kit/packages.json").exists()
+        assert (project1 / ".devsync/packages.json").exists()
+        assert (project2 / ".devsync/packages.json").exists()
 
 
 class TestListPackages:
@@ -125,7 +125,7 @@ class TestListPackages:
 
     def test_list_empty_project(self, test_project: Path) -> None:
         """Test listing packages when none are installed."""
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 0
@@ -140,7 +140,7 @@ class TestListPackages:
 
         install_package(pkg, test_project, AIToolType.CLAUDE)
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 1
@@ -164,7 +164,7 @@ class TestListPackages:
         install_package(pkg1, test_project, AIToolType.CLAUDE)
         install_package(pkg2, test_project, AIToolType.CLAUDE)
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 2
@@ -194,7 +194,7 @@ class TestUninstallPackages:
         assert hook_path.exists()
 
         # Uninstall
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record is not None
 
@@ -230,7 +230,7 @@ class TestUninstallPackages:
         install_package(pkg2, test_project, AIToolType.CLAUDE)
 
         # Uninstall package-1
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg1_record = tracker.get_package("package-1", InstallationScope.PROJECT)
 
         for component in pkg1_record.components:
@@ -248,7 +248,7 @@ class TestUninstallPackages:
 
     def test_uninstall_nonexistent_package(self, test_project: Path) -> None:
         """Test uninstalling a package that doesn't exist."""
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         result = tracker.remove_package("nonexistent", InstallationScope.PROJECT)
 
         assert result is False

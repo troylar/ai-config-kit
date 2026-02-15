@@ -81,7 +81,7 @@ bundles:
 @pytest.fixture
 def mock_library_dir(temp_dir: Path) -> Path:
     """Create a mock library directory."""
-    library = temp_dir / ".instructionkit" / "library"
+    library = temp_dir / ".devsync" / "library"
     library.mkdir(parents=True)
     return library
 

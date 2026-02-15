@@ -6,14 +6,14 @@ from unittest.mock import MagicMock, patch
 import pytest
 from click.exceptions import Exit
 
-from aiconfigkit.cli.package import (
+from devsync.cli.package import (
     _display_installation_summary,
     install_package_command,
     list_packages_command,
     uninstall_package_command,
 )
-from aiconfigkit.cli.package_install import InstallationResult
-from aiconfigkit.core.models import (
+from devsync.cli.package_install import InstallationResult
+from devsync.core.models import (
     ComponentType,
     InstallationStatus,
 )
@@ -45,7 +45,7 @@ class TestInstallPackageCommand:
 
         assert exc_info.value.exit_code == 1
 
-    @patch("aiconfigkit.cli.package.find_project_root")
+    @patch("devsync.cli.package.find_project_root")
     def test_install_no_project_root(self, mock_find_root: MagicMock) -> None:
         """Test installing when project root cannot be found."""
         mock_find_root.return_value = None
@@ -55,7 +55,7 @@ class TestInstallPackageCommand:
 
         assert exc_info.value.exit_code == 1
 
-    @patch("aiconfigkit.cli.package.find_project_root")
+    @patch("devsync.cli.package.find_project_root")
     def test_install_package_not_found(self, mock_find_root: MagicMock) -> None:
         """Test installing when package directory doesn't exist."""
         mock_find_root.return_value = Path("/project")
@@ -181,7 +181,7 @@ class TestListPackagesCommand:
 
         assert exc_info.value.exit_code == 1
 
-    @patch("aiconfigkit.cli.package.find_project_root")
+    @patch("devsync.cli.package.find_project_root")
     def test_list_no_project_root(self, mock_find_root: MagicMock) -> None:
         """Test listing when project root cannot be found."""
         mock_find_root.return_value = None
@@ -205,7 +205,7 @@ class TestUninstallPackageCommand:
 
         assert exc_info.value.exit_code == 1
 
-    @patch("aiconfigkit.cli.package.find_project_root")
+    @patch("devsync.cli.package.find_project_root")
     def test_uninstall_no_project_root(self, mock_find_root: MagicMock) -> None:
         """Test uninstalling when project root cannot be found."""
         mock_find_root.return_value = None
@@ -215,8 +215,8 @@ class TestUninstallPackageCommand:
 
         assert exc_info.value.exit_code == 1
 
-    @patch("aiconfigkit.cli.package.PackageTracker")
-    @patch("aiconfigkit.cli.package.find_project_root")
+    @patch("devsync.cli.package.PackageTracker")
+    @patch("devsync.cli.package.find_project_root")
     def test_uninstall_package_not_found(self, mock_find_root: MagicMock, mock_tracker_class: MagicMock) -> None:
         """Test uninstalling non-existent package."""
         project_root = Path("/project")

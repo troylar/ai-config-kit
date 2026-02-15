@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.models import EnvironmentConfig, InstallationScope
-from aiconfigkit.utils.dotenv import (
+from devsync.core.models import EnvironmentConfig, InstallationScope
+from devsync.utils.dotenv import (
     ensure_env_gitignored,
     load_env_config,
     merge_env_configs,

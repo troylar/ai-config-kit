@@ -4,13 +4,13 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.core.models import (
+from devsync.core.models import (
     AIToolType,
     ComponentType,
     InstallationScope,
     InstallationStatus,
 )
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.storage.package_tracker import PackageTracker
 
 
 @pytest.fixture
@@ -114,7 +114,7 @@ class TestPackageInstall:
         - Installed files have correct content
         - Installation status is COMPLETE
         """
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Install package for Claude Code IDE (supports all components)
         result = install_package(
@@ -154,7 +154,7 @@ class TestPackageInstall:
         assert resource_file.exists()
 
         # Verify tracking
-        tracker = PackageTracker(project_root / ".ai-config-kit" / "packages.json")
+        tracker = PackageTracker(project_root / ".devsync" / "packages.json")
         record = tracker.get_package("test-package", InstallationScope.PROJECT)
 
         assert record is not None
@@ -172,7 +172,7 @@ class TestPackageInstall:
         - Unsupported components are counted as skipped
         - Installation status reflects partial installation if some skipped
         """
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Install for Cursor (supports instructions, MCP servers, and resources)
         result = install_package(
@@ -202,7 +202,7 @@ class TestPackageInstall:
         assert not (project_root / ".cursor" / "commands").exists()
 
         # Verify tracking shows partial installation
-        tracker = PackageTracker(project_root / ".ai-config-kit" / "packages.json")
+        tracker = PackageTracker(project_root / ".devsync" / "packages.json")
         record = tracker.get_package("test-package", InstallationScope.PROJECT)
 
         assert record is not None
@@ -219,8 +219,8 @@ class TestPackageInstall:
         - Installation record is updated (not duplicated)
         - Updated timestamp reflects reinstall
         """
-        from aiconfigkit.cli.package_install import install_package
-        from aiconfigkit.core.models import ConflictResolution
+        from devsync.cli.package_install import install_package
+        from devsync.core.models import ConflictResolution
 
         # First installation
         result1 = install_package(
@@ -232,7 +232,7 @@ class TestPackageInstall:
         assert result1.success is True
 
         # Get original timestamp
-        tracker = PackageTracker(project_root / ".ai-config-kit" / "packages.json")
+        tracker = PackageTracker(project_root / ".devsync" / "packages.json")
         record1 = tracker.get_package("test-package", InstallationScope.PROJECT)
         original_time = record1.updated_at
 
@@ -256,8 +256,8 @@ class TestPackageInstall:
 
     def test_install_package_with_conflict_skip(self, sample_package_dir: Path, project_root: Path) -> None:
         """Test that SKIP conflict resolution preserves existing files."""
-        from aiconfigkit.cli.package_install import install_package
-        from aiconfigkit.core.models import ConflictResolution
+        from devsync.cli.package_install import install_package
+        from devsync.core.models import ConflictResolution
 
         # Create pre-existing file with different content
         rules_dir = project_root / ".claude" / "rules"
@@ -283,8 +283,8 @@ class TestPackageInstall:
 
     def test_install_package_with_conflict_rename(self, sample_package_dir: Path, project_root: Path) -> None:
         """Test that RENAME conflict resolution creates numbered copies."""
-        from aiconfigkit.cli.package_install import install_package
-        from aiconfigkit.core.models import ConflictResolution
+        from devsync.cli.package_install import install_package
+        from devsync.core.models import ConflictResolution
 
         # Create pre-existing file
         rules_dir = project_root / ".claude" / "rules"
@@ -312,7 +312,7 @@ class TestPackageInstall:
 
     def test_install_package_missing_manifest_fails(self, tmp_path: Path, project_root: Path) -> None:
         """Test that installing package without manifest fails gracefully."""
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Create package without manifest
         invalid_package = tmp_path / "invalid-package"
@@ -332,7 +332,7 @@ class TestPackageInstall:
 
     def test_install_package_invalid_manifest_fails(self, tmp_path: Path, project_root: Path) -> None:
         """Test that invalid manifest causes installation to fail."""
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Create package with invalid manifest (missing required fields)
         invalid_package = tmp_path / "invalid-package"
@@ -353,7 +353,7 @@ class TestPackageInstall:
 
     def test_list_installed_packages(self, sample_package_dir: Path, project_root: Path) -> None:
         """Test listing installed packages."""
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Install a package first
         result = install_package(
@@ -365,7 +365,7 @@ class TestPackageInstall:
         assert result.success is True
 
         # Now list packages
-        tracker = PackageTracker(project_root / ".ai-config-kit" / "packages.json")
+        tracker = PackageTracker(project_root / ".devsync" / "packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 1
@@ -376,7 +376,7 @@ class TestPackageInstall:
 
     def test_uninstall_package(self, sample_package_dir: Path, project_root: Path) -> None:
         """Test uninstalling a package."""
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Install a package first
         result = install_package(
@@ -392,7 +392,7 @@ class TestPackageInstall:
         assert instruction_file.exists()
 
         # Uninstall
-        tracker = PackageTracker(project_root / ".ai-config-kit" / "packages.json")
+        tracker = PackageTracker(project_root / ".devsync" / "packages.json")
         package = tracker.get_package("test-package", InstallationScope.PROJECT)
         assert package is not None
 
@@ -412,7 +412,7 @@ class TestPackageInstall:
 
     def test_installation_result_total_components(self) -> None:
         """Test InstallationResult.total_components property."""
-        from aiconfigkit.cli.package_install import InstallationResult
+        from devsync.cli.package_install import InstallationResult
 
         result = InstallationResult(
             success=True,
@@ -428,8 +428,8 @@ class TestPackageInstall:
 
     def test_install_mcp_component_with_conflict_skip(self, sample_package_dir: Path, project_root: Path) -> None:
         """Test that MCP component installation skips on conflict."""
-        from aiconfigkit.cli.package_install import install_package
-        from aiconfigkit.core.models import ConflictResolution
+        from devsync.cli.package_install import install_package
+        from devsync.core.models import ConflictResolution
 
         # Modify package to only have MCP component
         manifest_content = """name: mcp-only-package
@@ -474,10 +474,10 @@ components:
         """Test exception handling in instruction component installation."""
         from unittest.mock import patch
 
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Mock translator to raise exception
-        with patch("aiconfigkit.cli.package_install.get_translator") as mock_translator:
+        with patch("devsync.cli.package_install.get_translator") as mock_translator:
             mock_translator.return_value.translate_instruction.side_effect = RuntimeError("Translation error")
 
             result = install_package(
@@ -495,7 +495,7 @@ components:
         """Test exception handling in MCP component installation."""
         from unittest.mock import patch
 
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Create package with MCP only
         mcp_package = tmp_path / "mcp-package"
@@ -519,7 +519,7 @@ components:
         (mcp_package / "mcp" / "server.json").write_text('{"server": "config"}')
 
         # Mock translator to raise exception
-        with patch("aiconfigkit.cli.package_install.get_translator") as mock_translator:
+        with patch("devsync.cli.package_install.get_translator") as mock_translator:
             mock_translator.return_value.translate_mcp_server.side_effect = RuntimeError("MCP error")
 
             result = install_package(package_path=mcp_package, project_root=project_root, target_ide=AIToolType.CLAUDE)
@@ -532,7 +532,7 @@ components:
         """Test exception handling in hook component installation."""
         from unittest.mock import patch
 
-        from aiconfigkit.cli.package_install import install_package
+        from devsync.cli.package_install import install_package
 
         # Create package with hook only
         hook_package = tmp_path / "hook-package"
@@ -557,7 +557,7 @@ components:
         (hook_package / "hooks" / "test.sh").write_text("#!/bin/bash\necho test")
 
         # Mock translator to raise exception
-        with patch("aiconfigkit.cli.package_install.get_translator") as mock_translator:
+        with patch("devsync.cli.package_install.get_translator") as mock_translator:
             mock_translator.return_value.translate_hook.side_effect = RuntimeError("Hook error")
 
             result = install_package(package_path=hook_package, project_root=project_root, target_ide=AIToolType.CLAUDE)

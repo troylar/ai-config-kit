@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestIDECompatibility:
@@ -519,7 +519,7 @@ class TestRealWorldWorkflows:
         install_package(python_pkg, project, AIToolType.CLAUDE)
 
         # Verify complete setup
-        tracker = PackageTracker(project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(project / ".devsync/packages.json")
         packages = tracker.get_installed_packages()
 
         assert len(packages) == 3
@@ -576,7 +576,7 @@ class TestRealWorldWorkflows:
 
         # Verify all on same version
         for dev in [dev1, dev2, dev3]:
-            tracker = PackageTracker(dev / ".ai-config-kit/packages.json")
+            tracker = PackageTracker(dev / ".devsync/packages.json")
             record = tracker.get_package("team-standards", InstallationScope.PROJECT)
             assert record.version == "1.1.0"
 
@@ -614,12 +614,12 @@ class TestRealWorldWorkflows:
         install_package(shared_pkg, backend, AIToolType.CLAUDE)
 
         # Verify frontend
-        fe_tracker = PackageTracker(frontend / ".ai-config-kit/packages.json")
+        fe_tracker = PackageTracker(frontend / ".devsync/packages.json")
         fe_packages = {p.package_name for p in fe_tracker.get_installed_packages()}
         assert fe_packages == {"frontend-pkg", "shared-pkg"}
 
         # Verify backend
-        be_tracker = PackageTracker(backend / ".ai-config-kit/packages.json")
+        be_tracker = PackageTracker(backend / ".devsync/packages.json")
         be_packages = {p.package_name for p in be_tracker.get_installed_packages()}
         assert be_packages == {"backend-pkg", "shared-pkg"}
 
@@ -659,7 +659,7 @@ class TestRealWorldWorkflows:
         assert (rules_dir / "company-testing.md").exists()
 
         # Package is tracked
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         assert tracker.is_package_installed("official-standards", InstallationScope.PROJECT)
 
     def test_cleanup_old_versions_workflow(self, package_builder, test_project: Path) -> None:

@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from aiconfigkit.utils.streaming import (
+from devsync.utils.streaming import (
     StreamingError,
     copy_directory_tree,
     format_file_size,
@@ -473,7 +473,7 @@ class TestCopyDirectoryTree:
         (source / "file.txt").write_text("content")
 
         # Mock stream_copy_file to raise an error
-        with patch("aiconfigkit.utils.streaming.stream_copy_file", side_effect=IOError("Copy error")):
+        with patch("devsync.utils.streaming.stream_copy_file", side_effect=IOError("Copy error")):
             with pytest.raises(StreamingError, match="Failed to copy directory tree"):
                 copy_directory_tree(source, dest)
 

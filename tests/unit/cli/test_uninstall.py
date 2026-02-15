@@ -4,15 +4,15 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from aiconfigkit.cli.uninstall import uninstall_instruction
-from aiconfigkit.core.models import AIToolType, InstallationRecord, InstallationScope
+from devsync.cli.uninstall import uninstall_instruction
+from devsync.core.models import AIToolType, InstallationRecord, InstallationScope
 
 
 class TestUninstallInstruction:
     """Test uninstall_instruction function."""
 
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
     def test_uninstall_not_installed(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test uninstalling instruction that is not installed."""
         mock_find_root.return_value = Path("/project")
@@ -25,8 +25,8 @@ class TestUninstallInstruction:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
     def test_uninstall_invalid_tool(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test uninstalling with invalid tool name."""
         mock_find_root.return_value = Path("/project")
@@ -47,10 +47,10 @@ class TestUninstallInstruction:
 
         assert result == 1  # Error code for invalid tool
 
-    @patch("aiconfigkit.cli.uninstall.get_detector")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
-    @patch("aiconfigkit.cli.uninstall.Path")
+    @patch("devsync.cli.uninstall.get_detector")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.Path")
     def test_uninstall_with_force(
         self,
         mock_path_class: MagicMock,
@@ -94,9 +94,9 @@ class TestUninstallInstruction:
         mock_file.unlink.assert_called_once()
         mock_tracker.remove_installation.assert_called_once()
 
-    @patch("aiconfigkit.cli.uninstall.typer.confirm")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.typer.confirm")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
     def test_uninstall_cancelled_by_user(
         self,
         mock_tracker_class: MagicMock,
@@ -127,11 +127,11 @@ class TestUninstallInstruction:
         assert result == 0  # Success (cancelled, not an error)
         mock_tracker.remove_installation.assert_not_called()
 
-    @patch("aiconfigkit.cli.uninstall.typer.confirm")
-    @patch("aiconfigkit.cli.uninstall.get_detector")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
-    @patch("aiconfigkit.cli.uninstall.Path")
+    @patch("devsync.cli.uninstall.typer.confirm")
+    @patch("devsync.cli.uninstall.get_detector")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.Path")
     def test_uninstall_file_not_found(
         self,
         mock_path_class: MagicMock,
@@ -178,10 +178,10 @@ class TestUninstallInstruction:
         mock_file.unlink.assert_not_called()  # File doesn't exist
         mock_tracker.remove_installation.assert_called_once()
 
-    @patch("aiconfigkit.cli.uninstall.typer.confirm")
-    @patch("aiconfigkit.cli.uninstall.get_detector")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.typer.confirm")
+    @patch("devsync.cli.uninstall.get_detector")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
     def test_uninstall_unknown_tool(
         self,
         mock_tracker_class: MagicMock,
@@ -219,11 +219,11 @@ class TestUninstallInstruction:
         assert result == 1  # Error because unknown tool
         mock_tracker.remove_installation.assert_not_called()
 
-    @patch("aiconfigkit.cli.uninstall.typer.confirm")
-    @patch("aiconfigkit.cli.uninstall.get_detector")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
-    @patch("aiconfigkit.cli.uninstall.Path")
+    @patch("devsync.cli.uninstall.typer.confirm")
+    @patch("devsync.cli.uninstall.get_detector")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.Path")
     def test_uninstall_exception_during_removal(
         self,
         mock_path_class: MagicMock,
@@ -270,11 +270,11 @@ class TestUninstallInstruction:
         assert result == 1  # Error due to exception
         mock_tracker.remove_installation.assert_not_called()  # Should not remove from tracker if file removal failed
 
-    @patch("aiconfigkit.cli.uninstall.typer.confirm")
-    @patch("aiconfigkit.cli.uninstall.get_detector")
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
-    @patch("aiconfigkit.cli.uninstall.Path")
+    @patch("devsync.cli.uninstall.typer.confirm")
+    @patch("devsync.cli.uninstall.get_detector")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.Path")
     def test_uninstall_multiple_records(
         self,
         mock_path_class: MagicMock,
@@ -334,8 +334,8 @@ class TestUninstallInstruction:
         assert mock_file.unlink.call_count == 2  # Two files removed
         assert mock_tracker.remove_installation.call_count == 2  # Two records removed
 
-    @patch("aiconfigkit.cli.uninstall.find_project_root")
-    @patch("aiconfigkit.cli.uninstall.InstallationTracker")
+    @patch("devsync.cli.uninstall.find_project_root")
+    @patch("devsync.cli.uninstall.InstallationTracker")
     def test_uninstall_with_tool_filter(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test uninstalling from specific tool."""
         mock_find_root.return_value = Path("/project")

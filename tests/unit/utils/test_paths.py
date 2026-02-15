@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from aiconfigkit.utils.paths import (
+from devsync.utils.paths import (
     ensure_directory_exists,
     get_claude_config_dir,
     get_claude_desktop_config_path,
@@ -212,7 +212,7 @@ class TestGetInstructionkitDataDir:
 
         data_dir = get_devsync_data_dir()
         assert data_dir.exists()
-        assert ".instructionkit" in str(data_dir)
+        assert ".devsync" in str(data_dir)
 
 
 class TestGetLibraryDir:

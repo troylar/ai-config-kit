@@ -12,9 +12,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Core Concepts
 
-1. **Library System**: Instructions are downloaded from Git repos or local folders to `~/.ai-config-kit/library/` organized by namespace
+1. **Library System**: Instructions are downloaded from Git repos or local folders to `~/.devsync/library/` organized by namespace
 2. **Project-Level Installation**: All installations are project-specific, stored in tool-specific directories (`.cursor/rules/`, `.claude/rules/`, `.kiro/steering/`, etc.)
-3. **Installation Tracking**: Tracked in `<project-root>/.ai-config-kit/installations.json` for each project (instructions) and `<project-root>/.ai-config-kit/packages.json` for packages
+3. **Installation Tracking**: Tracked in `<project-root>/.devsync/installations.json` for each project (instructions) and `<project-root>/.devsync/packages.json` for packages
 4. **Interactive TUI**: Terminal UI for browsing and selecting instructions from the library
 5. **Configuration Packages**: Multi-component packages containing instructions, MCP servers, hooks, commands, and resources that can be installed as a unit
 
@@ -51,7 +51,7 @@ ai-config-kit/
 │   ├── checksum.py   # File integrity checking
 │   └── conflict_resolution.py # Handle file conflicts
 ├── storage/           # Data persistence
-│   ├── library.py    # LibraryManager for ~/.ai-config-kit/library/
+│   ├── library.py    # LibraryManager for ~/.devsync/library/
 │   ├── tracker.py    # InstallationTracker for installations.json
 │   └── package_tracker.py # PackageTracker for packages.json
 ├── tui/               # Terminal UI
@@ -277,10 +277,10 @@ Allows installing multiple instructions in one command..."
 The `utils/project.py` module detects project root by looking for markers like `.git/`, `pyproject.toml`, `package.json`, etc. This enables running `aiconfig` from any subdirectory within a project.
 
 ### Installation Workflow
-1. **Download**: Clone/copy repo to `~/.ai-config-kit/library/<namespace>/`
+1. **Download**: Clone/copy repo to `~/.devsync/library/<namespace>/`
 2. **Browse**: TUI reads library, displays instructions
 3. **Install**: Copy instruction file to project's tool-specific directory
-4. **Track**: Record in `<project-root>/.ai-config-kit/installations.json`
+4. **Track**: Record in `<project-root>/.devsync/installations.json`
 
 ### Conflict Resolution
 When installing an instruction that already exists:
@@ -389,7 +389,7 @@ aiconfig package uninstall package-name --yes
 3. **Filter Components**: Only install components supported by target IDE
 4. **Translate Components**: Convert to IDE-specific formats
 5. **Install Files**: Copy files with conflict resolution
-6. **Track Installation**: Record in `.ai-config-kit/packages.json`
+6. **Track Installation**: Record in `.devsync/packages.json`
 
 #### IDE Capability Filtering
 Different IDEs support different component types:
@@ -750,9 +750,9 @@ The GitHub Actions workflow (`.github/workflows/publish.yml`) handles building a
 - Markdown (instruction content) | Python 3.10+ (for DevSync CLI - no changes needed) + Git (for repository hosting), existing DevSync commands (no new dependencies) (001-example-instruction-repo)
 - GitHub repository at `troylar/config-sync-examples` | Git-based versioning (001-example-instruction-repo)
 - Python 3.10+ (targeting 3.10-3.13) (002-template-sync-system)
-- Filesystem-based (MCP definitions in `~/.ai-config-kit/library/<namespace>/`, credentials in `.ai-config-kit/.env`, AI tool configs at standard locations) (003-mcp-server-management)
+- Filesystem-based (MCP definitions in `~/.devsync/library/<namespace>/`, credentials in `.devsync/.env`, AI tool configs at standard locations) (003-mcp-server-management)
 - Python 3.10+ (minimum 3.10, support 3.10-3.13) + PyYAML (manifest parsing), Rich/Textual (TUI), Typer (CLI), existing ai-config-kit modules (004-config-package)
-- JSON files (registry, package tracker) + YAML (manifests) + filesystem (.instructionkit/ structure) (004-config-package)
+- JSON files (registry, package tracker) + YAML (manifests) + filesystem (.devsync/ structure) (004-config-package)
 
 ## Recent Changes
 - 001-example-instruction-repo: Added Markdown (instruction content) | Python 3.10+ (for DevSync CLI - no changes needed) + Git (for repository hosting), existing DevSync commands (no new dependencies)

@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from aiconfigkit.utils.project import (
+from devsync.utils.project import (
     find_project_root,
     get_project_installation_tracker_path,
     get_project_instructions_dir,
@@ -109,7 +109,7 @@ class TestProjectInstructionsDir:
 
         instructions_dir = get_project_instructions_dir(project)
 
-        assert instructions_dir == project / ".instructionkit"
+        assert instructions_dir == project / ".devsync"
         assert instructions_dir.exists()
 
     def test_get_project_instructions_dir_no_create(self, temp_dir: Path):
@@ -119,7 +119,7 @@ class TestProjectInstructionsDir:
 
         instructions_dir = get_project_instructions_dir(project, create=False)
 
-        assert instructions_dir == project / ".instructionkit"
+        assert instructions_dir == project / ".devsync"
         assert not instructions_dir.exists()
 
     def test_get_project_installation_tracker_path(self, temp_dir: Path):
@@ -129,5 +129,5 @@ class TestProjectInstructionsDir:
 
         tracker_path = get_project_installation_tracker_path(project)
 
-        assert tracker_path == project / ".instructionkit" / "installations.json"
+        assert tracker_path == project / ".devsync" / "installations.json"
         assert tracker_path.parent.exists()

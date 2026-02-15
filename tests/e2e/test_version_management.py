@@ -3,9 +3,9 @@
 import subprocess
 from pathlib import Path
 
-from aiconfigkit.cli.package_install import install_package
-from aiconfigkit.core.models import AIToolType, ConflictResolution, InstallationScope
-from aiconfigkit.storage.package_tracker import PackageTracker
+from devsync.cli.package_install import install_package
+from devsync.core.models import AIToolType, ConflictResolution, InstallationScope
+from devsync.storage.package_tracker import PackageTracker
 
 
 class TestVersionUpdates:
@@ -44,7 +44,7 @@ class TestVersionUpdates:
         assert result2.success is True
 
         # Verify version updated
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.1"
 
@@ -91,7 +91,7 @@ class TestVersionUpdates:
         assert (test_project / ".claude/rules/advanced.md").exists()
 
         # Verify version
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.1.0"
         assert len(pkg_record.components) == 2
@@ -141,7 +141,7 @@ class TestVersionUpdates:
         # This is expected behavior - major updates require manual cleanup
 
         # Verify version
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "2.0.0"
 
@@ -176,7 +176,7 @@ class TestVersionUpdates:
         assert result.success is True
 
         # Verify downgrade
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.0"
 
@@ -237,7 +237,7 @@ class TestGitVersionTags:
         assert result.success is True
 
         # Verify installed v1.0.0
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("git-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.0"
 
@@ -280,7 +280,7 @@ class TestGitVersionTags:
         assert result2.success is True
 
         # Verify update
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("versioned-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.1.0"
 
@@ -316,7 +316,7 @@ class TestVersionConflicts:
         assert result.success is True
 
         # Verify downgrade occurred
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.0"
 
@@ -345,8 +345,8 @@ class TestVersionConflicts:
         install_package(pkg_v2, project2, AIToolType.CLAUDE)
 
         # Verify each has correct version
-        tracker1 = PackageTracker(project1 / ".ai-config-kit/packages.json")
-        tracker2 = PackageTracker(project2 / ".ai-config-kit/packages.json")
+        tracker1 = PackageTracker(project1 / ".devsync/packages.json")
+        tracker2 = PackageTracker(project2 / ".devsync/packages.json")
 
         pkg1_record = tracker1.get_package("test-pkg", InstallationScope.PROJECT)
         pkg2_record = tracker2.get_package("test-pkg", InstallationScope.PROJECT)
@@ -376,7 +376,7 @@ class TestPreReleaseVersions:
         result = install_package(pkg, test_project, AIToolType.CLAUDE)
         assert result.success is True
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "2.0.0-alpha.1"
 
@@ -405,7 +405,7 @@ class TestPreReleaseVersions:
         )
         assert result.success is True
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "1.0.0"
 
@@ -420,6 +420,6 @@ class TestPreReleaseVersions:
         result = install_package(pkg, test_project, AIToolType.CLAUDE)
         assert result.success is True
 
-        tracker = PackageTracker(test_project / ".ai-config-kit/packages.json")
+        tracker = PackageTracker(test_project / ".devsync/packages.json")
         pkg_record = tracker.get_package("test-pkg", InstallationScope.PROJECT)
         assert pkg_record.version == "3.0.0-rc.2"

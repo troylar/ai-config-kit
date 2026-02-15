@@ -2,8 +2,8 @@
 
 import pytest
 
-from aiconfigkit.ai_tools.cline import ClineTool
-from aiconfigkit.core.models import AIToolType, InstallationScope, Instruction
+from devsync.ai_tools.cline import ClineTool
+from devsync.core.models import AIToolType, InstallationScope, Instruction
 
 
 @pytest.fixture
@@ -41,7 +41,7 @@ def mock_cline_installed(monkeypatch, temp_dir):
 
     cline_dir.mkdir(parents=True)
 
-    monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+    monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
     return cline_dir
 
 
@@ -64,7 +64,7 @@ class TestClineTool:
         """Test is_installed returns False when Cline is not present."""
         home_dir = temp_dir / "empty_home"
         home_dir.mkdir()
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", lambda: home_dir)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", lambda: home_dir)
         cline_tool = ClineTool()
         assert cline_tool.is_installed() is False
 
@@ -74,7 +74,7 @@ class TestClineTool:
         def raise_error():
             raise RuntimeError("Test error")
 
-        monkeypatch.setattr("aiconfigkit.utils.paths.get_home_directory", raise_error)
+        monkeypatch.setattr("devsync.utils.paths.get_home_directory", raise_error)
         cline_tool = ClineTool()
         assert cline_tool.is_installed() is False
 

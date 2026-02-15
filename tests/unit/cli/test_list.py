@@ -4,8 +4,8 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from aiconfigkit.cli.list import list_available, list_installed, list_library
-from aiconfigkit.core.models import (
+from devsync.cli.list import list_available, list_installed, list_library
+from devsync.core.models import (
     AIToolType,
     InstallationRecord,
     InstallationScope,
@@ -19,7 +19,7 @@ from aiconfigkit.core.models import (
 class TestListAvailable:
     """Test list_available function."""
 
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_invalid_url(self, mock_valid: MagicMock) -> None:
         """Test listing available with invalid Git URL."""
         mock_valid.return_value = False
@@ -28,8 +28,8 @@ class TestListAvailable:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.list.GitOperations.is_git_installed")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.is_git_installed")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_git_not_installed(self, mock_valid: MagicMock, mock_git_installed: MagicMock) -> None:
         """Test listing when Git is not installed."""
         mock_valid.return_value = True
@@ -39,9 +39,9 @@ class TestListAvailable:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_local_path_error(
         self, mock_valid: MagicMock, mock_git_ops_class: MagicMock, mock_cleanup: MagicMock
     ) -> None:
@@ -58,9 +58,9 @@ class TestListAvailable:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_clone_failure(
         self, mock_valid: MagicMock, mock_git_ops_class: MagicMock, mock_cleanup: MagicMock
     ) -> None:
@@ -77,10 +77,10 @@ class TestListAvailable:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_success(
         self,
         mock_valid: MagicMock,
@@ -117,10 +117,10 @@ class TestListAvailable:
         assert result == 0  # Success
         mock_cleanup.assert_called_once()
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_with_tag_filter(
         self,
         mock_valid: MagicMock,
@@ -158,10 +158,10 @@ class TestListAvailable:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_bundles_only(
         self,
         mock_valid: MagicMock,
@@ -194,10 +194,10 @@ class TestListAvailable:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_empty_result(
         self,
         mock_valid: MagicMock,
@@ -228,10 +228,10 @@ class TestListAvailable:
 
         assert result == 0  # Success (empty is not an error)
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_instructions_only_with_only_bundles(
         self,
         mock_valid: MagicMock,
@@ -264,10 +264,10 @@ class TestListAvailable:
 
         assert result == 0  # Success (bundles filtered out, empty result)
 
-    @patch("aiconfigkit.cli.list.GitOperations.cleanup_repository")
-    @patch("aiconfigkit.cli.list.RepositoryParser")
-    @patch("aiconfigkit.cli.list.GitOperations")
-    @patch("aiconfigkit.cli.list.is_valid_git_url")
+    @patch("devsync.cli.list.GitOperations.cleanup_repository")
+    @patch("devsync.cli.list.RepositoryParser")
+    @patch("devsync.cli.list.GitOperations")
+    @patch("devsync.cli.list.is_valid_git_url")
     def test_list_available_with_tag_no_results(
         self,
         mock_valid: MagicMock,
@@ -309,8 +309,8 @@ class TestListAvailable:
 class TestListInstalled:
     """Test list_installed function."""
 
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_no_results(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test listing installed with no results."""
         mock_find_root.return_value = Path("/project")
@@ -323,8 +323,8 @@ class TestListInstalled:
 
         assert result == 0  # Success (empty is not an error)
 
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_invalid_tool(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test listing with invalid tool name."""
         mock_find_root.return_value = Path("/project")
@@ -336,8 +336,8 @@ class TestListInstalled:
 
         assert result == 1  # Error code
 
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_with_tool_filter(self, mock_tracker_class: MagicMock, mock_find_root: MagicMock) -> None:
         """Test listing with tool filter."""
         mock_find_root.return_value = Path("/project")
@@ -363,9 +363,9 @@ class TestListInstalled:
         assert result == 0  # Success
         mock_tracker.get_installed_instructions.assert_called_once()
 
-    @patch("aiconfigkit.cli.list.normalize_repo_url")
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.normalize_repo_url")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_with_repo_filter(
         self, mock_tracker_class: MagicMock, mock_find_root: MagicMock, mock_normalize: MagicMock
     ) -> None:
@@ -393,9 +393,9 @@ class TestListInstalled:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.normalize_repo_url")
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.normalize_repo_url")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_no_results_for_tool_and_repo(
         self, mock_tracker_class: MagicMock, mock_find_root: MagicMock, mock_normalize: MagicMock
     ) -> None:
@@ -412,8 +412,8 @@ class TestListInstalled:
 
         assert result == 0  # Success (no matches)
 
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_no_results_for_tool_only(
         self, mock_tracker_class: MagicMock, mock_find_root: MagicMock
     ) -> None:
@@ -430,9 +430,9 @@ class TestListInstalled:
 
         assert result == 0  # Success (no matches for claude)
 
-    @patch("aiconfigkit.cli.list.normalize_repo_url")
-    @patch("aiconfigkit.cli.list.find_project_root")
-    @patch("aiconfigkit.cli.list.InstallationTracker")
+    @patch("devsync.cli.list.normalize_repo_url")
+    @patch("devsync.cli.list.find_project_root")
+    @patch("devsync.cli.list.InstallationTracker")
     def test_list_installed_no_results_for_repo_only(
         self, mock_tracker_class: MagicMock, mock_find_root: MagicMock, mock_normalize: MagicMock
     ) -> None:
@@ -470,7 +470,7 @@ class TestListInstalled:
 class TestListLibrary:
     """Test list_library function."""
 
-    @patch("aiconfigkit.cli.list.LibraryManager")
+    @patch("devsync.cli.list.LibraryManager")
     def test_list_library_empty(self, mock_library_class: MagicMock) -> None:
         """Test listing empty library."""
         mock_library = MagicMock()
@@ -481,7 +481,7 @@ class TestListLibrary:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.LibraryManager")
+    @patch("devsync.cli.list.LibraryManager")
     def test_list_library_with_sources(self, mock_library_class: MagicMock) -> None:
         """Test listing library sources."""
         # Create library repositories
@@ -518,7 +518,7 @@ class TestListLibrary:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.LibraryManager")
+    @patch("devsync.cli.list.LibraryManager")
     def test_list_library_with_filter_match(self, mock_library_class: MagicMock) -> None:
         """Test listing library with matching filter."""
         repos = [
@@ -543,7 +543,7 @@ class TestListLibrary:
 
         assert result == 0  # Success
 
-    @patch("aiconfigkit.cli.list.LibraryManager")
+    @patch("devsync.cli.list.LibraryManager")
     def test_list_library_with_filter_no_match(self, mock_library_class: MagicMock) -> None:
         """Test listing library with non-matching filter."""
         repos = [
@@ -568,7 +568,7 @@ class TestListLibrary:
 
         assert result == 1  # Error - no match
 
-    @patch("aiconfigkit.cli.list.LibraryManager")
+    @patch("devsync.cli.list.LibraryManager")
     def test_list_library_with_instructions(self, mock_library_class: MagicMock) -> None:
         """Test listing library with instructions view."""
         instructions = [
