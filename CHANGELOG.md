@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-02-15
+
+### Added
+- **Gemini CLI / Code Assist Support** - Added support for Google Gemini CLI and Gemini Code Assist (#38, #46)
+  - Instructions managed via section markers in `GEMINI.md` at project root
+  - Section-based install/uninstall using HTML comment markers
+  - Detection via `gemini` binary on PATH or `~/.gemini/` directory
+  - MCP configuration via `~/.gemini/settings.json`
+  - Package system support for instructions and resources
+- **Antigravity IDE Support** - Added support for Google's Antigravity IDE (#52)
+  - Instructions stored in `.agent/rules/*.md` (multi-file pattern)
+  - Detection via `antigravity` binary on PATH or `~/.gemini/antigravity/` directory
+  - MCP configuration via `.mcp.json` at project root
+  - Package system support for instructions, MCP servers, and resources
+- **Snyk Security Scanning** - Added Snyk vulnerability scanning to CI pipeline (#53)
+  - Dependency scanning with high severity threshold
+  - `.snyk` policy file to suppress false positive findings (#54)
+
 ## [0.8.0] - 2026-02-14
 
 ### Added
