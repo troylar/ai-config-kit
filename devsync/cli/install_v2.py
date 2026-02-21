@@ -152,7 +152,10 @@ def _install_v2_fallback(
         if component_type != "instructions":
             continue
         for ref in refs:
-            src_file = package_path / ref.file
+            src_file = (package_path / ref.file).resolve()
+            if not str(src_file).startswith(str(package_path.resolve())):
+                console.print(f"  [red]Rejected (path traversal): {ref.file}[/red]")
+                continue
             if not src_file.exists():
                 console.print(f"  [yellow]Missing: {ref.file}[/yellow]")
                 continue
@@ -203,6 +206,8 @@ def _execute_plan(plan: AdaptationPlan, project_root: Path, target_tools: list[s
 
 def _get_tool_instruction_path(tool_name: str, project_root: Path, instruction_name: str) -> Optional[Path]:
     """Get the file path for an instruction in a specific tool."""
+    if ".." in instruction_name or "/" in instruction_name or "\\" in instruction_name:
+        return None
     tool_paths: dict[str, tuple[str, str]] = {
         "claude": (".claude/rules", ".md"),
         "cursor": (".cursor/rules", ".mdc"),

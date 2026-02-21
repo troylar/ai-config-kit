@@ -148,7 +148,10 @@ def _upgrade_v1_package(
         if comp_type != "instructions":
             continue
         for ref in refs:
-            src_file = package_path / ref.file
+            src_file = (package_path / ref.file).resolve()
+            if not str(src_file).startswith(str(package_path.resolve())):
+                console.print(f"  [red]Rejected (path traversal): {ref.file}[/red]")
+                continue
             if src_file.exists() and src_file.stat().st_size < 100_000:
                 try:
                     content = src_file.read_text(encoding="utf-8")

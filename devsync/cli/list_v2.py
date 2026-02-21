@@ -89,4 +89,4 @@ def _package_has_tool(pkg: object, tool_name: str) -> bool:
             comp_tool = getattr(comp, "ai_tool", None) or getattr(comp, "tool", None)
             if comp_tool and str(comp_tool).lower() == tool_name.lower():
                 return True
-    return True
+    return False
