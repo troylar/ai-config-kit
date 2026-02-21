@@ -1,6 +1,5 @@
 """Anthropic Claude provider using HTTP-only calls."""
 
-import json
 from typing import Optional
 
 import httpx

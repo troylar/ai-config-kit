@@ -1,6 +1,5 @@
 """Setup command for configuring LLM provider."""
 
-import typer
 from rich.console import Console
 from rich.prompt import Confirm, Prompt
 
@@ -42,9 +41,9 @@ def setup_command() -> int:
     env_var = _PROVIDER_ENV_VARS[provider_name]
     default_model = _PROVIDER_DEFAULTS[provider_name]
 
-    console.print(f"\nSet your API key as an environment variable:")
+    console.print("\nSet your API key as an environment variable:")
     console.print(f"  [cyan]export {env_var}=your-key-here[/cyan]")
-    console.print(f"\nAdd this to your shell profile (~/.zshrc, ~/.bashrc) for persistence.\n")
+    console.print("\nAdd this to your shell profile (~/.zshrc, ~/.bashrc) for persistence.\n")
 
     model = Prompt.ask("Model", default=default_model)
 

@@ -2,8 +2,6 @@
 
 from pathlib import Path
 
-import pytest
-
 from devsync.llm.config import LLMConfig, load_config, save_config
 
 

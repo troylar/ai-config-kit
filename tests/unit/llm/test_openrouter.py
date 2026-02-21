@@ -2,10 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from devsync.llm.openrouter import OpenRouterProvider
-from devsync.llm.provider import LLMProviderError
 
 
 def _mock_response(status_code: int, json_data: dict) -> MagicMock:

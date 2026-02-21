@@ -4,12 +4,11 @@ Stores provider and model preferences in ~/.devsync/config.yaml.
 API keys are NEVER stored — only env var names for reference.
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
 import yaml
-
 
 _CONFIG_DIR = Path.home() / ".devsync"
 _CONFIG_FILE = _CONFIG_DIR / "config.yaml"

@@ -3,9 +3,7 @@
 import os
 from unittest.mock import patch
 
-import pytest
-
-from devsync.llm.provider import LLMProvider, LLMProviderError, LLMResponse, resolve_provider
+from devsync.llm.provider import LLMProviderError, LLMResponse, resolve_provider
 
 
 class TestLLMResponse:

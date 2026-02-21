@@ -4,8 +4,6 @@ import json
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
-
 from devsync.core.adapter import PracticeAdapter
 from devsync.core.practice import PracticeDeclaration
 from devsync.llm.provider import LLMProviderError, LLMResponse

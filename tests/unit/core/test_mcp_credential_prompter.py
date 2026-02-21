@@ -1,9 +1,6 @@
 """Tests for MCP credential prompting."""
 
-from pathlib import Path
 from unittest.mock import MagicMock, patch
-
-import pytest
 
 from devsync.core.mcp_credential_prompter import build_mcp_config, prompt_mcp_credentials
 from devsync.core.practice import CredentialSpec, MCPDeclaration

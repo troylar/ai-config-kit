@@ -1,12 +1,9 @@
 """Tests for the setup command."""
 
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from devsync.cli.setup import setup_command
-from devsync.llm.config import LLMConfig, load_config
+from devsync.llm.config import LLMConfig
 
 
 class TestSetupCommand:

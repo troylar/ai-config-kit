@@ -2,7 +2,6 @@
 
 import json
 from dataclasses import dataclass, field
-from typing import Optional
 
 from devsync.core.practice import MCPDeclaration, PracticeDeclaration
 

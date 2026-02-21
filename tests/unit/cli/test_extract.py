@@ -3,7 +3,6 @@
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
 import yaml
 
 from devsync.cli.extract import _upgrade_v1_package, extract_command

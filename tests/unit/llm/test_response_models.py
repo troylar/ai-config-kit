@@ -4,16 +4,15 @@ import json
 
 import pytest
 
+from devsync.core.practice import PracticeDeclaration
 from devsync.llm.response_models import (
     AdaptationAction,
     AdaptationPlan,
     ExtractionResult,
-    MergeDecision,
     parse_adaptation_response,
     parse_extraction_response,
     parse_merge_response,
 )
-from devsync.core.practice import MCPDeclaration, PracticeDeclaration
 
 
 class TestExtractionResult:
