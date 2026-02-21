@@ -88,14 +88,10 @@ class TestAnteroomTool:
         project_root.mkdir()
         assert anteroom_tool.get_project_instructions_directory(project_root) == project_root
 
-    def test_get_instruction_path(
-        self, anteroom_tool: AnteroomTool, temp_dir  # type: ignore[no-untyped-def]
-    ) -> None:
+    def test_get_instruction_path(self, anteroom_tool: AnteroomTool, temp_dir) -> None:  # type: ignore[no-untyped-def]
         project_root = temp_dir / "project"
         project_root.mkdir()
-        path = anteroom_tool.get_instruction_path(
-            "test", scope=InstallationScope.PROJECT, project_root=project_root
-        )
+        path = anteroom_tool.get_instruction_path("test", scope=InstallationScope.PROJECT, project_root=project_root)
         assert path == project_root / "ANTEROOM.md"
 
     def test_get_instruction_path_global_raises(self, anteroom_tool: AnteroomTool) -> None:
@@ -210,9 +206,7 @@ class TestAnteroomTool:
         project_root.mkdir()
 
         assert (
-            anteroom_tool.instruction_exists(
-                "nonexistent", scope=InstallationScope.PROJECT, project_root=project_root
-            )
+            anteroom_tool.instruction_exists("nonexistent", scope=InstallationScope.PROJECT, project_root=project_root)
             is False
         )
 
