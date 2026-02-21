@@ -91,20 +91,13 @@ def extract(
     """
     from devsync.cli.extract import extract_command
 
-    if upgrade:
-        exit_code = extract_command(
-            output=output,
-            name=name,
-            no_ai=no_ai,
-            project_dir=upgrade,
-        )
-    else:
-        exit_code = extract_command(
-            output=output,
-            name=name,
-            no_ai=no_ai,
-            project_dir=project_dir,
-        )
+    exit_code = extract_command(
+        output=output,
+        name=name,
+        no_ai=no_ai,
+        project_dir=project_dir,
+        upgrade=upgrade,
+    )
     raise typer.Exit(code=exit_code)
 
 
