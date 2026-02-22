@@ -15,8 +15,11 @@ $ devsync extract [OPTIONS]
 | `--output` | `-o` | Output directory for the package | `./devsync-package` |
 | `--name` | `-n` | Package name | -- |
 | `--no-ai` | -- | Use file-copy mode instead of AI extraction | `False` |
-| `--project-dir` | `-p` | Project directory to extract from | `.` |
-| `--upgrade` | `-u` | Path to v1 package to upgrade to v2 format | -- |
+| `--project` | `-p` | Project directory to extract from | `.` |
+| `--upgrade` | -- | Path to v1 package to upgrade to v2 format | -- |
+| `--tool` | `-t` | Only extract from specific AI tool(s). Repeatable. | -- |
+| `--component` | `-c` | Only extract specific component types (rules, mcp, hooks, commands, skills, workflows, memory, resources). Repeatable. | -- |
+| `--scope` | `-s` | Detection scope: `project`, `global`, or `all` | `project` |
 
 ## AI-Powered Mode (Default)
 
@@ -98,6 +101,38 @@ $ devsync extract --project-dir ~/other-project --output ./other-standards --nam
 ```bash
 $ devsync extract --output ~/shared/team-standards --name team-standards
 ```
+
+### Extract only from specific tools
+
+```bash
+$ devsync extract --tool cursor --tool claude
+```
+
+Extract only from Cursor and Claude Code, skipping other tools.
+
+### Extract only specific component types
+
+```bash
+$ devsync extract --component rules --component mcp
+```
+
+Extract only instruction rules and MCP configurations, skipping hooks, commands, etc.
+
+### Include global configurations
+
+```bash
+$ devsync extract --scope all
+```
+
+By default, DevSync only scans the project directory. Use `--scope all` to include global AI tool configurations in addition to project-level ones.
+
+### Combine filters
+
+```bash
+$ devsync extract --tool claude --component rules --scope all
+```
+
+Extract only instruction rules from Claude Code, including global configurations.
 
 ## What Gets Extracted
 
