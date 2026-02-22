@@ -26,6 +26,7 @@ def install_v2_command(
     no_ai: bool = False,
     conflict: str = "prompt",
     project_dir: Optional[str] = None,
+    skip_pip: bool = False,
 ) -> int:
     """Install a package into the current project.
 
@@ -37,6 +38,7 @@ def install_v2_command(
         no_ai: Disable AI-powered adaptation.
         conflict: Conflict strategy ('prompt', 'skip', 'overwrite', 'rename').
         project_dir: Target project directory. Defaults to cwd.
+        skip_pip: Skip pip package installations for MCP servers.
 
     Returns:
         Exit code (0 = success).
@@ -72,8 +74,8 @@ def install_v2_command(
         console.print(f"  Tools: {', '.join(target_tools)}")
 
         if manifest.is_v2 and manifest.has_practices and not no_ai:
-            return _install_v2_ai(manifest, project_root, target_tools)
-        return _install_v2_fallback(manifest, package_path, project_root, target_tools, conflict)
+            return _install_v2_ai(manifest, project_root, target_tools, skip_pip=skip_pip)
+        return _install_v2_fallback(manifest, package_path, project_root, target_tools, conflict, skip_pip=skip_pip)
     finally:
         if cloned_tmp and cloned_tmp.exists():
             shutil.rmtree(cloned_tmp, ignore_errors=True)
@@ -125,6 +127,7 @@ def _install_v2_ai(
     manifest: PackageManifestV2,
     project_root: Path,
     target_tools: list[str],
+    skip_pip: bool = False,
 ) -> int:
     """Install using AI-powered adaptation."""
     config = load_config()
@@ -142,7 +145,7 @@ def _install_v2_ai(
     _execute_plan(plan, project_root, target_tools)
 
     if manifest.mcp_servers:
-        _install_mcp_servers(manifest, project_root)
+        _install_mcp_servers(manifest, project_root, skip_pip=skip_pip)
 
     console.print(f"\n[green]Installed {manifest.name} successfully.[/green]")
     return 0
@@ -154,6 +157,7 @@ def _install_v2_fallback(
     project_root: Path,
     target_tools: list[str],
     conflict: str,
+    skip_pip: bool = False,
 ) -> int:
     """Install using file-copy mode (v1 compat or --no-ai)."""
     installed_count = 0
@@ -205,7 +209,7 @@ def _install_v2_fallback(
                     console.print(f"  Installed: {ref.name} → {dest.relative_to(project_root)}")
 
     if manifest.mcp_servers:
-        _install_mcp_servers(manifest, project_root)
+        _install_mcp_servers(manifest, project_root, skip_pip=skip_pip)
 
     console.print(f"\n[green]Installed {installed_count} instructions.[/green]")
     return 0
@@ -258,8 +262,14 @@ def _get_tool_instruction_path(tool_name: str, project_root: Path, instruction_n
     return project_root / dir_name / f"{instruction_name}{ext}"
 
 
-def _install_mcp_servers(manifest: PackageManifestV2, project_root: Path) -> None:
-    """Install MCP server configurations with credential prompting."""
+def _install_mcp_servers(
+    manifest: PackageManifestV2,
+    project_root: Path,
+    skip_pip: bool = False,
+) -> None:
+    """Install MCP server configurations with pip dependencies and credential prompting."""
+    _install_pip_dependencies(manifest.mcp_servers, skip_pip=skip_pip)
+
     servers_with_creds = [s for s in manifest.mcp_servers if s.credentials]
     if servers_with_creds:
         env_path = project_root / ".devsync" / ".env"
@@ -272,3 +282,57 @@ def _install_mcp_servers(manifest: PackageManifestV2, project_root: Path) -> Non
     else:
         for server in manifest.mcp_servers:
             console.print(f"  MCP: {server.name} (no credentials needed)")
+
+
+def _install_pip_dependencies(
+    mcp_servers: list,
+    skip_pip: bool = False,
+) -> None:
+    """Install pip package dependencies for MCP servers.
+
+    Args:
+        mcp_servers: List of MCPDeclaration objects.
+        skip_pip: If True, skip all pip installations.
+    """
+    servers_with_pip = [s for s in mcp_servers if getattr(s, "pip_package", None)]
+    if not servers_with_pip:
+        return
+
+    console.print("\n[bold]MCP Server Dependencies[/bold]")
+
+    if skip_pip:
+        console.print("  [yellow]Skipping pip installations (--skip-pip)[/yellow]")
+        for server in servers_with_pip:
+            console.print(f"  [dim]{server.name}: {server.pip_package} (skipped)[/dim]")
+        return
+
+    from devsync.core.pip_utils import get_installed_version, install_pip_package, validate_pip_spec
+
+    for server in servers_with_pip:
+        spec = server.pip_package
+
+        if not validate_pip_spec(spec):
+            console.print(f"  [red]Invalid package spec for {server.name}: {spec}[/red]")
+            continue
+
+        installed_ver = get_installed_version(spec)
+        if installed_ver:
+            console.print(f"  [dim]{server.name}: {spec} already installed (v{installed_ver})[/dim]")
+            continue
+
+        console.print(f"  [cyan]{server.name} requires pip package: {spec}[/cyan]")
+        if server.description:
+            console.print(f"  [dim]{server.description}[/dim]")
+
+        if not Confirm.ask(f"  Install {spec}?", default=True):
+            console.print(f"  [yellow]Skipped pip install for {server.name}[/yellow]")
+            continue
+
+        with console.status(f"  Installing {spec}..."):
+            success, message = install_pip_package(spec)
+
+        if success:
+            console.print(f"  [green]{message}[/green]")
+        else:
+            console.print(f"  [red]{message}[/red]")
+            console.print(f"  [yellow]MCP server {server.name} may not work without {spec}[/yellow]")
