@@ -28,19 +28,31 @@ class PracticeExtractor:
     def __init__(self, llm_provider: Optional[LLMProvider] = None):
         self._llm = llm_provider
 
-    def extract(self, project_path: Path) -> ExtractionResult:
+    def extract(
+        self,
+        project_path: Path,
+        tool_filter: list[str] | None = None,
+        component_filter: list[str] | None = None,
+        scope: str = "project",
+    ) -> ExtractionResult:
         """Extract practices from a project directory.
 
         Args:
             project_path: Root directory of the project to analyze.
+            tool_filter: Only extract from these AI tools.
+            component_filter: Only extract these component types.
+            scope: Detection scope — project, global, or all.
 
         Returns:
             ExtractionResult with extracted practices and MCP servers.
         """
-        from devsync.core.component_detector import ComponentDetector
+        from devsync.core.component_detector import ComponentDetector, filter_detection_result
 
-        detector = ComponentDetector(project_path)
+        detector = ComponentDetector(project_path, scope=scope, tool_filter=tool_filter)
         detection = detector.detect_all()
+
+        if component_filter:
+            detection = filter_detection_result(detection, component_filter=component_filter)
 
         instruction_files = self._read_instruction_files(project_path, detection)
         mcp_configs = self._read_mcp_configs(detection)

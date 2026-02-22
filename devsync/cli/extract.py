@@ -21,6 +21,9 @@ def extract_command(
     no_ai: bool = False,
     project_dir: Optional[str] = None,
     upgrade: Optional[str] = None,
+    tool: Optional[list[str]] = None,
+    component: Optional[list[str]] = None,
+    scope: str = "project",
 ) -> int:
     """Extract practices from the current project into a shareable package.
 
@@ -30,12 +33,42 @@ def extract_command(
         no_ai: Force file-copy mode (no LLM calls).
         project_dir: Project directory to extract from. Defaults to cwd.
         upgrade: Path to a v1 package to convert to v2 format.
+        tool: Only extract from these AI tool(s).
+        component: Only extract these component types.
+        scope: Detection scope — project, global, or all.
 
     Returns:
         Exit code (0 = success).
     """
     if upgrade:
         return _upgrade_v1_package(upgrade, output=output, name=name, no_ai=no_ai)
+
+    # Validate scope
+    if scope not in ("project", "global", "all"):
+        console.print(f"[red]Invalid scope: {scope}. Must be project, global, or all.[/red]")
+        return 1
+
+    # Validate tool names
+    if tool:
+        from devsync.ai_tools.detector import AIToolDetector
+
+        detector = AIToolDetector()
+        for t in tool:
+            if not detector.validate_tool_name(t):
+                console.print(f"[red]Unknown tool: {t}[/red]")
+                console.print(f"Supported tools: {', '.join(detector.get_tool_names())}")
+                return 1
+
+    # Validate component names
+    if component:
+        from devsync.core.component_detector import COMPONENT_TYPE_MAP
+
+        for c in component:
+            if c.lower() not in COMPONENT_TYPE_MAP:
+                valid = sorted(set(COMPONENT_TYPE_MAP.keys()))
+                console.print(f"[red]Unknown component type: {c}[/red]")
+                console.print(f"Valid types: {', '.join(valid)}")
+                return 1
 
     project_path = Path(project_dir) if project_dir else Path.cwd()
     if not project_path.is_dir():
@@ -64,7 +97,12 @@ def extract_command(
         console=console,
     ) as progress:
         task = progress.add_task("Scanning project...", total=None)
-        result = extractor.extract(project_path)
+        result = extractor.extract(
+            project_path,
+            tool_filter=tool,
+            component_filter=component,
+            scope=scope,
+        )
         progress.update(task, description="Building package...")
 
     output_path.mkdir(parents=True, exist_ok=True)

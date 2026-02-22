@@ -60,6 +60,71 @@ class TestExtractCommand:
         mock_extractor_cls.assert_called_once_with(llm_provider=None)
 
 
+class TestExtractFilterValidation:
+    """Test validation of --tool, --component, --scope options."""
+
+    def test_invalid_tool_rejected(self, tmp_path: Path) -> None:
+        """Test that an invalid tool name returns error."""
+        result = extract_command(project_dir=str(tmp_path), no_ai=True, tool=["nonexistent-tool"])
+        assert result == 1
+
+    def test_invalid_component_rejected(self, tmp_path: Path) -> None:
+        """Test that an invalid component name returns error."""
+        result = extract_command(project_dir=str(tmp_path), no_ai=True, component=["nonexistent-component"])
+        assert result == 1
+
+    def test_invalid_scope_rejected(self, tmp_path: Path) -> None:
+        """Test that an invalid scope returns error."""
+        result = extract_command(project_dir=str(tmp_path), no_ai=True, scope="invalid")
+        assert result == 1
+
+    def test_valid_tool_accepted(self, tmp_path: Path) -> None:
+        """Test that valid tool names are accepted."""
+        result = extract_command(
+            project_dir=str(tmp_path),
+            no_ai=True,
+            tool=["claude"],
+            output=str(tmp_path / "out"),
+        )
+        assert result == 0
+
+    def test_valid_component_accepted(self, tmp_path: Path) -> None:
+        """Test that valid component names are accepted."""
+        result = extract_command(
+            project_dir=str(tmp_path),
+            no_ai=True,
+            component=["mcp"],
+            output=str(tmp_path / "out"),
+        )
+        assert result == 0
+
+    @patch("devsync.cli.extract.PracticeExtractor")
+    @patch("devsync.cli.extract.load_config")
+    def test_filters_pass_to_extractor(
+        self, mock_config: MagicMock, mock_extractor_cls: MagicMock, tmp_path: Path
+    ) -> None:
+        """Test that tool/component/scope filters are passed to extractor."""
+        output_dir = tmp_path / "output"
+        mock_extractor = MagicMock()
+        mock_extractor.extract.return_value = ExtractionResult(ai_powered=False)
+        mock_extractor_cls.return_value = mock_extractor
+
+        extract_command(
+            output=str(output_dir),
+            no_ai=True,
+            project_dir=str(tmp_path),
+            tool=["cursor"],
+            component=["mcp"],
+            scope="all",
+        )
+
+        mock_extractor.extract.assert_called_once()
+        call_kwargs = mock_extractor.extract.call_args
+        assert call_kwargs.kwargs["tool_filter"] == ["cursor"]
+        assert call_kwargs.kwargs["component_filter"] == ["mcp"]
+        assert call_kwargs.kwargs["scope"] == "all"
+
+
 class TestUpgradeV1Package:
     def test_upgrade_nonexistent_path(self) -> None:
         result = _upgrade_v1_package("/nonexistent/path")

@@ -70,6 +70,24 @@ def extract(
         "--upgrade",
         help="Convert a v1 package to v2 format",
     ),
+    tool: Optional[list[str]] = typer.Option(
+        None,
+        "--tool",
+        "-t",
+        help="Only extract from specific AI tool(s). Repeatable.",
+    ),
+    component: Optional[list[str]] = typer.Option(
+        None,
+        "--component",
+        "-c",
+        help="Only extract specific component types (rules, mcp, hooks, commands, skills, workflows). Repeatable.",
+    ),
+    scope: str = typer.Option(
+        "project",
+        "--scope",
+        "-s",
+        help="Detection scope: project, global, or all",
+    ),
 ) -> None:
     """Extract practices from a project into a shareable package.
 
@@ -86,6 +104,15 @@ def extract(
       # Custom output and name
       devsync extract --output ./my-package --name team-standards
 
+      # Extract only from Cursor
+      devsync extract --tool cursor
+
+      # Extract only MCP configs
+      devsync extract --component mcp
+
+      # Extract from global configs too
+      devsync extract --scope all
+
       # Upgrade v1 package to v2
       devsync extract --upgrade ./old-package
     """
@@ -97,6 +124,9 @@ def extract(
         no_ai=no_ai,
         project_dir=project_dir,
         upgrade=upgrade,
+        tool=tool,
+        component=component,
+        scope=scope,
     )
     raise typer.Exit(code=exit_code)
 
