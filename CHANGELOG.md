@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-02-22
+
+### Added
+- **Extract command UX improvements** (#86, #88)
+  - `--dry-run` flag to preview detected components without writing files or calling the LLM
+  - `--include-global` flag replacing the confusing three-way `--scope` option
+  - Detection summary table displayed before extraction (Rich table with Component/Source/Count)
+  - Zero-result warning with suggestions when filters match nothing
+  - `devsync tools --verbose` showing per-tool capabilities and valid `--component` filter names
+- **Multi-tool extract filtering** (#86)
+  - `--tool` filter to extract from specific AI tools only (repeatable)
+  - `--component` filter to extract specific component types only (repeatable)
+  - Multi-tool MCP server detection across all registered IDE config paths
+  - IDE capability registry driving detection locations
+  - Component-level filtering with `filter_detection_result()`
+
+### Changed
+- `--scope` option on `devsync extract` is now deprecated in favor of `--include-global`
+- Extract command now shows detection summary before running extraction
+- Extraction output enhanced with per-tool breakdown
+
+### Fixed
+- Resources no longer dropped when `--tool` filter is active (#86)
+
 ## [0.13.0] - 2026-02-22
 
 ### Added
