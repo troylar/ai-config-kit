@@ -470,7 +470,7 @@ class ComponentDetector:
 
         return servers
 
-    def _resolve_pip_package(self, command: str, args: list) -> Optional[str]:
+    def _resolve_pip_package(self, command: str, args: list[str]) -> Optional[str]:
         """Attempt to resolve a pip package from an MCP server command.
 
         Non-fatal: returns None on any failure.
@@ -484,13 +484,9 @@ class ComponentDetector:
         """
         if not command:
             return None
-        try:
-            from devsync.core.pip_utils import resolve_pip_package_for_command
+        from devsync.core.pip_utils import resolve_pip_package_for_command
 
-            return resolve_pip_package_for_command(command, args)
-        except Exception as e:
-            logger.warning("Failed to resolve pip package for %s: %s", command, e)
-            return None
+        return resolve_pip_package_for_command(command, args)
 
     def _detect_hooks(self) -> list[DetectedHook]:
         """Detect hook scripts.

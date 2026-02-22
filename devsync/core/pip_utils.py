@@ -93,6 +93,43 @@ def get_installed_version(package_name: str) -> Optional[str]:
         return None
 
 
+def installed_version_satisfies(spec: str) -> bool:
+    """Check if the installed version of a package satisfies the spec.
+
+    Args:
+        spec: Pip package specifier (e.g., 'mcp-server>=1.0').
+
+    Returns:
+        True if the package is installed and satisfies the version constraint.
+        False if not installed or version doesn't satisfy.
+    """
+    base = _extract_base_name(spec)
+    installed = get_installed_version(base)
+    if installed is None:
+        return False
+
+    # Extract version constraint from spec
+    constraint_match = re.search(r"([<>=!~]+.+)$", spec.strip())
+    if not constraint_match:
+        return True
+
+    constraint = constraint_match.group(1)
+
+    try:
+        from packaging.specifiers import SpecifierSet
+        from packaging.version import Version
+
+        specifier = SpecifierSet(constraint)
+        return Version(installed) in specifier
+    except ImportError:
+        # packaging not available — fall back to simple presence check
+        logger.debug("packaging library not available, skipping version constraint check")
+        return True
+    except Exception:
+        # Invalid version/spec — assume satisfied to avoid blocking install
+        return True
+
+
 def resolve_pip_package_for_command(command: str, args: list[str]) -> Optional[str]:
     """Resolve a command/args pair to a pip package name if possible.
 
@@ -120,7 +157,7 @@ def _resolve_pip_package_for_command_inner(command: str, args: list[str]) -> Opt
     cmd_basename = os.path.basename(command)
 
     # Pattern 1: python -m module_name
-    if cmd_basename in ("python", "python3", "python3.10", "python3.11", "python3.12", "python3.13"):
+    if cmd_basename == "python" or cmd_basename == "python3" or re.match(r"python3\.\d+$", cmd_basename):
         if "-m" in args:
             m_idx = args.index("-m")
             if m_idx + 1 < len(args):
@@ -131,7 +168,7 @@ def _resolve_pip_package_for_command_inner(command: str, args: list[str]) -> Opt
     if cmd_basename == "uvx":
         if args:
             pkg_name = args[0]
-            if not pkg_name.startswith("-"):
+            if not pkg_name.startswith("-") and validate_pip_spec(pkg_name):
                 return pkg_name
 
     # Pattern 3: command is a console_script entry point
@@ -188,7 +225,7 @@ def _find_distribution_for_script(script_name: str) -> Optional[str]:
                 # ep.dist may not exist on all versions
                 if hasattr(ep, "dist") and ep.dist is not None:
                     return ep.dist.metadata["Name"]
-                return None
+                continue
     except Exception:
         pass
 
@@ -196,13 +233,14 @@ def _find_distribution_for_script(script_name: str) -> Optional[str]:
 
 
 def find_pip_executable() -> Optional[str]:
-    """Find a usable pip executable.
+    """Find a usable way to run pip.
 
     Prefers `sys.executable -m pip` (respects current venv),
     falls back to `shutil.which("pip")`.
 
     Returns:
-        Path to pip executable or None if unavailable.
+        Python executable path (for `-m pip` usage) or standalone pip path,
+        or None if pip is unavailable.
     """
     try:
         result = subprocess.run(

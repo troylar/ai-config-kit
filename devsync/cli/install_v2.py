@@ -1,9 +1,14 @@
 """V2 install command — AI-powered package installation."""
 
+from __future__ import annotations
+
 import shutil
 import tempfile
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
+
+if TYPE_CHECKING:
+    from devsync.core.practice import MCPDeclaration
 
 from rich.console import Console
 from rich.prompt import Confirm
@@ -268,35 +273,48 @@ def _install_mcp_servers(
     skip_pip: bool = False,
 ) -> None:
     """Install MCP server configurations with pip dependencies and credential prompting."""
-    _install_pip_dependencies(manifest.mcp_servers, skip_pip=skip_pip)
+    failed_pip_servers = _install_pip_dependencies(manifest.mcp_servers, skip_pip=skip_pip)
 
-    servers_with_creds = [s for s in manifest.mcp_servers if s.credentials]
+    # Skip credential prompting for servers whose pip deps failed
+    eligible_servers = [s for s in manifest.mcp_servers if s.name not in failed_pip_servers]
+    servers_with_creds = [s for s in eligible_servers if s.credentials]
     if servers_with_creds:
         env_path = project_root / ".devsync" / ".env"
         credentials = prompt_mcp_credentials(servers_with_creds, env_path=env_path)
 
-        for server in manifest.mcp_servers:
+        for server in eligible_servers:
             server_creds = credentials.get(server.name, {})
             build_mcp_config(server, server_creds)
             console.print(f"  MCP: {server.name} configured")
     else:
-        for server in manifest.mcp_servers:
+        for server in eligible_servers:
             console.print(f"  MCP: {server.name} (no credentials needed)")
 
 
 def _install_pip_dependencies(
-    mcp_servers: list,
+    mcp_servers: list[MCPDeclaration],
     skip_pip: bool = False,
-) -> None:
+) -> set[str]:
     """Install pip package dependencies for MCP servers.
 
     Args:
         mcp_servers: List of MCPDeclaration objects.
         skip_pip: If True, skip all pip installations.
+
+    Returns:
+        Set of server names whose pip dependency installation failed or was declined.
     """
-    servers_with_pip = [s for s in mcp_servers if getattr(s, "pip_package", None)]
+    from devsync.core.pip_utils import (
+        get_installed_version,
+        install_pip_package,
+        installed_version_satisfies,
+        validate_pip_spec,
+    )
+
+    failed_servers: set[str] = set()
+    servers_with_pip = [s for s in mcp_servers if s.pip_package]
     if not servers_with_pip:
-        return
+        return failed_servers
 
     console.print("\n[bold]MCP Server Dependencies[/bold]")
 
@@ -304,19 +322,19 @@ def _install_pip_dependencies(
         console.print("  [yellow]Skipping pip installations (--skip-pip)[/yellow]")
         for server in servers_with_pip:
             console.print(f"  [dim]{server.name}: {server.pip_package} (skipped)[/dim]")
-        return
-
-    from devsync.core.pip_utils import get_installed_version, install_pip_package, validate_pip_spec
+        return failed_servers
 
     for server in servers_with_pip:
         spec = server.pip_package
+        assert spec is not None  # guarded by servers_with_pip filter
 
         if not validate_pip_spec(spec):
             console.print(f"  [red]Invalid package spec for {server.name}: {spec}[/red]")
+            failed_servers.add(server.name)
             continue
 
-        installed_ver = get_installed_version(spec)
-        if installed_ver:
+        if installed_version_satisfies(spec):
+            installed_ver = get_installed_version(spec)
             console.print(f"  [dim]{server.name}: {spec} already installed (v{installed_ver})[/dim]")
             continue
 
@@ -326,6 +344,7 @@ def _install_pip_dependencies(
 
         if not Confirm.ask(f"  Install {spec}?", default=True):
             console.print(f"  [yellow]Skipped pip install for {server.name}[/yellow]")
+            failed_servers.add(server.name)
             continue
 
         with console.status(f"  Installing {spec}..."):
@@ -336,3 +355,6 @@ def _install_pip_dependencies(
         else:
             console.print(f"  [red]{message}[/red]")
             console.print(f"  [yellow]MCP server {server.name} may not work without {spec}[/yellow]")
+            failed_servers.add(server.name)
+
+    return failed_servers

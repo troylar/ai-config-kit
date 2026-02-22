@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
+from devsync.core.pip_utils import validate_pip_spec
+
 
 @dataclass
 class CredentialSpec:
@@ -145,8 +147,6 @@ class MCPDeclaration:
         if self.protocol not in ("stdio", "sse"):
             raise ValueError(f"MCPDeclaration protocol must be 'stdio' or 'sse', got '{self.protocol}'")
         if self.pip_package is not None:
-            from devsync.core.pip_utils import validate_pip_spec
-
             if not validate_pip_spec(self.pip_package):
                 raise ValueError(f"MCPDeclaration pip_package is not a valid pip spec: '{self.pip_package}'")
 

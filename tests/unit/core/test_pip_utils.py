@@ -1,6 +1,8 @@
 """Tests for pip_utils module."""
 
+import importlib.metadata
 import subprocess
+import sys
 from unittest.mock import MagicMock, patch
 
 from devsync.core.pip_utils import (
@@ -8,6 +10,7 @@ from devsync.core.pip_utils import (
     find_pip_executable,
     get_installed_version,
     install_pip_package,
+    installed_version_satisfies,
     is_pip_installed,
     resolve_pip_package_for_command,
     validate_pip_spec,
@@ -86,8 +89,6 @@ class TestIsPipInstalled:
 
     @patch("devsync.core.pip_utils.importlib.metadata.version")
     def test_not_installed(self, mock_version: MagicMock) -> None:
-        import importlib.metadata
-
         mock_version.side_effect = importlib.metadata.PackageNotFoundError("nope")
         assert is_pip_installed("nonexistent-pkg") is False
 
@@ -106,8 +107,6 @@ class TestGetInstalledVersion:
 
     @patch("devsync.core.pip_utils.importlib.metadata.version")
     def test_not_found(self, mock_version: MagicMock) -> None:
-        import importlib.metadata
-
         mock_version.side_effect = importlib.metadata.PackageNotFoundError("nope")
         assert get_installed_version("nonexistent") is None
 
@@ -159,13 +158,40 @@ class TestResolvePipPackageForCommand:
             assert result == "pkg"
 
 
+class TestInstalledVersionSatisfies:
+    @patch("devsync.core.pip_utils.get_installed_version")
+    def test_not_installed(self, mock_ver: MagicMock) -> None:
+        mock_ver.return_value = None
+        assert installed_version_satisfies("requests>=2.0") is False
+
+    @patch("devsync.core.pip_utils.get_installed_version")
+    def test_no_constraint(self, mock_ver: MagicMock) -> None:
+        mock_ver.return_value = "1.0.0"
+        assert installed_version_satisfies("requests") is True
+
+    @patch("devsync.core.pip_utils.get_installed_version")
+    def test_satisfies_constraint(self, mock_ver: MagicMock) -> None:
+        mock_ver.return_value = "2.28.0"
+        assert installed_version_satisfies("requests>=2.0") is True
+
+    @patch("devsync.core.pip_utils.get_installed_version")
+    def test_does_not_satisfy_constraint(self, mock_ver: MagicMock) -> None:
+        mock_ver.return_value = "1.5.0"
+        assert installed_version_satisfies("requests>=2.0") is False
+
+    @patch("devsync.core.pip_utils.get_installed_version")
+    def test_packaging_not_available(self, mock_ver: MagicMock) -> None:
+        mock_ver.return_value = "1.0.0"
+        with patch.dict("sys.modules", {"packaging.specifiers": None, "packaging.version": None}):
+            # When packaging is unavailable, falls back to True (installed = good enough)
+            assert installed_version_satisfies("requests>=2.0") is True
+
+
 class TestFindPipExecutable:
     @patch("devsync.core.pip_utils.subprocess.run")
     def test_sys_executable_works(self, mock_run: MagicMock) -> None:
         mock_run.return_value = MagicMock(returncode=0)
         result = find_pip_executable()
-        import sys
-
         assert result == sys.executable
 
     @patch("devsync.core.pip_utils.shutil.which")
@@ -201,8 +227,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_success(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.return_value = MagicMock(returncode=0)
         success, msg = install_pip_package("requests>=2.0")
@@ -212,8 +236,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_not_found(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.return_value = MagicMock(returncode=1, stderr="no matching distribution found")
         success, msg = install_pip_package("nonexistent-pkg")
@@ -223,8 +245,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_permission_denied(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.return_value = MagicMock(returncode=1, stderr="permission denied")
         success, msg = install_pip_package("requests")
@@ -234,8 +254,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_timeout(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.side_effect = subprocess.TimeoutExpired(cmd="pip", timeout=120)
         success, msg = install_pip_package("requests", timeout=120)
@@ -245,8 +263,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_os_error(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.side_effect = OSError("broken")
         success, msg = install_pip_package("requests")
@@ -256,8 +272,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_no_compatible_version(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.return_value = MagicMock(returncode=1, stderr="could not find a version that satisfies")
         success, msg = install_pip_package("requests>=999.0")
@@ -267,8 +281,6 @@ class TestInstallPipPackage:
     @patch("devsync.core.pip_utils.subprocess.run")
     @patch("devsync.core.pip_utils.find_pip_executable")
     def test_generic_failure(self, mock_find: MagicMock, mock_run: MagicMock) -> None:
-        import sys
-
         mock_find.return_value = sys.executable
         mock_run.return_value = MagicMock(returncode=2, stderr="something unexpected")
         success, msg = install_pip_package("requests")
